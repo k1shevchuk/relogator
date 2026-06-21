@@ -1,7 +1,14 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+# local project/agent instructions
+AGENTS.md
+PLANS.md
+.agents/
+skills-lock.json
+
+# environment files
 .env
 .env.*
 !.env.example
+
 # dependencies
 /node_modules
 /.pnp
@@ -12,28 +19,44 @@
 !.yarn/releases
 !.yarn/versions
 
-# testing
-/coverage
-
 # next.js
 /.next/
 /out/
 
-# production
+# production builds
 /build
+/dist
 
-# misc
-.DS_Store
-*.pem
+# test and coverage output
+/coverage
+/test-results/
+/playwright-report/
+/blob-report/
+/.nyc_output/
 
-# debug
+# caches
+/.turbo/
+/.cache/
+
+# logs
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+pnpm-debug.log*
 .pnpm-debug.log*
 
-# env files (can opt-in for committing if needed)
-.env*
+# misc
+.DS_Store
+Thumbs.db
+*.pem
+
+# local editor and OS files
+.idea/
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+*.swp
+*.swo
 
 # vercel
 .vercel
