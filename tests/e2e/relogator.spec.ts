@@ -119,6 +119,34 @@ test("mobile layout has no horizontal page overflow", async ({ page }) => {
   expect(hasNoOverflow).toBe(true)
 })
 
+test("auth pages render without sending real emails", async ({ page }) => {
+  await page.goto("/auth/register")
+  await expect(page.getByRole("heading", { name: "Регистрация" })).toBeVisible()
+  await expect(page.getByLabel("Email")).toBeVisible()
+  await expect(page.getByLabel("Пароль")).toBeVisible()
+
+  await page.goto("/auth/login")
+  await expect(
+    page.getByRole("heading", { name: "Вход в Relogator" })
+  ).toBeVisible()
+  await expect(page.getByRole("link", { name: "Забыли пароль?" })).toBeVisible()
+
+  await page.goto("/auth/reset-password")
+  await expect(
+    page.getByRole("heading", { name: "Сброс пароля" })
+  ).toBeVisible()
+  await expect(
+    page.getByRole("button", { name: "Отправить письмо" })
+  ).toBeVisible()
+
+  await page.goto("/auth/new-password")
+  await expect(
+    page.getByRole("heading", { name: "Новый пароль" })
+  ).toBeVisible()
+  await expect(page.getByLabel("Повторите пароль")).toBeVisible()
+  await expect(page.getByText(/sb_publishable|service_role/)).toHaveCount(0)
+})
+
 test("quick exit scenario shows routes that can start now", async ({
   page,
 }) => {
@@ -236,5 +264,5 @@ async function fillQuestionnaire(page: Page, scenario: QuestionnaireScenario) {
   }
   await page.getByRole("button", { name: /Дальше/ }).click()
 
-  await page.getByRole("link", { name: "Показать маршруты" }).click()
+  await page.getByRole("button", { name: "Показать маршруты" }).click()
 }

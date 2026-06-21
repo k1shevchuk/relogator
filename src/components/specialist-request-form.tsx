@@ -10,10 +10,12 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
+import { readStoredProfile } from "@/features/questionnaire/profile-storage"
 import {
   saveSpecialistRequest,
   type StoredSpecialistRequest,
 } from "@/features/specialist-requests/request-storage"
+import { saveSpecialistRequestToServer } from "@/features/user-data/client"
 
 type SpecialistRequestFormProps = {
   countryName: string
@@ -71,6 +73,15 @@ export function SpecialistRequestForm({
     }
 
     saveSpecialistRequest(request)
+    void saveSpecialistRequestToServer({
+      routeId,
+      routeTitle,
+      countryName,
+      name: request.name,
+      contact: request.contact,
+      question: request.question,
+      profile: readStoredProfile(),
+    })
 
     setSubmitted(true)
     setOpen(false)
@@ -82,8 +93,9 @@ export function SpecialistRequestForm({
         <CheckCircle2 data-icon="inline-start" />
         <AlertTitle>Заявка сохранена</AlertTitle>
         <AlertDescription>
-          Это заявка на консультацию, не гарантия результата. Сейчас она
-          сохранена локально в браузере, без отправки в базу.
+          Это заявка на консультацию, не гарантия результата. Для гостя она
+          сохранена локально; для вошедшего пользователя дополнительно
+          отправлена в Supabase.
         </AlertDescription>
         <div className="mt-3">
           <Button asChild size="sm" variant="outline">

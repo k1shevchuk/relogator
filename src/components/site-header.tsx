@@ -16,9 +16,15 @@ export function SiteHeader() {
           </span>
           <span>Relogator</span>
         </Link>
-        <nav className="flex items-center gap-2">
+        <nav className="flex flex-wrap items-center justify-end gap-2">
           <Button asChild variant="ghost" size="sm">
             <Link href="/results">Результаты</Link>
+          </Button>
+          <Button asChild variant="ghost" size="sm">
+            <Link href="/account">Кабинет</Link>
+          </Button>
+          <Button asChild variant="outline" size="sm">
+            <Link href="/auth">Войти</Link>
           </Button>
           <Button asChild size="sm">
             <Link href="/questionnaire">Начать подбор</Link>

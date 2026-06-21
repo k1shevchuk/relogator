@@ -2,6 +2,7 @@
 AGENTS.md
 PLANS.md
 .agents/
+.codex/
 skills-lock.json
 
 # environment files

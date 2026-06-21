@@ -40,9 +40,9 @@ export function SpecialistRequestsClient() {
         <FileText data-icon="inline-start" />
         <AlertTitle>Локальный реестр заявок</AlertTitle>
         <AlertDescription>
-          Это временный MVP-инструмент для проверки спроса. Заявки хранятся
-          только в этом браузере; для рабочей версии нужен Supabase, роли и
-          защищенный кабинет.
+          Этот экран показывает копии заявок из текущего браузера.
+          Авторизованные заявки дополнительно сохраняются в Supabase и доступны
+          администратору через защищенный раздел.
         </AlertDescription>
       </Alert>
 

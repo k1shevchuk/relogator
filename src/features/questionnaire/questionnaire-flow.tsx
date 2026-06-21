@@ -1,14 +1,7 @@
 "use client"
 
-import {
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-  type MouseEvent,
-  type ReactNode,
-} from "react"
-import Link from "next/link"
+import { useEffect, useMemo, useRef, useState, type ReactNode } from "react"
+import { useRouter } from "next/navigation"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Controller, useForm, useWatch } from "react-hook-form"
 import type { PathValue } from "react-hook-form"
@@ -48,6 +41,7 @@ import {
   translationReadinessOptions,
   userProfileSchema,
 } from "./profile-schema"
+import { saveQuestionnaireToServer } from "@/features/user-data/client"
 
 const steps = [
   "Цель",
@@ -59,6 +53,7 @@ const steps = [
 ] as const
 
 export function QuestionnaireFlow() {
+  const router = useRouter()
   const [step, setStep] = useState(0)
   const [stepError, setStepError] = useState<string | null>(null)
   const draftLoadedRef = useRef(false)
@@ -138,11 +133,10 @@ export function QuestionnaireFlow() {
     })
   }
 
-  function saveProfileForResults(event: MouseEvent<HTMLAnchorElement>) {
+  function saveProfileForResults() {
     const result = finalizeQuestionnaireDraft(values)
 
     if (!result.success) {
-      event.preventDefault()
       setStep(result.firstInvalidStep)
       setStepError(result.message)
       return
@@ -151,12 +145,13 @@ export function QuestionnaireFlow() {
     const parsed = userProfileSchema.safeParse(result.data)
 
     if (!parsed.success) {
-      event.preventDefault()
       setStepError("Не удалось подготовить анкету к расчету.")
       return
     }
 
     window.localStorage.setItem(profileStorageKey, JSON.stringify(parsed.data))
+    void saveQuestionnaireToServer(parsed.data)
+    router.push("/results")
   }
 
   return (
@@ -404,10 +399,8 @@ export function QuestionnaireFlow() {
             <ArrowRight data-icon="inline-end" />
           </Button>
         ) : (
-          <Button asChild>
-            <Link href="/results" onClick={saveProfileForResults}>
-              Показать маршруты
-            </Link>
+          <Button type="button" onClick={saveProfileForResults}>
+            Показать маршруты
           </Button>
         )}
       </div>
