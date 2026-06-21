@@ -1,0 +1,26 @@
+[
+  {
+    "id": "kazakhstan-mfa-visa-regime",
+    "title": "МИД Казахстана: визовый режим",
+    "url": "https://www.gov.kz/memleket/entities/mfa/press/article/details/6764?lang=en",
+    "sourceType": "official_body",
+    "countryCode": "KZ",
+    "language": "en",
+    "lastReviewedAt": "2026-06-18",
+    "description": "Официальная таблица безвизового въезда для иностранных граждан",
+    "confidence": "high",
+    "appliesToCitizenship": ["RU"]
+  },
+  {
+    "id": "kazakhstan-trp",
+    "title": "GOV.KZ: разрешение на временное проживание",
+    "url": "https://www.gov.kz/situations/572/intro?lang=en",
+    "sourceType": "government_portal",
+    "countryCode": "KZ",
+    "language": "en",
+    "lastReviewedAt": "2026-06-18",
+    "description": "Порядок получения разрешения на временное проживание для иностранцев",
+    "confidence": "medium",
+    "appliesToCitizenship": ["RU"]
+  }
+]

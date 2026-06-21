@@ -1,0 +1,677 @@
+"use client"
+
+import {
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  type MouseEvent,
+  type ReactNode,
+} from "react"
+import Link from "next/link"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { Controller, useForm, useWatch } from "react-hook-form"
+import type { PathValue } from "react-hook-form"
+import { ArrowLeft, ArrowRight, CheckCircle2, Save } from "lucide-react"
+
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
+import { Button } from "@/components/ui/button"
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card"
+import { Checkbox } from "@/components/ui/checkbox"
+import { Progress } from "@/components/ui/progress"
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
+import { Separator } from "@/components/ui/separator"
+import {
+  defaultQuestionnaireDraft,
+  finalizeQuestionnaireDraft,
+  validateQuestionnaireStep,
+} from "@/domain/questionnaire"
+import type { Companion, QuestionnaireDraft } from "@/domain/types"
+import { summarizeProfile } from "@/features/questionnaire/profile-labels"
+import {
+  companionOptions,
+  departureOptions,
+  goalOptions,
+  incomeOptions,
+  passportOptions,
+  profileStorageKey,
+  questionnaireDraftSchema,
+  questionnaireDraftStorageKey,
+  savingsOptions,
+  stayOptions,
+  translationReadinessOptions,
+  userProfileSchema,
+} from "./profile-schema"
+
+const steps = [
+  "Цель",
+  "Сроки",
+  "Состав",
+  "Финансы",
+  "Документы",
+  "Проверка",
+] as const
+
+export function QuestionnaireFlow() {
+  const [step, setStep] = useState(0)
+  const [stepError, setStepError] = useState<string | null>(null)
+  const draftLoadedRef = useRef(false)
+
+  const form = useForm<QuestionnaireDraft>({
+    resolver: zodResolver(questionnaireDraftSchema),
+    defaultValues: defaultQuestionnaireDraft,
+    mode: "onSubmit",
+  })
+
+  const { control, formState, reset, setValue } = form
+  const values = useWatch({ control }) as QuestionnaireDraft
+
+  useEffect(() => {
+    const raw = window.localStorage.getItem(questionnaireDraftStorageKey)
+
+    if (raw) {
+      const parsed = safelyParseDraft(raw)
+
+      if (parsed.success) {
+        reset(parsed.data)
+      }
+    }
+
+    draftLoadedRef.current = true
+  }, [reset])
+
+  useEffect(() => {
+    if (draftLoadedRef.current) {
+      window.localStorage.setItem(
+        questionnaireDraftStorageKey,
+        JSON.stringify(values)
+      )
+    }
+  }, [values])
+
+  const progress = useMemo(() => ((step + 1) / steps.length) * 100, [step])
+
+  function nextStep() {
+    const validation = validateQuestionnaireStep(step, values)
+
+    if (!validation.success) {
+      setStepError(validation.message ?? "Заполните обязательные ответы.")
+      return
+    }
+
+    setStepError(null)
+    setStep((current) => Math.min(current + 1, steps.length - 1))
+  }
+
+  function previousStep() {
+    setStep((current) => Math.max(current - 1, 0))
+  }
+
+  function toggleCompanion(value: Companion) {
+    const current = values.companions ?? []
+
+    if (current.includes(value)) {
+      setValue(
+        "companions",
+        current.filter((item) => item !== value),
+        {
+          shouldDirty: true,
+          shouldValidate: true,
+        }
+      )
+      return
+    }
+
+    const next = current.includes(value)
+      ? current.filter((item) => item !== value)
+      : [...current.filter((item) => item !== "alone"), value]
+
+    setValue("companions", value === "alone" ? ["alone"] : next, {
+      shouldDirty: true,
+      shouldValidate: true,
+    })
+  }
+
+  function saveProfileForResults(event: MouseEvent<HTMLAnchorElement>) {
+    const result = finalizeQuestionnaireDraft(values)
+
+    if (!result.success) {
+      event.preventDefault()
+      setStep(result.firstInvalidStep)
+      setStepError(result.message)
+      return
+    }
+
+    const parsed = userProfileSchema.safeParse(result.data)
+
+    if (!parsed.success) {
+      event.preventDefault()
+      setStepError("Не удалось подготовить анкету к расчету.")
+      return
+    }
+
+    window.localStorage.setItem(profileStorageKey, JSON.stringify(parsed.data))
+  }
+
+  return (
+    <form
+      onSubmit={(event) => event.preventDefault()}
+      className="mx-auto flex w-full max-w-3xl flex-col gap-5"
+    >
+      <div className="flex flex-col gap-3">
+        <div className="flex items-center justify-between gap-3 text-sm text-muted-foreground">
+          <span>
+            Шаг {step + 1} из {steps.length}: {steps[step]}
+          </span>
+          <span className="flex items-center gap-1">
+            <Save data-icon="inline-start" />
+            Черновик сохраняется
+          </span>
+        </div>
+        <Progress value={progress} aria-label="Прогресс анкеты" />
+      </div>
+
+      <Card className="rounded-lg">
+        <CardHeader>
+          <CardTitle>{getStepTitle(step)}</CardTitle>
+          <CardDescription>{getStepDescription(step)}</CardDescription>
+        </CardHeader>
+        <CardContent className="flex flex-col gap-6">
+          {stepError && (
+            <Alert variant="destructive">
+              <AlertTitle>Нужно заполнить ответ</AlertTitle>
+              <AlertDescription>{stepError}</AlertDescription>
+            </Alert>
+          )}
+
+          {step === 0 && (
+            <Controller
+              control={control}
+              name="goal"
+              render={({ field }) => (
+                <RadioGroup
+                  value={field.value ?? ""}
+                  onValueChange={(value) =>
+                    setValue("goal", value as QuestionnaireDraft["goal"], {
+                      shouldDirty: true,
+                      shouldValidate: true,
+                    })
+                  }
+                >
+                  {goalOptions.map((option) => {
+                    const selectOption = () =>
+                      setValue("goal", option.value, {
+                        shouldDirty: true,
+                        shouldValidate: true,
+                      })
+
+                    return (
+                      <Choice
+                        key={option.value}
+                        id={`goal-${option.value}`}
+                        checked={field.value === option.value}
+                        label={option.label}
+                        hint={option.hint}
+                        onSelect={selectOption}
+                      >
+                        <RadioGroupItem
+                          id={`goal-${option.value}`}
+                          value={option.value}
+                        />
+                      </Choice>
+                    )
+                  })}
+                </RadioGroup>
+              )}
+            />
+          )}
+
+          {step === 1 && (
+            <div className="grid gap-6 md:grid-cols-3">
+              <RadioField
+                control={control}
+                name="departureWindow"
+                label="Когда нужно уехать?"
+                options={departureOptions}
+                setValue={setValue}
+              />
+              <RadioField
+                control={control}
+                name="stayDuration"
+                label="На какой срок?"
+                options={stayOptions}
+                setValue={setValue}
+              />
+              <RadioField
+                control={control}
+                name="passportStatus"
+                label="Есть действующий загранпаспорт?"
+                options={passportOptions}
+                setValue={setValue}
+              />
+            </div>
+          )}
+
+          {step === 2 && (
+            <fieldset className="flex flex-col gap-3">
+              <legend className="text-sm font-medium">
+                Едете один или с кем-то?
+              </legend>
+              {companionOptions.map((option) => (
+                <label
+                  key={option.value}
+                  className="flex cursor-pointer items-center gap-3 rounded-md border bg-background p-3 text-sm"
+                >
+                  <Checkbox
+                    checked={(values.companions ?? []).includes(option.value)}
+                    onCheckedChange={() => toggleCompanion(option.value)}
+                    aria-label={option.label}
+                  />
+                  <span>{option.label}</span>
+                </label>
+              ))}
+              {formState.errors.companions && (
+                <p className="text-sm text-destructive">
+                  {formState.errors.companions.message}
+                </p>
+              )}
+            </fieldset>
+          )}
+
+          {step === 3 && (
+            <div className="grid gap-6 md:grid-cols-2">
+              <BooleanRadioField
+                control={control}
+                name="hasProvableIncome"
+                label="Есть подтверждаемый регулярный доход?"
+                setValue={setValue}
+              />
+              <RadioField
+                control={control}
+                name="monthlyIncomeLevel"
+                label="Какой доход можно подтвердить?"
+                options={incomeOptions}
+                setValue={setValue}
+              />
+              <RadioField
+                control={control}
+                name="savingsLevel"
+                label="Есть ли накопления?"
+                options={savingsOptions}
+                setValue={setValue}
+              />
+              <BooleanField
+                control={control}
+                name="hasEmploymentContract"
+                label="Есть трудовой договор"
+              />
+              <BooleanField
+                control={control}
+                name="hasBusiness"
+                label="Есть ИП или ООО"
+              />
+              <BooleanField
+                control={control}
+                name="willingToOpenCompany"
+                label="Готов открыть компанию за рубежом"
+              />
+            </div>
+          )}
+
+          {step === 4 && (
+            <div className="flex flex-col gap-5">
+              <div className="rounded-md border bg-muted/40 p-3 text-sm leading-6 text-muted-foreground">
+                Переводы, нотариальные копии и апостиль нужны, когда документы
+                из РФ должны быть приняты органом другой страны.
+              </div>
+              <RadioField
+                control={control}
+                name="translationReadiness"
+                label="Если маршрут потребует перевести или заверить документы, какой вариант ближе?"
+                options={translationReadinessOptions}
+                setValue={setValue}
+              />
+              <div className="grid gap-4 md:grid-cols-2">
+                <BooleanField
+                  control={control}
+                  name="hasCriminalRecordCertificate"
+                  label="Есть справка о несудимости"
+                />
+                <BooleanField
+                  control={control}
+                  name="needsSchool"
+                  label="Нужна школа или сад"
+                />
+                <BooleanField
+                  control={control}
+                  name="needsBankAccount"
+                  label="Нужен банковский счет"
+                />
+                <BooleanField
+                  control={control}
+                  name="valuesRussianSpeaking"
+                  label="Важна русскоязычная среда"
+                />
+                <BooleanField
+                  control={control}
+                  name="valuesLowCost"
+                  label="Важна низкая стоимость жизни"
+                />
+                <BooleanField
+                  control={control}
+                  name="valuesWarmClimate"
+                  label="Важен теплый климат"
+                />
+              </div>
+            </div>
+          )}
+
+          {step === 5 && (
+            <div className="flex flex-col gap-4">
+              <Alert>
+                <CheckCircle2 data-icon="inline-start" />
+                <AlertTitle>Анкета готова к расчету</AlertTitle>
+                <AlertDescription>
+                  Расчет выполнится по структурированным правилам и официальным
+                  источникам, без обязательного использования ИИ.
+                </AlertDescription>
+              </Alert>
+              <Summary draft={values} />
+            </div>
+          )}
+        </CardContent>
+      </Card>
+
+      <div className="flex flex-col-reverse gap-3 sm:flex-row sm:justify-between">
+        <Button
+          type="button"
+          variant="outline"
+          onClick={previousStep}
+          disabled={step === 0}
+        >
+          <ArrowLeft data-icon="inline-start" />
+          Назад
+        </Button>
+        {step < steps.length - 1 ? (
+          <Button type="button" onClick={nextStep}>
+            Дальше
+            <ArrowRight data-icon="inline-end" />
+          </Button>
+        ) : (
+          <Button asChild>
+            <Link href="/results" onClick={saveProfileForResults}>
+              Показать маршруты
+            </Link>
+          </Button>
+        )}
+      </div>
+    </form>
+  )
+}
+
+function safelyParseDraft(raw: string) {
+  try {
+    return questionnaireDraftSchema.safeParse(JSON.parse(raw))
+  } catch {
+    return questionnaireDraftSchema.safeParse(null)
+  }
+}
+
+function Choice({
+  children,
+  checked,
+  hint,
+  id,
+  label,
+  onSelect,
+}: {
+  children: ReactNode
+  checked: boolean
+  hint?: string
+  id: string
+  label: string
+  onSelect?: () => void
+}) {
+  return (
+    <div
+      onPointerDown={() => onSelect?.()}
+      className="flex cursor-pointer items-start gap-3 rounded-md border bg-background p-3 data-[checked=true]:border-primary data-[checked=true]:bg-primary/5"
+      data-checked={checked}
+    >
+      <span className="mt-1">{children}</span>
+      <label
+        htmlFor={id}
+        className="flex min-w-0 flex-1 cursor-pointer flex-col gap-1"
+      >
+        <span className="text-sm font-medium">{label}</span>
+        {hint && (
+          <span className="text-sm leading-5 text-muted-foreground">
+            {hint}
+          </span>
+        )}
+      </label>
+    </div>
+  )
+}
+
+function RadioField<
+  TName extends
+    | "departureWindow"
+    | "stayDuration"
+    | "passportStatus"
+    | "monthlyIncomeLevel"
+    | "savingsLevel"
+    | "translationReadiness",
+>({
+  control,
+  label,
+  name,
+  options,
+  setValue,
+}: {
+  control: ReturnType<typeof useForm<QuestionnaireDraft>>["control"]
+  label: string
+  name: TName
+  options: { value: NonNullable<QuestionnaireDraft[TName]>; label: string }[]
+  setValue: ReturnType<typeof useForm<QuestionnaireDraft>>["setValue"]
+}) {
+  return (
+    <Controller
+      control={control}
+      name={name}
+      render={({ field }) => (
+        <fieldset className="flex flex-col gap-3">
+          <legend className="text-sm font-medium">{label}</legend>
+          <RadioGroup
+            value={field.value ? String(field.value) : ""}
+            onValueChange={(value) =>
+              setValue(name, value as PathValue<QuestionnaireDraft, TName>, {
+                shouldDirty: true,
+                shouldValidate: true,
+              })
+            }
+          >
+            {options.map((option) => {
+              const selectOption = () =>
+                setValue(
+                  name,
+                  option.value as PathValue<QuestionnaireDraft, TName>,
+                  {
+                    shouldDirty: true,
+                    shouldValidate: true,
+                  }
+                )
+
+              return (
+                <Choice
+                  key={String(option.value)}
+                  id={`${name}-${option.value}`}
+                  checked={field.value === option.value}
+                  label={option.label}
+                  onSelect={selectOption}
+                >
+                  <RadioGroupItem
+                    id={`${name}-${option.value}`}
+                    value={String(option.value)}
+                  />
+                </Choice>
+              )
+            })}
+          </RadioGroup>
+        </fieldset>
+      )}
+    />
+  )
+}
+
+function BooleanRadioField<TName extends "hasProvableIncome">({
+  control,
+  label,
+  name,
+  setValue,
+}: {
+  control: ReturnType<typeof useForm<QuestionnaireDraft>>["control"]
+  label: string
+  name: TName
+  setValue: ReturnType<typeof useForm<QuestionnaireDraft>>["setValue"]
+}) {
+  return (
+    <Controller
+      control={control}
+      name={name}
+      render={({ field }) => (
+        <fieldset className="flex flex-col gap-3">
+          <legend className="text-sm font-medium">{label}</legend>
+          <RadioGroup
+            value={field.value === undefined ? "" : String(field.value)}
+            onValueChange={(value) =>
+              setValue(
+                name,
+                (value === "true") as PathValue<QuestionnaireDraft, TName>,
+                {
+                  shouldDirty: true,
+                  shouldValidate: true,
+                }
+              )
+            }
+          >
+            {[
+              { value: true, label: "Да, могу подтвердить" },
+              { value: false, label: "Нет или пока не уверен" },
+            ].map((option) => {
+              const selectOption = () =>
+                setValue(
+                  name,
+                  option.value as PathValue<QuestionnaireDraft, TName>,
+                  {
+                    shouldDirty: true,
+                    shouldValidate: true,
+                  }
+                )
+
+              return (
+                <Choice
+                  key={String(option.value)}
+                  id={`${name}-${option.value}`}
+                  checked={field.value === option.value}
+                  label={option.label}
+                  onSelect={selectOption}
+                >
+                  <RadioGroupItem
+                    id={`${name}-${option.value}`}
+                    value={String(option.value)}
+                  />
+                </Choice>
+              )
+            })}
+          </RadioGroup>
+        </fieldset>
+      )}
+    />
+  )
+}
+
+function BooleanField<TName extends keyof QuestionnaireDraft>({
+  control,
+  label,
+  name,
+}: {
+  control: ReturnType<typeof useForm<QuestionnaireDraft>>["control"]
+  label: string
+  name: TName
+}) {
+  return (
+    <Controller
+      control={control}
+      name={name}
+      render={({ field }) => (
+        <label className="flex cursor-pointer items-center gap-3 rounded-md border bg-background p-3 text-sm">
+          <Checkbox
+            checked={Boolean(field.value)}
+            onCheckedChange={(checked) => field.onChange(Boolean(checked))}
+            aria-label={label}
+          />
+          <span>{label}</span>
+        </label>
+      )}
+    />
+  )
+}
+
+function Summary({ draft }: { draft: QuestionnaireDraft }) {
+  const result = finalizeQuestionnaireDraft(draft)
+
+  if (!result.success) {
+    return (
+      <Alert variant="destructive">
+        <AlertTitle>Анкета пока не готова</AlertTitle>
+        <AlertDescription>{result.message}</AlertDescription>
+      </Alert>
+    )
+  }
+
+  const rows = summarizeProfile(result.data).slice(0, 6)
+
+  return (
+    <div className="flex flex-col rounded-lg border">
+      {rows.map((row, index) => (
+        <div
+          key={row.label}
+          className="grid gap-1 p-3 text-sm sm:grid-cols-[180px_1fr]"
+        >
+          <span className="font-medium">{row.label}</span>
+          <span className="text-muted-foreground">{row.value}</span>
+          {index < rows.length - 1 && <Separator className="sm:col-span-2" />}
+        </div>
+      ))}
+    </div>
+  )
+}
+
+function getStepTitle(step: number): string {
+  return [
+    "Какую задачу решаем?",
+    "Когда и на какой срок вы планируете уехать?",
+    "Кто едет вместе с вами?",
+    "Какие финансовые основания можно подтвердить?",
+    "Какие документы и бытовые требования уже понятны?",
+    "Проверьте ответы перед расчетом",
+  ][step]
+}
+
+function getStepDescription(step: number): string {
+  return [
+    "Страна не является первым фильтром: сначала фиксируем цель и ограничения.",
+    "Сроки влияют на то, нужен ли только въезд или уже отдельный статус.",
+    "Семья, дети и животные меняют документы и сложность маршрута.",
+    "Доход, договор и бизнес-основание отсеивают неподходящие маршруты.",
+    "Эти ответы помогают показать риски заранее, а не в конце подготовки.",
+    "После расчета вы увидите страны, маршруты, документы, сроки и источники.",
+  ][step]
+}

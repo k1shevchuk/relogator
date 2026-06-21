@@ -1,0 +1,9 @@
+{
+  "code": "DE",
+  "name": "Германия",
+  "slug": "germany",
+  "status": "reference_only",
+  "summary": "Работа, самозанятость и бизнес требуют национальной визы, основания и высокой документальной готовности.",
+  "sourceIds": ["germany-self-employment"],
+  "lastReviewedAt": "2026-06-18"
+}

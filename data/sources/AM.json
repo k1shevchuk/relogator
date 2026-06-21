@@ -1,0 +1,38 @@
+[
+  {
+    "id": "armenia-mfa-visa",
+    "title": "МИД Армении: визы",
+    "url": "https://www.mfa.am/en/visa/",
+    "sourceType": "official_body",
+    "countryCode": "AM",
+    "language": "en",
+    "lastReviewedAt": "2026-06-18",
+    "description": "Официальная информация о визовом режиме и безвизовом въезде",
+    "confidence": "high",
+    "appliesToCitizenship": ["RU"]
+  },
+  {
+    "id": "armenia-mfa-residency",
+    "title": "МИД Армении: резидентство",
+    "url": "https://www.mfa.am/en/residency/",
+    "sourceType": "official_body",
+    "countryCode": "AM",
+    "language": "en",
+    "lastReviewedAt": "2026-06-18",
+    "description": "Официальные основания временного и постоянного проживания",
+    "confidence": "high",
+    "appliesToCitizenship": ["RU"]
+  },
+  {
+    "id": "armenia-emn-2024",
+    "title": "EMN Armenia: Country factsheet 2024",
+    "url": "https://home-affairs.ec.europa.eu/document/download/b9da3d06-5999-416f-9625-d27d95153398_en?filename=2024_EMN-AM_countryfactsheet.pdf",
+    "sourceType": "statistics",
+    "countryCode": "AM",
+    "language": "en",
+    "lastReviewedAt": "2026-06-18",
+    "description": "Статистический и политический контекст миграции в Армении за 2024 год",
+    "confidence": "medium",
+    "appliesToCitizenship": ["RU"]
+  }
+]

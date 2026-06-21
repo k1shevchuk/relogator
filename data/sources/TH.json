@@ -1,0 +1,14 @@
+[
+  {
+    "id": "thailand-visa-exemption",
+    "title": "Royal Thai Embassy: visa exemption",
+    "url": "https://thaiconsulatela.thaiembassy.org/en/publicservice/visa-exemption-and-visa-on-arrival-to-thailand",
+    "sourceType": "official_body",
+    "countryCode": "TH",
+    "language": "en",
+    "lastReviewedAt": "2026-06-18",
+    "description": "Официальная справка о безвизовом въезде и продлении срока пребывания",
+    "confidence": "medium",
+    "appliesToCitizenship": ["RU"]
+  }
+]

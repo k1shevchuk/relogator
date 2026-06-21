@@ -1,0 +1,14 @@
+[
+  {
+    "id": "france-long-stay-visa",
+    "title": "France-Visas: long-stay visa",
+    "url": "https://france-visas.gouv.fr/en/visa-de-long-sejour",
+    "sourceType": "government_portal",
+    "countryCode": "FR",
+    "language": "en",
+    "lastReviewedAt": "2026-06-18",
+    "description": "Официальная справка о долгосрочных визах Франции",
+    "confidence": "high",
+    "appliesToCitizenship": ["RU"]
+  }
+]

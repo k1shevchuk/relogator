@@ -1,0 +1,50 @@
+[
+  {
+    "id": "turkiye-mfa-visa-info",
+    "title": "МИД Турции: визовая информация",
+    "url": "https://www.mfa.gov.tr/visa-information-for-foreigners.en.mfa",
+    "sourceType": "official_body",
+    "countryCode": "TR",
+    "language": "en",
+    "lastReviewedAt": "2026-06-18",
+    "description": "Официальные правила визового и безвизового въезда иностранцев",
+    "confidence": "high",
+    "appliesToCitizenship": ["RU"]
+  },
+  {
+    "id": "turkiye-residence-permit",
+    "title": "Управление миграции Турции: виды ВНЖ",
+    "url": "https://en.goc.gov.tr/residence-permit-types",
+    "sourceType": "official_body",
+    "countryCode": "TR",
+    "language": "en",
+    "lastReviewedAt": "2026-06-18",
+    "description": "Официальные виды ВНЖ и общие условия подачи в Турции",
+    "confidence": "high",
+    "appliesToCitizenship": ["RU"]
+  },
+  {
+    "id": "turkiye-oecd-migration-2025",
+    "title": "OECD: Türkiye migration profile 2025",
+    "url": "https://www.oecd.org/en/publications/2025/11/international-migration-outlook-2025_355ae9fd/full-report/turkiye_6a33f8e3.html",
+    "sourceType": "statistics",
+    "countryCode": "TR",
+    "language": "en",
+    "lastReviewedAt": "2026-06-18",
+    "description": "Статистический контекст миграции по Турции из обзора OECD",
+    "confidence": "medium",
+    "appliesToCitizenship": ["RU"]
+  },
+  {
+    "id": "turkiye-invest-business",
+    "title": "Invest in Türkiye: открытие бизнеса",
+    "url": "https://www.invest.gov.tr/en/investmentguide/pages/establishing-a-business.aspx",
+    "sourceType": "government_portal",
+    "countryCode": "TR",
+    "language": "en",
+    "lastReviewedAt": "2026-06-18",
+    "description": "Официальная справка инвестиционного офиса по созданию компании",
+    "confidence": "medium",
+    "appliesToCitizenship": ["RU"]
+  }
+]

@@ -1,0 +1,38 @@
+[
+  {
+    "id": "serbia-mfa-russia-visa-regime",
+    "title": "МИД Сербии: визовый режим для граждан РФ",
+    "url": "https://www.mfa.gov.rs/en/citizens/travel-serbia/visa-regime/ruska-federacija",
+    "sourceType": "official_body",
+    "countryCode": "RS",
+    "language": "en",
+    "lastReviewedAt": "2026-06-18",
+    "description": "Официальные правила безвизового пребывания для граждан РФ с обычным паспортом",
+    "confidence": "high",
+    "appliesToCitizenship": ["RU"]
+  },
+  {
+    "id": "serbia-temporary-residence",
+    "title": "Welcome to Serbia: временное проживание",
+    "url": "https://welcometoserbia.gov.rs/temporary-residence",
+    "sourceType": "government_portal",
+    "countryCode": "RS",
+    "language": "en",
+    "lastReviewedAt": "2026-06-18",
+    "description": "Справка о временном проживании и подаче на единое разрешение",
+    "confidence": "medium",
+    "appliesToCitizenship": ["RU"]
+  },
+  {
+    "id": "serbia-stat-foreign-migration",
+    "title": "Статистическое управление Сербии: миграция иностранцев",
+    "url": "https://www.stat.gov.rs/en-us/oblasti/stanovnistvo/migracije-stanovnistva/",
+    "sourceType": "statistics",
+    "countryCode": "RS",
+    "language": "en",
+    "lastReviewedAt": "2026-06-18",
+    "description": "Статистика иммиграции и эмиграции иностранцев, включая граждан РФ",
+    "confidence": "medium",
+    "appliesToCitizenship": ["RU"]
+  }
+]

@@ -1,0 +1,14 @@
+[
+  {
+    "id": "portugal-russia-visas",
+    "title": "Посольство Португалии в РФ: визы",
+    "url": "https://moscovo.embaixadaportugal.mne.gov.pt/en/consular-section/visas",
+    "sourceType": "consulate",
+    "countryCode": "PT",
+    "language": "en",
+    "lastReviewedAt": "2026-06-18",
+    "description": "Консульская страница по визовым заявлениям и срокам рассмотрения",
+    "confidence": "medium",
+    "appliesToCitizenship": ["RU"]
+  }
+]

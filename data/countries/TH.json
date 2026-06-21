@@ -1,0 +1,9 @@
+{
+  "code": "TH",
+  "name": "Таиланд",
+  "slug": "thailand",
+  "status": "stale",
+  "summary": "Туристический и долгосрочный сценарии требуют регулярной проверки актуальных правил.",
+  "sourceIds": ["thailand-visa-exemption"],
+  "lastReviewedAt": "2026-06-18"
+}

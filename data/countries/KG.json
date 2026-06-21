@@ -1,0 +1,9 @@
+{
+  "code": "KG",
+  "name": "Кыргызстан",
+  "slug": "kyrgyzstan",
+  "status": "needs_review",
+  "summary": "Близкое безвизовое направление для первого этапа и проверки долгого основания.",
+  "sourceIds": ["kyrgyzstan-evisa"],
+  "lastReviewedAt": "2026-06-18"
+}

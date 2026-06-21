@@ -1,0 +1,14 @@
+[
+  {
+    "id": "vietnam-evisa",
+    "title": "Vietnam National Electronic Visa system",
+    "url": "https://evisa.gov.vn/",
+    "sourceType": "government_portal",
+    "countryCode": "VN",
+    "language": "en",
+    "lastReviewedAt": "2026-06-18",
+    "description": "Официальная система электронных виз Вьетнама",
+    "confidence": "medium",
+    "appliesToCitizenship": ["RU"]
+  }
+]

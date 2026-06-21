@@ -1,0 +1,9 @@
+{
+  "code": "CY",
+  "name": "Кипр",
+  "slug": "cyprus",
+  "status": "reference_only",
+  "summary": "Европейское направление с визовыми и резидентскими требованиями, не подходит для срочного выезда без подготовки.",
+  "sourceIds": ["cyprus-visas"],
+  "lastReviewedAt": "2026-06-18"
+}

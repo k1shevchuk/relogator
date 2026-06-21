@@ -1,0 +1,9 @@
+{
+  "code": "PL",
+  "name": "Польша",
+  "slug": "poland",
+  "status": "reference_only",
+  "summary": "Национальная виза и пребывание зависят от цели, биометрического паспорта и консульских процедур.",
+  "sourceIds": ["poland-national-visa"],
+  "lastReviewedAt": "2026-06-18"
+}

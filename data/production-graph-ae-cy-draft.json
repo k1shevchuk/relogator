@@ -1,0 +1,1061 @@
+{
+  "fragments": [
+    {
+      "countryCode": "AE",
+      "countryNameRu": "ОАЭ",
+      "generatedAt": "2026-06-21",
+      "meta": {
+        "passportNationality": "RU",
+        "confidence": "source_needed",
+        "note": "Официальные источники u.ae недоступны для автоматической загрузки. Факты требуют ручной верификации по указанным URL."
+      },
+      "sourceNodes": [
+        {
+          "id": "ae-src-entry",
+          "url": "https://u.ae/en/information-and-services/visa-and-emirates-id/do-you-need-an-entry-permit-or-a-visa-to-enter-the-uae",
+          "title": "UAE – Do you need an entry permit or a visa to enter the UAE",
+          "lastChecked": null,
+          "status": "source_needed"
+        },
+        {
+          "id": "ae-src-remote-work",
+          "url": "https://u.ae/en/information-and-services/visa-and-emirates-id/residence-visas/residence-visa-for-working-outside-the-uae",
+          "title": "UAE – Residence visa for working outside the UAE (Virtual Working Residence)",
+          "lastChecked": null,
+          "status": "source_needed"
+        },
+        {
+          "id": "ae-src-local-work",
+          "url": "https://u.ae/en/information-and-services/visa-and-emirates-id/residence-visas/residence-visa-for-working-in-the-uae",
+          "title": "UAE – Residence visa for working in the UAE",
+          "lastChecked": null,
+          "status": "source_needed"
+        },
+        {
+          "id": "ae-src-business",
+          "url": "https://u.ae/en/information-and-services/visa-and-emirates-id/residence-visas/residence-visa-for-doing-business-in-the-uae",
+          "title": "UAE – Residence visa for doing business in the UAE",
+          "lastChecked": null,
+          "status": "source_needed"
+        },
+        {
+          "id": "ae-src-family",
+          "url": "https://u.ae/en/information-and-services/visa-and-emirates-id/residence-visas/residence-visa-for-family-members",
+          "title": "UAE – Residence visa for family members",
+          "lastChecked": null,
+          "status": "source_needed"
+        },
+        {
+          "id": "ae-src-study",
+          "url": "https://u.ae/en/information-and-services/visa-and-emirates-id/residence-visas/residence-visa-for-studying-in-the-uae",
+          "title": "UAE – Residence visa for studying in the UAE",
+          "lastChecked": null,
+          "status": "source_needed"
+        }
+      ],
+      "legalFactNodes": [
+        {
+          "id": "ae-fact-entry-rf-visa-free",
+          "category": "entry",
+          "fact": "Граждане РФ могут въезжать в ОАЭ без предварительной визы. Доступна виза по прибытии на 30 дней. С 1 февраля 2025 года виза по прибытии для граждан РФ оформляется бесплатно (ранее 90 дней оставались под вопросом).",
+          "sourceRef": "ae-src-entry",
+          "confidence": "needs_review",
+          "applicability": "граждане РФ с обычным загранпаспортом",
+          "exceptions": ["Паспорт должен быть действителен не менее 6 месяцев с даты въезда"],
+          "lastUpdated": null
+        },
+        {
+          "id": "ae-fact-entry-visa-extension",
+          "category": "entry",
+          "fact": "Виза по прибытии может быть продлена. Условия и сроки продления зависят от текущих правил ICP/GDRFA.",
+          "sourceRef": "ae-src-entry",
+          "confidence": "needs_review",
+          "applicability": "граждане РФ",
+          "exceptions": [],
+          "lastUpdated": null
+        },
+        {
+          "id": "ae-fact-remote-work-visa",
+          "category": "remote_work",
+          "fact": "Virtual Working Residence Visa (Residence visa for working outside the UAE) позволяет проживать в ОАЭ до 1 года, работая удалённо на работодателя за пределами ОАЭ. Требования включают: наличие трудового договора с иностранным работодателем, минимальный ежемесячный доход (обычно от 3 500 USD), медицинскую страховку.",
+          "sourceRef": "ae-src-remote-work",
+          "confidence": "needs_review",
+          "applicability": "граждане любых стран, работающие удалённо на зарубежного работодателя",
+          "exceptions": ["Точные требования к доходу и документам требуют проверки источника"],
+          "lastUpdated": null
+        },
+        {
+          "id": "ae-fact-local-work-visa",
+          "category": "local_work",
+          "fact": "Residence visa for working in the UAE требует наличия спонсора-работодателя в ОАЭ. Работодатель оформляет разрешение на работу (work permit) через MOHRE (для mainland) или free zone authority. Стандартный срок 2 года с продлением.",
+          "sourceRef": "ae-src-local-work",
+          "confidence": "needs_review",
+          "applicability": "граждане РФ с приглашением от работодателя в ОАЭ",
+          "exceptions": ["Требуется медицинское обследование, биометрия, Emirates ID"],
+          "lastUpdated": null
+        },
+        {
+          "id": "ae-fact-green-visa",
+          "category": "local_work",
+          "fact": "Green Visa позволяет самоспонсируемое проживание до 5 лет для квалифицированных специалистов, фрилансеров и инвесторов без привязки к работодателю. Требования: для специалистов — наличие степени бакалавра, трудовой договор, зарплата от 15 000 AED/мес.",
+          "sourceRef": "ae-src-local-work",
+          "confidence": "needs_review",
+          "applicability": "квалифицированные специалисты, фрилансеры, самозанятые",
+          "exceptions": [],
+          "lastUpdated": null
+        },
+        {
+          "id": "ae-fact-business-visa",
+          "category": "business",
+          "fact": "Residence visa for doing business — для предпринимателей, открывающих бизнес в ОАЭ (mainland или free zone). Investor visa (ранее Partner visa) выдаётся на 2-3 года. Golden Visa для инвесторов: инвестиции в недвижимость от 2 млн AED или бизнес-инвестиции от 2 млн AED, либо вклад в инновационный проект.",
+          "sourceRef": "ae-src-business",
+          "confidence": "needs_review",
+          "applicability": "предприниматели и инвесторы",
+          "exceptions": ["Суммы пороговых инвестиций требуют проверки"],
+          "lastUpdated": null
+        },
+        {
+          "id": "ae-fact-golden-visa",
+          "category": "residence",
+          "fact": "Golden Visa — долгосрочная резиденция на 5 или 10 лет. Доступна для инвесторов, предпринимателей, выдающихся специалистов (учёные, врачи, деятели культуры), студентов с высокими достижениями. Не требует спонсора-работодателя.",
+          "sourceRef": "ae-src-business",
+          "confidence": "needs_review",
+          "applicability": "инвесторы, предприниматели, выдающиеся таланты",
+          "exceptions": ["Категории и критерии требуют проверки по источнику"],
+          "lastUpdated": null
+        },
+        {
+          "id": "ae-fact-family-visa",
+          "category": "family",
+          "fact": "Residence visa for family members — резидент ОАЭ (работник, инвестор, владелец бизнеса) может спонсировать ближайших родственников: супругу/супруга, детей (до 18 лет для сыновей, до замужества для дочерей), родителей. Требования: минимальный доход спонсора (обычно от 4 000 AED/мес с жильём или 3 000 AED/мес без жилья).",
+          "sourceRef": "ae-src-family",
+          "confidence": "needs_review",
+          "applicability": "ближайшие родственники резидента ОАЭ",
+          "exceptions": ["Муж может спонсировать жену и детей; жена может спонсировать детей; спонсирование женой мужа — по особым правилам"],
+          "lastUpdated": null
+        },
+        {
+          "id": "ae-fact-study-visa",
+          "category": "study",
+          "fact": "Residence visa for studying выдаётся на срок программы обучения (обычно 1 год с продлением). Спонсором выступает учебное заведение, аккредитованное в ОАЭ. Студент может работать неполный день с разрешением.",
+          "sourceRef": "ae-src-study",
+          "confidence": "needs_review",
+          "applicability": "студенты, зачисленные в учебные заведения ОАЭ",
+          "exceptions": [],
+          "lastUpdated": null
+        },
+        {
+          "id": "ae-fact-pets-import",
+          "category": "pets",
+          "fact": "Ввоз домашних животных в ОАЭ регулируется Ministry of Climate Change and Environment (MOCCAE). Требуется: микрочип ISO 11784/11785, вакцинация от бешенства (не ранее 21 дня до въезда), ветеринарный сертификат, импортное разрешение (import permit). Некоторые породы собак запрещены к ввозу.",
+          "sourceRef": null,
+          "sourceNeeded": true,
+          "confidence": "needs_review",
+          "applicability": "граждане РФ с домашними животными",
+          "exceptions": [],
+          "lastUpdated": null
+        },
+        {
+          "id": "ae-fact-entry-no-visa-req",
+          "category": "entry",
+          "fact": "Гражданам РФ не требуется виза для краткосрочного въезда в ОАЭ. Доступен безвизовый въезд с визой по прибытии.",
+          "sourceRef": "ae-src-entry",
+          "confidence": "needs_review",
+          "applicability": "граждане РФ",
+          "exceptions": [],
+          "lastUpdated": null
+        },
+        {
+          "id": "ae-fact-emirates-id",
+          "category": "residence",
+          "fact": "Любая residence visa в ОАЭ требует оформления Emirates ID — обязательного удостоверения личности для резидентов.",
+          "sourceRef": "ae-src-local-work",
+          "confidence": "needs_review",
+          "applicability": "все резиденты ОАЭ",
+          "exceptions": [],
+          "lastUpdated": null
+        },
+        {
+          "id": "ae-fact-medical-insurance",
+          "category": "residence",
+          "fact": "Медицинская страховка обязательна для получения и продления residence visa в ОАЭ.",
+          "sourceRef": "ae-src-local-work",
+          "confidence": "needs_review",
+          "applicability": "все резиденты ОАЭ",
+          "exceptions": [],
+          "lastUpdated": null
+        }
+      ],
+      "routeNodes": {
+        "short_entry": {
+          "routeType": "short_entry",
+          "titleRu": "Краткосрочный въезд в ОАЭ (до 30 дней)",
+          "entryType": "visa_on_arrival",
+          "maxStayDays": 30,
+          "extendable": true,
+          "keyRequirements": [
+            "Загранпаспорт, действительный не менее 6 месяцев",
+            "Обратный билет (рекомендуется)",
+            "Подтверждение проживания"
+          ],
+          "legalFactRefs": ["ae-fact-entry-rf-visa-free", "ae-fact-entry-no-visa-req"],
+          "steps": [
+            "Прибыть в аэропорт ОАЭ",
+            "Пройти паспортный контроль (виза по прибытии ставится бесплатно)",
+            "При необходимости — продлить через ICP/GDRFA"
+          ],
+          "caveats": [
+            "Срок безвизового пребывания и условия продления могут меняться — проверять перед поездкой",
+            "Нарушение срока пребывания влечёт штраф"
+          ],
+          "confidence": "needs_review"
+        },
+        "medium_stay": {
+          "routeType": "medium_stay",
+          "titleRu": "Среднесрочное пребывание в ОАЭ (до 90 дней)",
+          "entryType": "visa_on_arrival_extended",
+          "maxStayDays": 90,
+          "extendable": true,
+          "keyRequirements": [
+            "Загранпаспорт (не менее 6 мес.)",
+            "Медицинская страховка",
+            "Достаточные финансовые средства"
+          ],
+          "legalFactRefs": ["ae-fact-entry-rf-visa-free", "ae-fact-entry-visa-extension"],
+          "steps": [
+            "Въехать по визе по прибытии",
+            "Подать заявление на продление через ICP/GDRFA до истечения 30 дней",
+            "Оплатить сбор за продление"
+          ],
+          "caveats": [
+            "Продление не гарантировано",
+            "Возможны ограничения по числу продлений"
+          ],
+          "confidence": "needs_review"
+        },
+        "residence": {
+          "routeType": "residence",
+          "titleRu": "Долгосрочная резиденция в ОАЭ (Golden Visa / Green Visa)",
+          "entryType": "residence_visa",
+          "maxStayDays": 3650,
+          "extendable": true,
+          "keyRequirements": [
+            "Соответствие критериям Golden Visa (инвестиции, таланты) или Green Visa (квалификация/фриланс)",
+            "Медицинская страховка",
+            "Прохождение медицинского обследования в ОАЭ",
+            "Биометрия и Emirates ID"
+          ],
+          "legalFactRefs": ["ae-fact-golden-visa", "ae-fact-green-visa", "ae-fact-emirates-id", "ae-fact-medical-insurance"],
+          "steps": [
+            "Определить подходящую категорию (Golden/Green)",
+            "Подать заявление через ICP/GDRFA",
+            "Пройди медобследование",
+            "Сдать биометрию",
+            "Получить Emirates ID"
+          ],
+          "caveats": [
+            "Golden Visa требует значительных инвестиций или выдающихся достижений",
+            "Green Visa требует квалификации или подтверждённого дохода",
+            "Не даёт гражданства"
+          ],
+          "confidence": "needs_review"
+        },
+        "remote_work": {
+          "routeType": "remote_work",
+          "titleRu": "Удалённая работа из ОАЭ (Virtual Working Residence)",
+          "entryType": "residence_visa",
+          "maxStayDays": 365,
+          "extendable": true,
+          "keyRequirements": [
+            "Трудовой договор с работодателем за пределами ОАЭ",
+            "Подтверждение дохода (ориентировочно от 3 500 USD/мес)",
+            "Медицинская страховка, покрывающая ОАЭ",
+            "Загранпаспорт (не менее 6 мес.)"
+          ],
+          "legalFactRefs": ["ae-fact-remote-work-visa", "ae-fact-emirates-id", "ae-fact-medical-insurance"],
+          "steps": [
+            "Подготовить документы (трудовой договор, справка о доходах, страховка)",
+            "Подать заявление через ICP/GDRFA",
+            "Пройти медобследование",
+            "Сдать биометрию",
+            "Получить Emirates ID"
+          ],
+          "caveats": [
+            "Запрещено работать на местного работодателя по этому типу визы",
+            "Точный порог дохода требует проверки"
+          ],
+          "confidence": "needs_review"
+        },
+        "local_work": {
+          "routeType": "local_work",
+          "titleRu": "Работа в ОАЭ (Residence Visa for Employment)",
+          "entryType": "residence_visa",
+          "maxStayDays": 730,
+          "extendable": true,
+          "keyRequirements": [
+            "Приглашение от работодателя в ОАЭ",
+            "Work permit через MOHRE (mainland) или free zone authority",
+            "Квалификационные документы (диплом, аттестат)",
+            "Медицинская страховка",
+            "Медицинское обследование"
+          ],
+          "legalFactRefs": ["ae-fact-local-work-visa", "ae-fact-emirates-id", "ae-fact-medical-insurance"],
+          "steps": [
+            "Получить job offer от работодателя в ОАЭ",
+            "Работодатель оформляет work permit",
+            "Въехать в ОАЭ по entry permit",
+            "Пройти медобследование, сдать биометрию",
+            "Получить Emirates ID и residence visa stamp"
+          ],
+          "caveats": [
+            "Визовая спонсорская система — работодатель контролирует визу",
+            "Смена работодателя требует аннуляции текущей визы и оформления новой",
+            "Green Visa снижает зависимость от работодателя"
+          ],
+          "confidence": "needs_review"
+        },
+        "business": {
+          "routeType": "business",
+          "titleRu": "Бизнес и инвестиции в ОАЭ",
+          "entryType": "residence_visa",
+          "maxStayDays": 3650,
+          "extendable": true,
+          "keyRequirements": [
+            "Регистрация компании в mainland или free zone",
+            "Инвестиции от 2 млн AED для Golden Visa",
+            "Бизнес-план (для некоторых категорий)",
+            "Медицинская страховка"
+          ],
+          "legalFactRefs": ["ae-fact-business-visa", "ae-fact-golden-visa", "ae-fact-emirates-id", "ae-fact-medical-insurance"],
+          "steps": [
+            "Зарегистрировать компанию в ОАЭ (free zone или mainland)",
+            "Получить лицензию на деятельность",
+            "Оформить investor/partner visa через компанию",
+            "Пройти медобследование, получить Emirates ID"
+          ],
+          "caveats": [
+            "Free zone компании ограничены деятельностью на территории ОАЭ (только за пределами mainland без дистрибьютора)",
+            "Стоимость регистрации и продления лицензии — значительная",
+            "Точные суммы зависят от юрисдикции и типа деятельности"
+          ],
+          "confidence": "needs_review"
+        },
+        "family": {
+          "routeType": "family",
+          "titleRu": "Воссоединение семьи в ОАЭ",
+          "entryType": "residence_visa",
+          "maxStayDays": 730,
+          "extendable": true,
+          "keyRequirements": [
+            "Резидент-спонсор с действующей residence visa",
+            "Доход спонсора (ориентировочно от 4 000 AED/мес с жильём)",
+            "Легализованные свидетельства о браке/рождении с переводом на арабский/английский",
+            "Медицинская страховка для каждого члена семьи"
+          ],
+          "legalFactRefs": ["ae-fact-family-visa", "ae-fact-emirates-id", "ae-fact-medical-insurance"],
+          "steps": [
+            "Спонсор подаёт заявление на family residence visa",
+            "Легализовать документы о родстве (с переводом)",
+            "Члены семьи проходят медобследование",
+            "Получить Emirates ID для каждого"
+          ],
+          "caveats": [
+            "Спонсирование родителей требует отдельного депозита или специальных условий",
+            "Разведённые/вдовые дочери — особые условия",
+            "Сыновья до 25 лет при условии обучения — по усмотрению"
+          ],
+          "confidence": "needs_review"
+        },
+        "study": {
+          "routeType": "study",
+          "titleRu": "Обучение в ОАЭ",
+          "entryType": "residence_visa",
+          "maxStayDays": 365,
+          "extendable": true,
+          "keyRequirements": [
+            "Зачисление в аккредитованное учебное заведение ОАЭ",
+            "Спонсорство учебного заведения",
+            "Оплата обучения",
+            "Медицинская страховка"
+          ],
+          "legalFactRefs": ["ae-fact-study-visa", "ae-fact-emirates-id", "ae-fact-medical-insurance"],
+          "steps": [
+            "Поступить в аккредитованный вуз ОАЭ",
+            "Учебное заведение оформляет student visa",
+            "Пройти медобследование",
+            "Получить Emirates ID"
+          ],
+          "caveats": [
+            "Возможность работы неполный день — по отдельному разрешению",
+            "Виза продлевается на время обучения"
+          ],
+          "confidence": "needs_review"
+        },
+        "pets": {
+          "routeType": "pets",
+          "titleRu": "Ввоз домашних животных в ОАЭ",
+          "entryType": "import_permit",
+          "maxStayDays": null,
+          "extendable": false,
+          "keyRequirements": [
+            "Микрочип ISO 11784/11785",
+            "Вакцинация от бешенства (не ранее 21 дня и не позднее 1 года до въезда)",
+            "Ветеринарный сертификат международного образца",
+            "Import permit от MOCCAE",
+            "Обработка от паразитов"
+          ],
+          "legalFactRefs": ["ae-fact-pets-import"],
+          "steps": [
+            "Чипировать животное",
+            "Сделать прививку от бешенства",
+            "Получить ветеринарное свидетельство",
+            "Подать заявку на import permit в MOCCAE",
+            "Пройти ветеринарный контроль по прибытии"
+          ],
+          "caveats": [
+            "Некоторые породы собак запрещены к ввозу",
+            "Требования могут различаться по эмиратам",
+            "Карантин обычно не требуется при выполнении условий"
+          ],
+          "confidence": "needs_review"
+        }
+      },
+      "manualReviewQuestions": [
+        "Точный срок безвизового пребывания для граждан РФ по визе по прибытии на текущий момент (30 или 90 дней?)",
+        "Актуальный порог дохода для Virtual Working Residence Visa",
+        "Актуальные суммы пороговых инвестиций для Golden Visa",
+        "Перечень запрещённых к ввозу в ОАЭ пород собак",
+        "Требования к легализации документов граждан РФ для family visa",
+        "Возможность продления туристической визы свыше 90 дней",
+        "Текущие сборы за визы и Emirates ID"
+      ],
+      "reviewLog": [
+        {
+          "date": "2026-06-21",
+          "reviewer": "auto-generated",
+          "action": "draft_created",
+          "note": "Источники u.ae недоступны для автоматической загрузки. Все факты помечены needs_review/source_needed. Требуется ручная верификация."
+        }
+      ]
+    },
+    {
+      "countryCode": "CY",
+      "countryNameRu": "Кипр",
+      "generatedAt": "2026-06-21",
+      "meta": {
+        "passportNationality": "RU",
+        "confidence": "partial",
+        "note": "Часть источников загружена успешно, часть недоступна. Факты из проверенных источников имеют высокий confidence, недоступные помечены source_needed."
+      },
+      "sourceNodes": [
+        {
+          "id": "cy-src-visa-general",
+          "url": "https://www.gov.cy/en/information/visas/",
+          "title": "Cyprus – Visas (Ministry of Foreign Affairs)",
+          "lastChecked": "2026-06-21",
+          "status": "verified"
+        },
+        {
+          "id": "cy-src-visa-required-countries",
+          "url": "https://www.gov.cy/mfa/en/documents/countries-whose-nationals-are-required-to-hold-a-visa-to-enter-the-republic-of-cyprus/",
+          "title": "Cyprus – Countries whose nationals are required to hold a visa",
+          "lastChecked": "2026-06-21",
+          "status": "verified"
+        },
+        {
+          "id": "cy-src-digital-nomad",
+          "url": "https://www.gov.cy/en/migration/announcement-by-the-deputy-ministry-of-migration-and-international-protection-on-cyprus-digital-nomad-visa-scheme/",
+          "title": "Cyprus – Digital Nomad Visa Scheme announcement",
+          "lastChecked": "2026-06-21",
+          "status": "verified"
+        },
+        {
+          "id": "cy-src-digital-nomad-details",
+          "url": "https://www.mip.gov.cy/dmmip/md.nsf/All/BF9908B541BFF7D3C22587EA003CD306?OpenDocument",
+          "title": "Cyprus – Digital Nomad Visa detailed requirements",
+          "lastChecked": null,
+          "status": "source_needed"
+        },
+        {
+          "id": "cy-src-residence-permits",
+          "url": "https://www.gov.cy/mip-md/en/documents/residence-permits-documents/",
+          "title": "Cyprus – Residence permits/documents",
+          "lastChecked": "2026-06-21",
+          "status": "verified"
+        },
+        {
+          "id": "cy-src-pets-import",
+          "url": "https://www.moa.gov.cy/moa/vs/vs.nsf/vs07_en/vs07_en?OpenDocument",
+          "title": "Cyprus – Veterinary Services – Import of pets",
+          "lastChecked": null,
+          "status": "source_needed"
+        }
+      ],
+      "legalFactNodes": [
+        {
+          "id": "cy-fact-rf-visa-required",
+          "category": "entry",
+          "fact": "Граждане РФ обязаны иметь визу для въезда на Кипр. Россия входит в список стран, чьи граждане подлежат визовому требованию.",
+          "sourceRef": "cy-src-visa-required-countries",
+          "confidence": "high",
+          "applicability": "граждане РФ с обычным загранпаспортом",
+          "exceptions": [],
+          "lastUpdated": "2026-06-21"
+        },
+        {
+          "id": "cy-fact-visa-facilitation-suspended",
+          "category": "entry",
+          "fact": "Соглашение об упрощении визового режима между ЕС и РФ полностью приостановлено с 09.09.2022 (Council Decision EU 2022/1500). Граждане РФ подают документы на визу по общим правилам, без льгот.",
+          "sourceRef": "cy-src-visa-general",
+          "confidence": "high",
+          "applicability": "граждане РФ",
+          "exceptions": [],
+          "lastUpdated": "2026-06-21"
+        },
+        {
+          "id": "cy-fact-short-stay-visa",
+          "category": "entry",
+          "fact": "Краткосрочная виза категории C: до 90 дней в любом 180-дневном периоде. Стоимость 90 EUR (для детей 6-12 лет — 45 EUR, до 6 лет — бесплатно). Подача не ранее чем за 6 месяцев и не позднее чем за 15 дней до поездки. Срок рассмотрения — обычно 15 дней, до 45 дней при дополнительных проверках.",
+          "sourceRef": "cy-src-visa-general",
+          "confidence": "high",
+          "applicability": "граждане РФ",
+          "exceptions": [],
+          "lastUpdated": "2026-06-21"
+        },
+        {
+          "id": "cy-fact-passport-requirements",
+          "category": "entry",
+          "fact": "Загранпаспорт должен: быть действителен не менее 3 месяцев после даты выезда с Кипра; выдан в последние 10 лет; содержать минимум 2 чистые страницы.",
+          "sourceRef": "cy-src-visa-general",
+          "confidence": "high",
+          "applicability": "граждане РФ",
+          "exceptions": [],
+          "lastUpdated": "2026-06-21"
+        },
+        {
+          "id": "cy-fact-medical-insurance",
+          "category": "entry",
+          "fact": "Медицинская страховка для поездки обязательна: минимальное покрытие 30 000 EUR, включая репатриацию по медицинским причинам, экстренную медицинскую помощь и госпитализацию.",
+          "sourceRef": "cy-src-visa-general",
+          "confidence": "high",
+          "applicability": "граждане РФ",
+          "exceptions": [],
+          "lastUpdated": "2026-06-21"
+        },
+        {
+          "id": "cy-fact-mev-visa",
+          "category": "entry",
+          "fact": "Многократная шенгенская виза (MEV) со сроком действия от 6 месяцев до 5 лет доступна для лиц, доказавших добросовестное использование предыдущих виз, надёжность и финансовую состоятельность.",
+          "sourceRef": "cy-src-visa-general",
+          "confidence": "high",
+          "applicability": "граждане РФ, часто посещающие Кипр",
+          "exceptions": [],
+          "lastUpdated": "2026-06-21"
+        },
+        {
+          "id": "cy-fact-not-schengen-yet",
+          "category": "entry",
+          "fact": "Кипр не входит в Шенгенскую зону. Визы и ВНЖ Кипра действительны только на территории Республики Кипр. Планируется интеграция в Шенген. Держатели действующей многократной шенгенской визы или ВНЖ страны Шенгена могут въезжать на Кипр без кипрской визы (до 90 дней в 180 дней). Граждане Турции и Азербайджана — исключение из этого правила.",
+          "sourceRef": "cy-src-visa-general",
+          "confidence": "high",
+          "applicability": "граждане РФ",
+          "exceptions": [],
+          "lastUpdated": "2026-06-21"
+        },
+        {
+          "id": "cy-fact-digital-nomad-scheme",
+          "category": "remote_work",
+          "fact": "Cyprus Digital Nomad Visa Scheme позволяет гражданам стран вне ЕС/ЕЭЗ проживать на Кипре при условии оказания услуг через информационные технологии для компаний/клиентов за рубежом. Выдаётся вид на жительство (residence permit). Цель — укрепление Кипра как центра электронных услуг.",
+          "sourceRef": "cy-src-digital-nomad",
+          "confidence": "high",
+          "applicability": "граждане стран вне ЕС/ЕЭЗ, работающие удалённо в IT",
+          "exceptions": [],
+          "lastUpdated": "2026-06-21"
+        },
+        {
+          "id": "cy-fact-digital-nomad-requirements",
+          "category": "remote_work",
+          "fact": "Детальные требования и формы заявлений для Digital Nomad Visa находятся на сайте Migration Department. Точные требования к доходу, перечень документов и сроки требуют проверки по первичному источнику.",
+          "sourceRef": "cy-src-digital-nomad-details",
+          "confidence": "source_needed",
+          "applicability": "граждане РФ",
+          "exceptions": [],
+          "lastUpdated": null
+        },
+        {
+          "id": "cy-fact-residence-permit-renewal",
+          "category": "residence",
+          "fact": "Продление ВНЖ необходимо подать не позднее чем за 1 месяц до истечения срока действия текущего ВНЖ.",
+          "sourceRef": "cy-src-residence-permits",
+          "confidence": "high",
+          "applicability": "все держатели ВНЖ Кипра",
+          "exceptions": [],
+          "lastUpdated": "2026-06-21"
+        },
+        {
+          "id": "cy-fact-temp-residence-reentry",
+          "category": "residence",
+          "fact": "Держатель временного ВНЖ может повторно въехать на Кипр по этому разрешению и паспорту при условии, что он не находился за границей более 3 месяцев.",
+          "sourceRef": "cy-src-residence-permits",
+          "confidence": "high",
+          "applicability": "все держатели временного ВНЖ Кипра",
+          "exceptions": [],
+          "lastUpdated": "2026-06-21"
+        },
+        {
+          "id": "cy-fact-visitor-no-work",
+          "category": "local_work",
+          "fact": "Гостевая виза (visitor residence permit) не даёт права на работу.",
+          "sourceRef": "cy-src-residence-permits",
+          "confidence": "high",
+          "applicability": "держатели guest residence permit",
+          "exceptions": [],
+          "lastUpdated": "2026-06-21"
+        },
+        {
+          "id": "cy-fact-student-work-limited",
+          "category": "study",
+          "fact": "Держатели студенческого ВНЖ имеют ограниченное право на работу. Условия и ограничения описаны на сайте Migration Department.",
+          "sourceRef": "cy-src-residence-permits",
+          "confidence": "needs_review",
+          "applicability": "студенты Кипра",
+          "exceptions": [],
+          "lastUpdated": "2026-06-21"
+        },
+        {
+          "id": "cy-fact-after-study-job-search",
+          "category": "study",
+          "fact": "После завершения обучения на Кипре выпускник может остаться для поиска работы или предпринимательской деятельности. Условия на сайте Migration Department.",
+          "sourceRef": "cy-src-residence-permits",
+          "confidence": "needs_review",
+          "applicability": "выпускники учебных заведений Кипра",
+          "exceptions": [],
+          "lastUpdated": "2026-06-21"
+        },
+        {
+          "id": "cy-fact-employment-categories",
+          "category": "local_work",
+          "fact": "Трудоустройство граждан третьих стран на Кипре зависит от категории: для некоторых требуется разрешение Department of Labor (сельское хозяйство, сезонные рабочие), для других — свободный доступ к рынку труда (члены семей граждан Кипра/ЕС, long-term residents), для третьих — проверка критериев Migration Department.",
+          "sourceRef": "cy-src-residence-permits",
+          "confidence": "high",
+          "applicability": "граждане третьих стран",
+          "exceptions": [],
+          "lastUpdated": "2026-06-21"
+        },
+        {
+          "id": "cy-fact-permanent-residence",
+          "category": "residence",
+          "fact": "Постоянный ВНЖ Кипра доступен через: статус long-term resident, Immigration Permit (включая категорию F для лиц с достаточным доходом), Immigration Permit for Investors. Категория F — для лиц с ежегодным доходом из-за рубежа, достаточным для проживания без работы на Кипре.",
+          "sourceRef": "cy-src-residence-permits",
+          "confidence": "needs_review",
+          "applicability": "граждане РФ",
+          "exceptions": ["Точные суммы дохода и инвестиций требуют проверки"],
+          "lastUpdated": "2026-06-21"
+        },
+        {
+          "id": "cy-fact-family-eu-cy",
+          "category": "family",
+          "fact": "Члены семей граждан Кипра и граждан ЕС имеют свободный доступ к рынку труда и право на ВНЖ по упрощённой процедуре (категории MEU1, MEU2, MEU3 для постоянного ВНЖ).",
+          "sourceRef": "cy-src-residence-permits",
+          "confidence": "high",
+          "applicability": "члены семей граждан Кипра/ЕС",
+          "exceptions": [],
+          "lastUpdated": "2026-06-21"
+        },
+        {
+          "id": "cy-fact-family-reunification",
+          "category": "family",
+          "fact": "Воссоединение семьи на Кипре для граждан третьих стран: резидент Кипра может пригласить супругу/супруга и несовершеннолетних детей. Требуется подтверждение дохода, жилья, медицинская страховка для членов семьи. Процедура через Migration Department.",
+          "sourceRef": "cy-src-residence-permits",
+          "confidence": "needs_review",
+          "applicability": "граждане РФ",
+          "exceptions": ["Детальные требования к доходу и документам требуют проверки"],
+          "lastUpdated": "2026-06-21"
+        },
+        {
+          "id": "cy-fact-business-bfu",
+          "category": "business",
+          "fact": "Для компаний иностранного интереса (Foreign Interest Companies) требуется одобрение Business Facilitation Unit (BFU) при Министерстве энергетики, торговли и промышленности. Работники таких компаний получают ВНЖ через BFU.",
+          "sourceRef": "cy-src-residence-permits",
+          "confidence": "high",
+          "applicability": "граждане РФ, открывающие бизнес на Кипре",
+          "exceptions": [],
+          "lastUpdated": "2026-06-21"
+        },
+        {
+          "id": "cy-fact-investor-permit",
+          "category": "business",
+          "fact": "Immigration Permit for Investors — ускоренная процедура постоянного ВНЖ для инвесторов при соблюдении критериев инвестиций. Детали и пороговые суммы на сайте Migration Department.",
+          "sourceRef": "cy-src-residence-permits",
+          "confidence": "needs_review",
+          "applicability": "граждане РФ",
+          "exceptions": ["Суммы и условия инвестиций требуют проверки"],
+          "lastUpdated": "2026-06-21"
+        },
+        {
+          "id": "cy-fact-pets-import",
+          "category": "pets",
+          "fact": "Ввоз домашних животных на Кипр регулируется Ветеринарной службой (Veterinary Services). Детальные требования, перечень необходимых прививок, анализов и документов — на сайте MOA.",
+          "sourceRef": "cy-src-pets-import",
+          "confidence": "source_needed",
+          "applicability": "граждане РФ с домашними животными",
+          "exceptions": [],
+          "lastUpdated": null
+        },
+        {
+          "id": "cy-fact-visa-extension-90",
+          "category": "entry",
+          "fact": "Продление краткосрочной визы C возможно до 90 дней с даты въезда (в пределах 180-дневного периода) при наличии форс-мажорных или гуманитарных причин (бесплатно) или серьёзных личных причин (30 EUR).",
+          "sourceRef": "cy-src-visa-general",
+          "confidence": "high",
+          "applicability": "держатели визы C",
+          "exceptions": ["Продление не применяется к визам, выданным на границе"],
+          "lastUpdated": "2026-06-21"
+        },
+        {
+          "id": "cy-fact-visa-appeal",
+          "category": "entry",
+          "fact": "При отказе в визе можно подать апелляцию в течение 75 дней. Отказное уведомление содержит информацию о порядке обжалования.",
+          "sourceRef": "cy-src-visa-general",
+          "confidence": "high",
+          "applicability": "граждане РФ",
+          "exceptions": [],
+          "lastUpdated": "2026-06-21"
+        },
+        {
+          "id": "cy-fact-financial-means-entry",
+          "category": "entry",
+          "fact": "При въезде на Кипр граждане третьих стран должны быть готовы подтвердить наличие достаточных финансовых средств для покрытия расходов на период пребывания.",
+          "sourceRef": "cy-src-visa-general",
+          "confidence": "high",
+          "applicability": "граждане РФ",
+          "exceptions": [],
+          "lastUpdated": "2026-06-21"
+        },
+        {
+          "id": "cy-fact-schengen-visa-holders",
+          "category": "entry",
+          "fact": "Держатели действующей многократной шенгенской визы или ВНЖ страны Шенгена (кроме граждан Турции и Азербайджана) могут въезжать на Кипр без национальной кипрской визы на срок до 90 дней в любом 180-дневном периоде.",
+          "sourceRef": "cy-src-visa-general",
+          "confidence": "high",
+          "applicability": "граждане РФ с действующей шенгенской визой/ВНЖ",
+          "exceptions": [],
+          "lastUpdated": "2026-06-21"
+        }
+      ],
+      "routeNodes": {
+        "short_entry": {
+          "routeType": "short_entry",
+          "titleRu": "Краткосрочный въезд на Кипр (виза C, до 90 дней)",
+          "entryType": "short_stay_visa_c",
+          "maxStayDays": 90,
+          "extendable": true,
+          "keyRequirements": [
+            "Загранпаспорт (не менее 3 мес. после выезда, выдан в последние 10 лет, 2 чистые страницы)",
+            "Медицинская страховка от 30 000 EUR",
+            "Подтверждение проживания (бронь отеля / приглашение)",
+            "Авиабилеты (бронь туда-обратно)",
+            "Подтверждение финансовых средств",
+            "Справка с работы / подтверждение дохода",
+            "Виза C: 90 EUR (дети 6-12: 45 EUR, до 6: бесплатно)"
+          ],
+          "legalFactRefs": [
+            "cy-fact-rf-visa-required",
+            "cy-fact-visa-facilitation-suspended",
+            "cy-fact-short-stay-visa",
+            "cy-fact-passport-requirements",
+            "cy-fact-medical-insurance",
+            "cy-fact-financial-means-entry"
+          ],
+          "steps": [
+            "Подать заявление в консульство Кипра / визовый центр не позднее чем за 15 дней до поездки",
+            "Предоставить полный пакет документов",
+            "Оплатить визовый сбор",
+            "Ожидать решение (обычно 15 дней, до 45 дней)",
+            "При отказе — апелляция в течение 75 дней"
+          ],
+          "caveats": [
+            "Виза не даёт автоматического права на въезд — пограничник может запросить доп. документы",
+            "Кипр не в Шенгене — виза действует только на Кипре",
+            "Держатели действующей многократной шенгенской визы / ВНЖ Шенгена могут въехать без кипрской визы",
+            "Визовое соглашение ЕС-РФ приостановлено с 09.09.2022"
+          ],
+          "confidence": "high"
+        },
+        "medium_stay": {
+          "routeType": "medium_stay",
+          "titleRu": "Среднесрочное пребывание на Кипре (виза C MEV, до 90 дней за въезд, 6 мес – 5 лет)",
+          "entryType": "multiple_entry_visa_c_mev",
+          "maxStayDays": 90,
+          "extendable": true,
+          "keyRequirements": [
+            "История добросовестного использования предыдущих кипрских/шенгенских виз",
+            "Подтверждение частых поездок на Кипр",
+            "Финансовая состоятельность",
+            "Документы те же, что для визы C"
+          ],
+          "legalFactRefs": [
+            "cy-fact-mev-visa",
+            "cy-fact-short-stay-visa",
+            "cy-fact-visa-extension-90"
+          ],
+          "steps": [
+            "Подать заявление на многократную визу в консульство/визовый центр",
+            "Обосновать необходимость частых поездок",
+            "Предоставить стандартный пакет + историю предыдущих виз",
+            "Ожидать решение"
+          ],
+          "caveats": [
+            "MEV не гарантируется — выдаётся по усмотрению консульства",
+            "Каждый въезд не более 90 дней в любые 180 дней"
+          ],
+          "confidence": "high"
+        },
+        "residence": {
+          "routeType": "residence",
+          "titleRu": "Постоянный вид на жительство Кипра (Immigration Permit, категория F / Investor)",
+          "entryType": "residence_permit",
+          "maxStayDays": null,
+          "extendable": false,
+          "keyRequirements": [
+            "Стабильный ежегодный доход из-за рубежа (категория F) — точная сумма требует проверки",
+            "Жильё на Кипре (покупка или аренда)",
+            "Медицинская страховка",
+            "Справка о несудимости",
+            "Банковский счёт на Кипре",
+            "Для Investor Permit — инвестиции (сумма требует проверки)"
+          ],
+          "legalFactRefs": ["cy-fact-permanent-residence", "cy-fact-investor-permit"],
+          "steps": [
+            "Подготовить документы о доходе из-за рубежа",
+            "Приобрести/арендовать жильё на Кипре",
+            "Подать заявление в Migration Department",
+            "Ожидать решение (процесс может занимать несколько месяцев)"
+          ],
+          "caveats": [
+            "Категория F не даёт права на работу на Кипре",
+            "Доход должен быть из источников за пределами Кипра",
+            "Точные суммы и требования — проверять по источнику"
+          ],
+          "confidence": "needs_review"
+        },
+        "remote_work": {
+          "routeType": "remote_work",
+          "titleRu": "Digital Nomad Visa Кипра (удалённая работа в IT)",
+          "entryType": "residence_permit",
+          "maxStayDays": 365,
+          "extendable": true,
+          "keyRequirements": [
+            "Гражданство страны вне ЕС/ЕЭЗ",
+            "Трудовой договор / контракт с компанией/клиентом за рубежом",
+            "Работа в сфере информационных технологий",
+            "Подтверждение дохода (точная сумма требует проверки)",
+            "Медицинская страховка",
+            "Жильё на Кипре",
+            "Справка о несудимости"
+          ],
+          "legalFactRefs": [
+            "cy-fact-digital-nomad-scheme",
+            "cy-fact-digital-nomad-requirements"
+          ],
+          "steps": [
+            "Подготовить документы (контракт, подтверждение дохода, страховка, справка о несудимости)",
+            "Подать заявление в Migration Department",
+            "Ожидать решение",
+            "По прибытии — оформить ВНЖ"
+          ],
+          "caveats": [
+            "Не даёт права работать на кипрского работодателя",
+            "Работа должна быть через IT для клиентов/компаний за рубежом",
+            "Точные требования к доходу и документам — проверять по первичному источнику (mip.gov.cy)"
+          ],
+          "confidence": "partial"
+        },
+        "local_work": {
+          "routeType": "local_work",
+          "titleRu": "Работа на Кипре (ВНЖ для трудоустройства)",
+          "entryType": "residence_permit",
+          "maxStayDays": 365,
+          "extendable": true,
+          "keyRequirements": [
+            "Приглашение от работодателя на Кипре",
+            "Разрешение Department of Labor (для категорий, где требуется)",
+            "Трудовой договор",
+            "Квалификационные документы",
+            "Медицинская страховка",
+            "Справка о несудимости"
+          ],
+          "legalFactRefs": [
+            "cy-fact-employment-categories",
+            "cy-fact-business-bfu"
+          ],
+          "steps": [
+            "Найти работодателя на Кипре",
+            "Работодатель получает разрешение на найм (если требуется)",
+            "Подать заявление на ВНЖ в Migration Department",
+            "Получить temporary residence permit"
+          ],
+          "caveats": [
+            "Для большинства категорий требуется market test — доказательство, что на позицию нет кандидатов из ЕС",
+            "Работодатель должен быть зарегистрирован на Кипре",
+            "Члены семей граждан Кипра/ЕС имеют свободный доступ к рынку труда"
+          ],
+          "confidence": "needs_review"
+        },
+        "business": {
+          "routeType": "business",
+          "titleRu": "Бизнес и инвестиции на Кипре",
+          "entryType": "residence_permit",
+          "maxStayDays": null,
+          "extendable": true,
+          "keyRequirements": [
+            "Регистрация компании на Кипре (Foreign Interest Company через BFU)",
+            "Бизнес-план",
+            "Инвестиции (для Investor Permit — сумма требует проверки)",
+            "Офис на Кипре",
+            "Медицинская страховка"
+          ],
+          "legalFactRefs": [
+            "cy-fact-business-bfu",
+            "cy-fact-investor-permit",
+            "cy-fact-employment-categories"
+          ],
+          "steps": [
+            "Зарегистрировать компанию (через BFU для Foreign Interest Companies)",
+            "Получить одобрение BFU",
+            "Оформить ВНЖ через Migration Department",
+            "Нанятые иностранные сотрудники оформляют ВНЖ через компанию"
+          ],
+          "caveats": [
+            "Foreign Interest Company — ускоренная процедура для значимых инвестиций/инноваций",
+            "Стандартная регистрация компании возможна без BFU, но даёт меньше привилегий при ВНЖ",
+            "Точные инвестиционные пороги — проверять по источнику"
+          ],
+          "confidence": "needs_review"
+        },
+        "family": {
+          "routeType": "family",
+          "titleRu": "Воссоединение семьи на Кипре",
+          "entryType": "residence_permit",
+          "maxStayDays": 365,
+          "extendable": true,
+          "keyRequirements": [
+            "Резидент-спонсор с действующим ВНЖ",
+            "Подтверждение родства (свидетельство о браке/рождении с переводом и апостилем)",
+            "Доход спонсора, достаточный для содержания семьи",
+            "Жильё, достаточное для семьи",
+            "Медицинская страховка для членов семьи"
+          ],
+          "legalFactRefs": [
+            "cy-fact-family-reunification",
+            "cy-fact-family-eu-cy"
+          ],
+          "steps": [
+            "Спонсор подаёт заявление в Migration Department",
+            "Предоставить легализованные документы о родстве",
+            "Подтвердить доход и жильё",
+            "Оформить ВНЖ для членов семьи"
+          ],
+          "caveats": [
+            "Если спонсор — гражданин Кипра/ЕС: упрощённая процедура (MEU1/MEU2), свободный доступ к работе",
+            "Если спонсор — гражданин третьей страны: стандартная процедура, работа может быть ограничена",
+            "Точный порог дохода для воссоединения требует проверки"
+          ],
+          "confidence": "needs_review"
+        },
+        "study": {
+          "routeType": "study",
+          "titleRu": "Обучение на Кипре",
+          "entryType": "residence_permit",
+          "maxStayDays": 365,
+          "extendable": true,
+          "keyRequirements": [
+            "Зачисление в учебное заведение Кипра",
+            "Оплата обучения",
+            "Подтверждение финансовых средств на проживание",
+            "Медицинская страховка",
+            "Справка о несудимости"
+          ],
+          "legalFactRefs": [
+            "cy-fact-student-work-limited",
+            "cy-fact-after-study-job-search"
+          ],
+          "steps": [
+            "Поступить в учебное заведение на Кипре",
+            "Получить письмо о зачислении",
+            "Подать заявление на студенческий ВНЖ",
+            "Оформить ВНЖ по прибытии"
+          ],
+          "caveats": [
+            "Студенческий ВНЖ даёт ограниченное право на работу",
+            "После окончания обучения — возможность остаться для поиска работы",
+            "Детальные условия — проверять по источнику"
+          ],
+          "confidence": "needs_review"
+        },
+        "pets": {
+          "routeType": "pets",
+          "titleRu": "Ввоз домашних животных на Кипр",
+          "entryType": "import_permit",
+          "maxStayDays": null,
+          "extendable": false,
+          "keyRequirements": [
+            "Микрочип ISO 11784/11785",
+            "Вакцинация от бешенства",
+            "Титр антител к бешенству (для стран не из списка \"безопасных\")",
+            "Ветеринарный сертификат",
+            "Обработка от эхинококка (для собак)",
+            "Разрешение на ввоз от Veterinary Services"
+          ],
+          "legalFactRefs": ["cy-fact-pets-import"],
+          "steps": [
+            "Чипировать животное",
+            "Сделать прививку от бешенства",
+            "Сдать анализ на титр антител (если требуется)",
+            "Получить ветеринарный сертификат",
+            "Обработать от паразитов",
+            "Получить разрешение на ввоз"
+          ],
+          "caveats": [
+            "Кипр свободен от бешенства — требования строгие",
+            "РФ, вероятно, в списке стран, для которых нужен титр антител",
+            "Источник недоступен — все требования требуют проверки"
+          ],
+          "confidence": "source_needed"
+        }
+      },
+      "manualReviewQuestions": [
+        "Точный порог дохода для Cyprus Digital Nomad Visa",
+        "Сумма инвестиций для Immigration Permit for Investors",
+        "Точный порог дохода для воссоединения семьи",
+        "Порог дохода для категории F (Permanent Residence by income)",
+        "Требования к въезду домашних животных из РФ (Ветеринарная служба MOA)",
+        "Возможность получения ВНЖ Кипра для граждан РФ при наличии действующего ВНЖ другой страны ЕС",
+        "Актуальные сроки рассмотрения заявлений на ВНЖ",
+        "Текущие сборы за подачу на ВНЖ различных категорий",
+        "Детальный список документов для Digital Nomad Visa",
+        "Возможность получения Кипрского гражданства через длительное проживание"
+      ],
+      "reviewLog": [
+        {
+          "date": "2026-06-21",
+          "reviewer": "auto-generated",
+          "action": "draft_created",
+          "note": "Источники: gov.cy/visas, gov.cy/mfa/visa-required-countries, gov.cy/digital-nomad — загружены успешно. gov.cy/residence-permits — загружен успешно (FAQ). mip.gov.cy/digital-nomad-details и moa.gov.cy/pets — недоступны. Факты из проверенных источников помечены confidence=high. Остальные — needs_review или source_needed."
+        }
+      ]
+    }
+  ],
+  "commonLegalFactNodes": [
+    {
+      "id": "common-fact-disclaimer",
+      "category": "meta",
+      "fact": "Информация справочная, правила меняются. Окончательное решение принимает компетентный орган. Данный материал не является юридической консультацией.",
+      "sourceRef": null,
+      "confidence": "high",
+      "applicability": "все страны и маршруты",
+      "exceptions": [],
+      "lastUpdated": "2026-06-21"
+    }
+  ]
+}

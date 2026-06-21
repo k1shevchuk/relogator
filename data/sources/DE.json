@@ -1,0 +1,14 @@
+[
+  {
+    "id": "germany-self-employment",
+    "title": "Make it in Germany: self-employment visa",
+    "url": "https://www.make-it-in-germany.com/en/visa-residence/types/other/self-employment",
+    "sourceType": "government_portal",
+    "countryCode": "DE",
+    "language": "en",
+    "lastReviewedAt": "2026-06-18",
+    "description": "Федеральная справка о ВНЖ для бизнеса и самозанятости",
+    "confidence": "medium",
+    "appliesToCitizenship": ["RU"]
+  }
+]

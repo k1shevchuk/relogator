@@ -1,0 +1,26 @@
+[
+  {
+    "id": "georgia-visa-free-ordinance",
+    "title": "Правительство Грузии: список безвизовых стран",
+    "url": "https://matsne.gov.ge/en/document/view/2867361",
+    "sourceType": "law",
+    "countryCode": "GE",
+    "language": "en",
+    "lastReviewedAt": "2026-06-18",
+    "description": "Официальный перечень стран для безвизового въезда, применимый к гражданам РФ",
+    "confidence": "high",
+    "appliesToCitizenship": ["RU"]
+  },
+  {
+    "id": "geostat-migration",
+    "title": "Geostat: Migration",
+    "url": "https://www.geostat.ge/en/modules/categories/322/migration",
+    "sourceType": "statistics",
+    "countryCode": "GE",
+    "language": "en",
+    "lastReviewedAt": "2026-06-18",
+    "description": "Статистика миграции Грузии для справочного понимания потока и контекста",
+    "confidence": "medium",
+    "appliesToCitizenship": ["RU"]
+  }
+]

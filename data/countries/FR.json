@@ -1,0 +1,9 @@
+{
+  "code": "FR",
+  "name": "Франция",
+  "slug": "france",
+  "status": "reference_only",
+  "summary": "Долгосрочная виза оформляется заранее и не подходит как быстрый первый шаг без документов.",
+  "sourceIds": ["france-long-stay-visa"],
+  "lastReviewedAt": "2026-06-18"
+}

@@ -1,0 +1,13 @@
+{
+  "code": "AM",
+  "name": "Армения",
+  "slug": "armenia",
+  "status": "reviewed",
+  "summary": "Безвизовый въезд и понятные основания для временного проживания.",
+  "sourceIds": [
+    "armenia-mfa-visa",
+    "armenia-mfa-residency",
+    "armenia-emn-2024"
+  ],
+  "lastReviewedAt": "2026-06-18"
+}

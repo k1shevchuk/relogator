@@ -1,0 +1,9 @@
+{
+  "code": "UZ",
+  "name": "Узбекистан",
+  "slug": "uzbekistan",
+  "status": "needs_review",
+  "summary": "Короткий безвизовый старт, долгие основания требуют отдельной проверки.",
+  "sourceIds": ["uzbekistan-embassy-russia-visa"],
+  "lastReviewedAt": "2026-06-18"
+}

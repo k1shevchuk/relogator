@@ -1,0 +1,9 @@
+{
+  "code": "ES",
+  "name": "Испания",
+  "slug": "spain",
+  "status": "reference_only",
+  "summary": "ВНЖ без права работы и другие национальные визы требуют дохода, документов и консульской подачи.",
+  "sourceIds": ["spain-non-lucrative-visa", "eurostat-migr-resfirst"],
+  "lastReviewedAt": "2026-06-18"
+}

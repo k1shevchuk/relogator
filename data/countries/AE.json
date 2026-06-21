@@ -1,0 +1,9 @@
+{
+  "code": "AE",
+  "name": "ОАЭ",
+  "slug": "uae",
+  "status": "needs_review",
+  "summary": "Маршруты удаленной работы и резидентства зависят от дохода, страховки и эмиратских процедур.",
+  "sourceIds": ["uae-remote-work-visa"],
+  "lastReviewedAt": "2026-06-18"
+}

@@ -1,0 +1,14 @@
+[
+  {
+    "id": "cyprus-visas",
+    "title": "Gov.cy: visas",
+    "url": "https://www.gov.cy/en/information/visas/",
+    "sourceType": "government_portal",
+    "countryCode": "CY",
+    "language": "en",
+    "lastReviewedAt": "2026-06-18",
+    "description": "Официальная справка по визам и разрешениям Республики Кипр",
+    "confidence": "medium",
+    "appliesToCitizenship": ["RU"]
+  }
+]

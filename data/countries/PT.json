@@ -1,0 +1,9 @@
+{
+  "code": "PT",
+  "name": "Португалия",
+  "slug": "portugal",
+  "status": "reference_only",
+  "summary": "Долгие визы и резидентские основания требуют записи, подтверждения дохода и запаса времени.",
+  "sourceIds": ["portugal-russia-visas"],
+  "lastReviewedAt": "2026-06-18"
+}

@@ -1,0 +1,43 @@
+{
+  "currentCountryCodes": [
+    "GE",
+    "RS",
+    "AM",
+    "TR",
+    "KZ",
+    "KG",
+    "UZ",
+    "ME",
+    "VN",
+    "TH",
+    "AE",
+    "CY",
+    "ES",
+    "PT",
+    "DE",
+    "FR",
+    "PL",
+    "BG",
+    "HU",
+    "IT"
+  ],
+  "plannedCountryCodes": [
+    "AT",
+    "NL",
+    "FI",
+    "CZ",
+    "CH",
+    "LT",
+    "LV",
+    "GR",
+    "SE",
+    "IL",
+    "BR",
+    "MX",
+    "AR",
+    "ID"
+  ],
+  "targetCountryCount": 34,
+  "lastReviewedAt": "2026-06-18",
+  "notes": "Current country files are loaded into the public catalogue. Planned country codes come from docs/research/russian-relocation-destinations-2026-06-18.md and must be added as reference_only, needs_review, or stale until checked."
+}

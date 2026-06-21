@@ -1,0 +1,9 @@
+{
+  "code": "HU",
+  "name": "Венгрия",
+  "slug": "hungary",
+  "status": "reference_only",
+  "summary": "Работа, бизнес и самозанятость требуют ВНЖ, подтверждений и отдельной проверки применимости.",
+  "sourceIds": ["hungary-guest-self-employment"],
+  "lastReviewedAt": "2026-06-18"
+}

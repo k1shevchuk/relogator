@@ -1,0 +1,14 @@
+[
+  {
+    "id": "uae-remote-work-visa",
+    "title": "UAE Government: residence visa for working outside UAE",
+    "url": "https://u.ae/en/information-and-services/visa-and-emirates-id/residence-visas/residence-visa-for-working-outside-the-uae",
+    "sourceType": "government_portal",
+    "countryCode": "AE",
+    "language": "en",
+    "lastReviewedAt": "2026-06-18",
+    "description": "Официальная справка по годовой визе для удаленной работы вне ОАЭ",
+    "confidence": "high",
+    "appliesToCitizenship": ["RU"]
+  }
+]

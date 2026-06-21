@@ -1,0 +1,14 @@
+[
+  {
+    "id": "kyrgyzstan-evisa",
+    "title": "МИД Кыргызстана: e-Visa",
+    "url": "https://www.evisa.e-gov.kg/",
+    "sourceType": "government_portal",
+    "countryCode": "KG",
+    "language": "en",
+    "lastReviewedAt": "2026-06-18",
+    "description": "Официальный портал электронных виз и визовых услуг Кыргызстана",
+    "confidence": "medium",
+    "appliesToCitizenship": ["RU"]
+  }
+]

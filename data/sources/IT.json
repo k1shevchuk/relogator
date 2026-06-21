@@ -1,0 +1,26 @@
+[
+  {
+    "id": "italy-visa-portal",
+    "title": "МИД Италии: Visa for Italy",
+    "url": "https://vistoperitalia.esteri.it/",
+    "sourceType": "government_portal",
+    "countryCode": "IT",
+    "language": "en",
+    "lastReviewedAt": "2026-06-18",
+    "description": "Официальный визовый портал Италии для проверки типа визы",
+    "confidence": "high",
+    "appliesToCitizenship": ["RU"]
+  },
+  {
+    "id": "italy-self-employment",
+    "title": "МИД Италии: self-employment visa",
+    "url": "https://consboston.esteri.it/en/servizi-consolari-e-visti/servizi-per-il-cittadino-straniero/visti/self-employment-visa/",
+    "sourceType": "consulate",
+    "countryCode": "IT",
+    "language": "en",
+    "lastReviewedAt": "2026-06-18",
+    "description": "Консульский перечень документов для визы самозанятости",
+    "confidence": "medium",
+    "appliesToCitizenship": ["RU"]
+  }
+]

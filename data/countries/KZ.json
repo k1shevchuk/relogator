@@ -1,0 +1,9 @@
+{
+  "code": "KZ",
+  "name": "Казахстан",
+  "slug": "kazakhstan",
+  "status": "reviewed",
+  "summary": "Близкое направление с безвизовым въездом и разрешением на временное проживание для более длинного пребывания.",
+  "sourceIds": ["kazakhstan-mfa-visa-regime", "kazakhstan-trp"],
+  "lastReviewedAt": "2026-06-18"
+}

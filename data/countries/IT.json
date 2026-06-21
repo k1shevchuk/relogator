@@ -1,0 +1,9 @@
+{
+  "code": "IT",
+  "name": "Италия",
+  "slug": "italy",
+  "status": "reference_only",
+  "summary": "Самозанятость или проживание на собственные средства требуют национальной визы и плотного комплекта документов.",
+  "sourceIds": ["italy-visa-portal", "italy-self-employment"],
+  "lastReviewedAt": "2026-06-18"
+}

@@ -1,0 +1,354 @@
+[
+  {
+    "id": "doc-0674c82268",
+    "title": "Подтверждение дохода или средств",
+    "category": "general",
+    "sourceIds": [
+      "turkiye-mfa-visa-info",
+      "turkiye-residence-permit",
+      "turkiye-oecd-migration-2025"
+    ],
+    "lastReviewedAt": "2026-06-18"
+  },
+  {
+    "id": "doc-0ae372b1f0",
+    "title": "Фото и заявление",
+    "category": "general",
+    "sourceIds": ["uae-remote-work-visa"],
+    "lastReviewedAt": "2026-06-18"
+  },
+  {
+    "id": "doc-1288a72972",
+    "title": "Документы о регистрации бизнеса или рабочем основании",
+    "category": "general",
+    "sourceIds": [
+      "serbia-mfa-russia-visa-regime",
+      "serbia-temporary-residence",
+      "serbia-stat-foreign-migration"
+    ],
+    "lastReviewedAt": "2026-06-18"
+  },
+  {
+    "id": "doc-2316296b9d",
+    "title": "Бизнес-план",
+    "category": "general",
+    "sourceIds": ["germany-self-employment", "eurostat-migr-resfirst"],
+    "lastReviewedAt": "2026-06-18"
+  },
+  {
+    "id": "doc-271b3d534e",
+    "title": "Документы для разрешения на временное проживание при основании",
+    "category": "general",
+    "sourceIds": ["kazakhstan-mfa-visa-regime", "kazakhstan-trp"],
+    "lastReviewedAt": "2026-06-18"
+  },
+  {
+    "id": "doc-2865a26817",
+    "title": "Переводы и заверения",
+    "category": "general",
+    "sourceIds": ["spain-non-lucrative-visa", "eurostat-migr-resfirst"],
+    "lastReviewedAt": "2026-06-18"
+  },
+  {
+    "id": "doc-2fee3fe7da",
+    "title": "Подтверждение жилья",
+    "category": "general",
+    "sourceIds": ["montenegro-visa-regime-russia"],
+    "lastReviewedAt": "2026-06-18"
+  },
+  {
+    "id": "doc-3120b01b9d",
+    "title": "Переводы документов",
+    "category": "general",
+    "sourceIds": [
+      "serbia-mfa-russia-visa-regime",
+      "serbia-temporary-residence",
+      "serbia-stat-foreign-migration",
+      "turkiye-mfa-visa-info",
+      "turkiye-residence-permit",
+      "turkiye-oecd-migration-2025",
+      "cyprus-visas",
+      "portugal-russia-visas",
+      "eurostat-migr-resfirst",
+      "germany-self-employment",
+      "france-long-stay-visa",
+      "poland-national-visa",
+      "bulgaria-visa",
+      "hungary-guest-self-employment",
+      "italy-visa-portal",
+      "italy-self-employment"
+    ],
+    "lastReviewedAt": "2026-06-18"
+  },
+  {
+    "id": "doc-41af0e6f31",
+    "title": "Медицинская страховка",
+    "category": "general",
+    "sourceIds": [
+      "armenia-mfa-visa",
+      "spain-non-lucrative-visa",
+      "eurostat-migr-resfirst"
+    ],
+    "lastReviewedAt": "2026-06-18"
+  },
+  {
+    "id": "doc-44a32b3068",
+    "title": "Подтверждение адреса",
+    "category": "general",
+    "sourceIds": [
+      "georgia-visa-free-ordinance",
+      "geostat-migration",
+      "turkiye-mfa-visa-info",
+      "turkiye-residence-permit",
+      "turkiye-oecd-migration-2025"
+    ],
+    "lastReviewedAt": "2026-06-18"
+  },
+  {
+    "id": "doc-4f176555e9",
+    "title": "Основание для визы D",
+    "category": "general",
+    "sourceIds": ["bulgaria-visa", "eurostat-migr-resfirst"],
+    "lastReviewedAt": "2026-06-18"
+  },
+  {
+    "id": "doc-719fcaa6dc",
+    "title": "Документы бизнеса или дохода",
+    "category": "general",
+    "sourceIds": [
+      "italy-visa-portal",
+      "italy-self-employment",
+      "eurostat-migr-resfirst"
+    ],
+    "lastReviewedAt": "2026-06-18"
+  },
+  {
+    "id": "doc-829bb126ac",
+    "title": "Подтверждение удаленной работы",
+    "category": "general",
+    "sourceIds": ["uae-remote-work-visa"],
+    "lastReviewedAt": "2026-06-18"
+  },
+  {
+    "id": "doc-83cff94389",
+    "title": "Страховка",
+    "category": "general",
+    "sourceIds": [
+      "georgia-visa-free-ordinance",
+      "geostat-migration",
+      "turkiye-mfa-visa-info",
+      "turkiye-residence-permit",
+      "turkiye-oecd-migration-2025",
+      "kyrgyzstan-evisa",
+      "uzbekistan-embassy-russia-visa",
+      "montenegro-visa-regime-russia",
+      "vietnam-evisa",
+      "thailand-visa-exemption",
+      "uae-remote-work-visa",
+      "cyprus-visas",
+      "portugal-russia-visas",
+      "eurostat-migr-resfirst",
+      "germany-self-employment",
+      "france-long-stay-visa",
+      "poland-national-visa",
+      "bulgaria-visa"
+    ],
+    "lastReviewedAt": "2026-06-18"
+  },
+  {
+    "id": "doc-910492c6db",
+    "title": "Загранпаспорт РФ",
+    "category": "general",
+    "sourceIds": [
+      "armenia-mfa-visa",
+      "armenia-mfa-residency",
+      "georgia-visa-free-ordinance",
+      "geostat-migration",
+      "serbia-mfa-russia-visa-regime",
+      "serbia-temporary-residence",
+      "serbia-stat-foreign-migration",
+      "kazakhstan-mfa-visa-regime",
+      "kazakhstan-trp",
+      "turkiye-mfa-visa-info",
+      "turkiye-residence-permit",
+      "turkiye-oecd-migration-2025",
+      "kyrgyzstan-evisa",
+      "uzbekistan-embassy-russia-visa",
+      "montenegro-visa-regime-russia",
+      "vietnam-evisa",
+      "thailand-visa-exemption",
+      "uae-remote-work-visa",
+      "cyprus-visas",
+      "spain-non-lucrative-visa",
+      "eurostat-migr-resfirst",
+      "portugal-russia-visas",
+      "germany-self-employment",
+      "france-long-stay-visa",
+      "poland-national-visa",
+      "bulgaria-visa",
+      "hungary-guest-self-employment",
+      "italy-visa-portal",
+      "italy-self-employment"
+    ],
+    "lastReviewedAt": "2026-06-18"
+  },
+  {
+    "id": "doc-95ba8aa45c",
+    "title": "Адрес проживания",
+    "category": "general",
+    "sourceIds": [
+      "vietnam-evisa",
+      "hungary-guest-self-employment",
+      "eurostat-migr-resfirst"
+    ],
+    "lastReviewedAt": "2026-06-18"
+  },
+  {
+    "id": "doc-9604cc42fa",
+    "title": "Документы о регистрации бизнеса",
+    "category": "general",
+    "sourceIds": ["armenia-mfa-residency"],
+    "lastReviewedAt": "2026-06-18"
+  },
+  {
+    "id": "doc-9e6fd03217",
+    "title": "Финансовые документы",
+    "category": "general",
+    "sourceIds": [
+      "cyprus-visas",
+      "spain-non-lucrative-visa",
+      "eurostat-migr-resfirst",
+      "poland-national-visa",
+      "bulgaria-visa",
+      "hungary-guest-self-employment",
+      "italy-visa-portal",
+      "italy-self-employment"
+    ],
+    "lastReviewedAt": "2026-06-18"
+  },
+  {
+    "id": "doc-a2c0233597",
+    "title": "Билеты",
+    "category": "general",
+    "sourceIds": ["thailand-visa-exemption"],
+    "lastReviewedAt": "2026-06-18"
+  },
+  {
+    "id": "doc-a3d2cb1178",
+    "title": "Электронная виза",
+    "category": "general",
+    "sourceIds": ["vietnam-evisa"],
+    "lastReviewedAt": "2026-06-18"
+  },
+  {
+    "id": "doc-b1559d849b",
+    "title": "Справка о несудимости",
+    "category": "general",
+    "sourceIds": [
+      "serbia-mfa-russia-visa-regime",
+      "serbia-temporary-residence",
+      "serbia-stat-foreign-migration",
+      "cyprus-visas",
+      "spain-non-lucrative-visa",
+      "eurostat-migr-resfirst",
+      "portugal-russia-visas"
+    ],
+    "lastReviewedAt": "2026-06-18"
+  },
+  {
+    "id": "doc-b2b4c5d35d",
+    "title": "Подтверждение средств",
+    "category": "general",
+    "sourceIds": [
+      "thailand-visa-exemption",
+      "france-long-stay-visa",
+      "eurostat-migr-resfirst"
+    ],
+    "lastReviewedAt": "2026-06-18"
+  },
+  {
+    "id": "doc-bb5f40cb49",
+    "title": "Визовая анкета",
+    "category": "general",
+    "sourceIds": [
+      "italy-visa-portal",
+      "italy-self-employment",
+      "eurostat-migr-resfirst"
+    ],
+    "lastReviewedAt": "2026-06-18"
+  },
+  {
+    "id": "doc-c9f5e5cc31",
+    "title": "Адрес пребывания",
+    "category": "general",
+    "sourceIds": [
+      "kazakhstan-mfa-visa-regime",
+      "kazakhstan-trp",
+      "uzbekistan-embassy-russia-visa"
+    ],
+    "lastReviewedAt": "2026-06-18"
+  },
+  {
+    "id": "doc-d7438c50b3",
+    "title": "Финансовые подтверждения",
+    "category": "general",
+    "sourceIds": ["germany-self-employment", "eurostat-migr-resfirst"],
+    "lastReviewedAt": "2026-06-18"
+  },
+  {
+    "id": "doc-dd55a9fceb",
+    "title": "Рабочее или другое основание",
+    "category": "general",
+    "sourceIds": ["poland-national-visa", "eurostat-migr-resfirst"],
+    "lastReviewedAt": "2026-06-18"
+  },
+  {
+    "id": "doc-debb23923f",
+    "title": "Документы самозанятости или бизнеса",
+    "category": "general",
+    "sourceIds": ["hungary-guest-self-employment", "eurostat-migr-resfirst"],
+    "lastReviewedAt": "2026-06-18"
+  },
+  {
+    "id": "doc-e44f78287f",
+    "title": "Адрес проживания на первое время",
+    "category": "general",
+    "sourceIds": ["armenia-mfa-visa", "kyrgyzstan-evisa"],
+    "lastReviewedAt": "2026-06-18"
+  },
+  {
+    "id": "doc-e59d1000a9",
+    "title": "Анкета на долгосрочную визу",
+    "category": "general",
+    "sourceIds": ["france-long-stay-visa", "eurostat-migr-resfirst"],
+    "lastReviewedAt": "2026-06-18"
+  },
+  {
+    "id": "doc-e9abd73ea4",
+    "title": "Подтверждение деловой активности",
+    "category": "general",
+    "sourceIds": ["armenia-mfa-residency"],
+    "lastReviewedAt": "2026-06-18"
+  },
+  {
+    "id": "doc-f33a99af16",
+    "title": "Переводы ключевых документов",
+    "category": "general",
+    "sourceIds": ["armenia-mfa-residency"],
+    "lastReviewedAt": "2026-06-18"
+  },
+  {
+    "id": "doc-f5e3ad471f",
+    "title": "Подтверждение дохода",
+    "category": "general",
+    "sourceIds": [
+      "serbia-mfa-russia-visa-regime",
+      "serbia-temporary-residence",
+      "serbia-stat-foreign-migration",
+      "uae-remote-work-visa",
+      "portugal-russia-visas",
+      "eurostat-migr-resfirst"
+    ],
+    "lastReviewedAt": "2026-06-18"
+  }
+]

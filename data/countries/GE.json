@@ -1,0 +1,9 @@
+{
+  "code": "GE",
+  "name": "Грузия",
+  "slug": "georgia",
+  "status": "reviewed",
+  "summary": "Длинный безвизовый срок, удобный для сравнения вариантов и удаленной работы.",
+  "sourceIds": ["georgia-visa-free-ordinance", "geostat-migration"],
+  "lastReviewedAt": "2026-06-18"
+}

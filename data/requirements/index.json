@@ -1,0 +1,271 @@
+[
+  {
+    "id": "business-basis",
+    "title": "Бизнес-основание или деловая активность",
+    "affects": ["documents", "cost", "approvalRisk"],
+    "config": {
+      "businessBasis": true
+    },
+    "sourceIds": [
+      "armenia-mfa-residency",
+      "germany-self-employment",
+      "eurostat-migr-resfirst",
+      "hungary-guest-self-employment",
+      "italy-visa-portal",
+      "italy-self-employment"
+    ],
+    "lastReviewedAt": "2026-06-18"
+  },
+  {
+    "id": "business-or-employment-basis",
+    "title": "Рабочее или бизнес-основание",
+    "affects": ["documents", "cost", "approvalRisk"],
+    "config": {
+      "businessOrEmploymentBasis": true
+    },
+    "sourceIds": [
+      "serbia-mfa-russia-visa-regime",
+      "serbia-temporary-residence",
+      "serbia-stat-foreign-migration"
+    ],
+    "lastReviewedAt": "2026-06-18"
+  },
+  {
+    "id": "criminal-record-certificate",
+    "title": "Справка о несудимости",
+    "affects": ["documents", "speed", "approvalRisk"],
+    "config": {
+      "criminalRecordCertificate": true
+    },
+    "sourceIds": [
+      "serbia-mfa-russia-visa-regime",
+      "serbia-temporary-residence",
+      "serbia-stat-foreign-migration",
+      "cyprus-visas",
+      "spain-non-lucrative-visa",
+      "eurostat-migr-resfirst",
+      "portugal-russia-visas",
+      "germany-self-employment",
+      "france-long-stay-visa",
+      "poland-national-visa",
+      "bulgaria-visa",
+      "hungary-guest-self-employment",
+      "italy-visa-portal",
+      "italy-self-employment"
+    ],
+    "lastReviewedAt": "2026-06-18"
+  },
+  {
+    "id": "employment-contract",
+    "title": "Трудовой договор или рабочее основание",
+    "affects": ["documents", "approvalRisk"],
+    "config": {
+      "employmentContract": true
+    },
+    "sourceIds": ["poland-national-visa", "eurostat-migr-resfirst"],
+    "lastReviewedAt": "2026-06-18"
+  },
+  {
+    "id": "monthly-income-min-one_to_three_thousand",
+    "title": "Минимальный подтверждаемый доход: one_to_three_thousand",
+    "affects": ["cost", "approvalRisk"],
+    "config": {
+      "minimumMonthlyIncomeLevel": "one_to_three_thousand"
+    },
+    "sourceIds": [
+      "serbia-mfa-russia-visa-regime",
+      "serbia-temporary-residence",
+      "serbia-stat-foreign-migration",
+      "turkiye-mfa-visa-info",
+      "turkiye-residence-permit",
+      "turkiye-oecd-migration-2025",
+      "cyprus-visas",
+      "portugal-russia-visas",
+      "eurostat-migr-resfirst",
+      "france-long-stay-visa",
+      "poland-national-visa",
+      "bulgaria-visa",
+      "hungary-guest-self-employment"
+    ],
+    "lastReviewedAt": "2026-06-18"
+  },
+  {
+    "id": "monthly-income-min-three_thousand_plus",
+    "title": "Минимальный подтверждаемый доход: three_thousand_plus",
+    "affects": ["cost", "approvalRisk"],
+    "config": {
+      "minimumMonthlyIncomeLevel": "three_thousand_plus"
+    },
+    "sourceIds": [
+      "uae-remote-work-visa",
+      "spain-non-lucrative-visa",
+      "eurostat-migr-resfirst",
+      "germany-self-employment",
+      "italy-visa-portal",
+      "italy-self-employment"
+    ],
+    "lastReviewedAt": "2026-06-18"
+  },
+  {
+    "id": "passport-min-12",
+    "title": "Загранпаспорт действует минимум 12 месяцев",
+    "affects": ["documents", "approvalRisk", "speed"],
+    "config": {
+      "minPassportMonths": 12
+    },
+    "sourceIds": [
+      "armenia-mfa-residency",
+      "serbia-mfa-russia-visa-regime",
+      "serbia-temporary-residence",
+      "serbia-stat-foreign-migration",
+      "cyprus-visas",
+      "spain-non-lucrative-visa",
+      "eurostat-migr-resfirst",
+      "portugal-russia-visas",
+      "germany-self-employment",
+      "france-long-stay-visa",
+      "poland-national-visa",
+      "bulgaria-visa",
+      "hungary-guest-self-employment",
+      "italy-visa-portal",
+      "italy-self-employment"
+    ],
+    "lastReviewedAt": "2026-06-18"
+  },
+  {
+    "id": "passport-min-6",
+    "title": "Загранпаспорт действует минимум 6 месяцев",
+    "affects": ["documents", "approvalRisk", "speed"],
+    "config": {
+      "minPassportMonths": 6
+    },
+    "sourceIds": [
+      "armenia-mfa-visa",
+      "georgia-visa-free-ordinance",
+      "geostat-migration",
+      "kazakhstan-mfa-visa-regime",
+      "kazakhstan-trp",
+      "kyrgyzstan-evisa",
+      "uzbekistan-embassy-russia-visa",
+      "montenegro-visa-regime-russia",
+      "vietnam-evisa",
+      "thailand-visa-exemption",
+      "uae-remote-work-visa"
+    ],
+    "lastReviewedAt": "2026-06-18"
+  },
+  {
+    "id": "passport-min-8",
+    "title": "Загранпаспорт действует минимум 8 месяцев",
+    "affects": ["documents", "approvalRisk", "speed"],
+    "config": {
+      "minPassportMonths": 8
+    },
+    "sourceIds": [
+      "turkiye-mfa-visa-info",
+      "turkiye-residence-permit",
+      "turkiye-oecd-migration-2025"
+    ],
+    "lastReviewedAt": "2026-06-18"
+  },
+  {
+    "id": "provable-income",
+    "title": "Подтверждаемый регулярный доход",
+    "affects": ["cost", "approvalRisk"],
+    "config": {
+      "provableIncome": true
+    },
+    "sourceIds": [
+      "serbia-mfa-russia-visa-regime",
+      "serbia-temporary-residence",
+      "serbia-stat-foreign-migration",
+      "turkiye-mfa-visa-info",
+      "turkiye-residence-permit",
+      "turkiye-oecd-migration-2025",
+      "uae-remote-work-visa",
+      "cyprus-visas",
+      "spain-non-lucrative-visa",
+      "eurostat-migr-resfirst",
+      "portugal-russia-visas",
+      "germany-self-employment",
+      "france-long-stay-visa",
+      "poland-national-visa",
+      "bulgaria-visa",
+      "hungary-guest-self-employment",
+      "italy-visa-portal",
+      "italy-self-employment"
+    ],
+    "lastReviewedAt": "2026-06-18"
+  },
+  {
+    "id": "savings-min-high",
+    "title": "Минимальный запас средств: high",
+    "affects": ["cost", "approvalRisk"],
+    "config": {
+      "minimumSavingsLevel": "high"
+    },
+    "sourceIds": [
+      "uae-remote-work-visa",
+      "cyprus-visas",
+      "spain-non-lucrative-visa",
+      "eurostat-migr-resfirst",
+      "portugal-russia-visas",
+      "germany-self-employment",
+      "france-long-stay-visa",
+      "hungary-guest-self-employment",
+      "italy-visa-portal",
+      "italy-self-employment"
+    ],
+    "lastReviewedAt": "2026-06-18"
+  },
+  {
+    "id": "savings-min-medium",
+    "title": "Минимальный запас средств: medium",
+    "affects": ["cost", "approvalRisk"],
+    "config": {
+      "minimumSavingsLevel": "medium"
+    },
+    "sourceIds": [
+      "turkiye-mfa-visa-info",
+      "turkiye-residence-permit",
+      "turkiye-oecd-migration-2025",
+      "thailand-visa-exemption",
+      "poland-national-visa",
+      "eurostat-migr-resfirst",
+      "bulgaria-visa"
+    ],
+    "lastReviewedAt": "2026-06-18"
+  },
+  {
+    "id": "translations",
+    "title": "Переводы, заверения или апостиль документов",
+    "affects": ["documents", "speed", "approvalRisk"],
+    "config": {
+      "translations": true
+    },
+    "sourceIds": [
+      "armenia-mfa-residency",
+      "serbia-mfa-russia-visa-regime",
+      "serbia-temporary-residence",
+      "serbia-stat-foreign-migration",
+      "kazakhstan-mfa-visa-regime",
+      "kazakhstan-trp",
+      "turkiye-mfa-visa-info",
+      "turkiye-residence-permit",
+      "turkiye-oecd-migration-2025",
+      "uae-remote-work-visa",
+      "cyprus-visas",
+      "spain-non-lucrative-visa",
+      "eurostat-migr-resfirst",
+      "portugal-russia-visas",
+      "germany-self-employment",
+      "france-long-stay-visa",
+      "poland-national-visa",
+      "bulgaria-visa",
+      "hungary-guest-self-employment",
+      "italy-visa-portal",
+      "italy-self-employment"
+    ],
+    "lastReviewedAt": "2026-06-18"
+  }
+]

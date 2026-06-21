@@ -1,0 +1,9 @@
+{
+  "code": "BG",
+  "name": "Болгария",
+  "slug": "bulgaria",
+  "status": "reference_only",
+  "summary": "Долгосрочная виза D и ВНЖ требуют основания, документов и проверки шенгенских переходных правил.",
+  "sourceIds": ["bulgaria-visa"],
+  "lastReviewedAt": "2026-06-18"
+}

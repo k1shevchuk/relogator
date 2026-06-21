@@ -1,0 +1,9 @@
+{
+  "code": "ME",
+  "name": "Черногория",
+  "slug": "montenegro",
+  "status": "needs_review",
+  "summary": "Безвизовый старт для граждан РФ остается чувствительным к изменениям визовой политики.",
+  "sourceIds": ["montenegro-visa-regime-russia"],
+  "lastReviewedAt": "2026-06-18"
+}

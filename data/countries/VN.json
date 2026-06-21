@@ -1,0 +1,9 @@
+{
+  "code": "VN",
+  "name": "Вьетнам",
+  "slug": "vietnam",
+  "status": "reference_only",
+  "summary": "Электронная виза подходит для сравнительного короткого сценария, ВНЖ не считается проверенным.",
+  "sourceIds": ["vietnam-evisa"],
+  "lastReviewedAt": "2026-06-18"
+}

@@ -1,0 +1,5026 @@
+{
+  "meta": {
+    "agent": "graph-a-caucasus-balkans",
+    "createdAt": "2026-06-20",
+    "model": "deepseek/deepseek-v4-flash",
+    "status": "draft",
+    "scopeCountries": ["GE", "AM", "RS", "TR", "ME"],
+    "limitations": [
+      "DeepSeek output is a draft and not a legal recommendation.",
+      "Routes with source_needed, draft, needs_review or reference_only status require manual editorial review before publication.",
+      "Official sources were checked on 2026-06-20; rules can change without notice."
+    ]
+  },
+  "countries": [
+    {
+      "countryCode": "GE",
+      "countryNameRu": "Грузия",
+      "graphStatus": "needs_review",
+      "jurisdictions": [
+        {
+          "id": "GE",
+          "type": "target_country",
+          "name": "Грузия",
+          "notes": [
+            "Черновой production graph агента A для волны Кавказ/Балканы."
+          ]
+        }
+      ],
+      "sourceNodes": [
+        {
+          "id": "geo-visa-free-ordinance",
+          "title": "Ordinance on Visa-Free Entry",
+          "url": "https://matsne.gov.ge/en/document/view/2867361",
+          "sourceType": "law",
+          "jurisdiction": "GE",
+          "language": "en",
+          "lastCheckedAt": "2026-06-20",
+          "appliesToCitizenship": ["RU"],
+          "confidence": "medium",
+          "officialness": "official",
+          "quoteOrFact": "Ordinance on Visa-Free Entry"
+        },
+        {
+          "id": "geo-sda-residence",
+          "title": "PSDA Residence Permits",
+          "url": "https://sda.gov.ge/en/products/migration-residence-permits/",
+          "sourceType": "official_body",
+          "jurisdiction": "GE",
+          "language": "en",
+          "lastCheckedAt": "2026-06-20",
+          "appliesToCitizenship": ["RU"],
+          "confidence": "medium",
+          "officialness": "official",
+          "quoteOrFact": "PSDA Residence Permits"
+        },
+        {
+          "id": "geo-address-registration",
+          "title": "Address Registration",
+          "url": "https://sda.gov.ge/en/products/registration-address/",
+          "sourceType": "official_body",
+          "jurisdiction": "GE",
+          "language": "en",
+          "lastCheckedAt": "2026-06-20",
+          "appliesToCitizenship": ["RU"],
+          "confidence": "medium",
+          "officialness": "official",
+          "quoteOrFact": "Address Registration"
+        },
+        {
+          "id": "source_needed",
+          "title": "Нужен официальный источник: Грузия",
+          "url": "source_needed",
+          "sourceType": "source_needed",
+          "jurisdiction": "GE",
+          "language": "ru",
+          "lastCheckedAt": "2026-06-20",
+          "appliesToCitizenship": ["RU"],
+          "confidence": "low",
+          "officialness": "source_needed",
+          "quoteOrFact": "Требуется дополнительная официальная проверка перед публикацией маршрута."
+        }
+      ],
+      "legalFactNodes": [
+        {
+          "id": "legal-visa-free-one-year",
+          "sourceIds": ["geo-visa-free-ordinance"],
+          "factType": "entry",
+          "fact": "According to the ordinance, nationals of countries in the annex (including Russian Federation) may enter and stay in Georgia without a visa for one full year.",
+          "appliesWhen": [],
+          "exceptions": [],
+          "needsManualReview": false,
+          "confidence": "medium"
+        },
+        {
+          "id": "legal-residence-permit-required",
+          "sourceIds": ["geo-sda-residence"],
+          "factType": "residence",
+          "fact": "Residence permit is required for stays beyond one year or for work, study, family reunification, etc. Lawful stay is prerequisite for applying.",
+          "appliesWhen": [],
+          "exceptions": [],
+          "needsManualReview": false,
+          "confidence": "medium"
+        },
+        {
+          "id": "legal-address-registration-obligation",
+          "sourceIds": ["geo-address-registration"],
+          "factType": "residence",
+          "fact": "An alien holding a residence permit must register their address within 1 month from entry or from obtaining the permit if already in Georgia.",
+          "appliesWhen": [],
+          "exceptions": [],
+          "needsManualReview": false,
+          "confidence": "medium"
+        }
+      ],
+      "requirementNodes": [
+        {
+          "id": "req-valid-passport",
+          "title": "Valid passport",
+          "sourceIds": ["geo-visa-free-ordinance"],
+          "legalFactIds": [],
+          "appliesWhen": [],
+          "documents": [],
+          "hardBlockerWhenMissing": false,
+          "affects": ["documents", "approvalRisk"],
+          "confidence": "medium"
+        },
+        {
+          "id": "req-address-registration",
+          "title": "Register address within 1 month",
+          "sourceIds": ["geo-address-registration"],
+          "legalFactIds": [],
+          "appliesWhen": [],
+          "documents": [],
+          "hardBlockerWhenMissing": false,
+          "affects": ["documents", "approvalRisk"],
+          "confidence": "medium"
+        },
+        {
+          "id": "req-residence-application",
+          "title": "Residence permit application documents",
+          "sourceIds": ["geo-sda-residence"],
+          "legalFactIds": [],
+          "appliesWhen": [],
+          "documents": [],
+          "hardBlockerWhenMissing": false,
+          "affects": ["documents", "approvalRisk"],
+          "confidence": "medium"
+        }
+      ],
+      "routeNodes": [
+        {
+          "id": "route_short_entry",
+          "title": "Short Entry (Tourism/Visit)",
+          "routeType": "short_entry",
+          "goals": ["quick_exit", "compare"],
+          "stayDurations": ["up_to_one_month", "one_to_three_months"],
+          "entryCountries": ["RU"],
+          "exitCountries": ["RU"],
+          "transitRisks": [],
+          "sourceIds": ["geo-visa-free-ordinance"],
+          "legalFactIds": ["legal-visa-free-one-year"],
+          "requirementIds": ["req-valid-passport"],
+          "personalizationRuleIds": [],
+          "manualReviewQuestions": [],
+          "documents": [
+            {
+              "id": "doc-passport",
+              "title": "Passport",
+              "sourceIds": ["geo-visa-free-ordinance"],
+              "legalFactIds": ["legal-visa-free-one-year"],
+              "notes": ["Valid passport"]
+            }
+          ],
+          "steps": [
+            {
+              "id": "route_short_entry-step-1",
+              "title": "Arrive at border with valid passport",
+              "description": "Arrive at border with valid passport",
+              "sourceIds": ["geo-visa-free-ordinance"],
+              "legalFactIds": ["legal-visa-free-one-year"],
+              "documents": [],
+              "manualReviewQuestions": []
+            }
+          ],
+          "blockers": [],
+          "unlocks": [],
+          "difficulty": {
+            "documents": 1,
+            "cost": 1,
+            "approvalRisk": 1,
+            "speed": 1,
+            "adaptation": 2
+          },
+          "publicationStatusSuggestion": "needs_review",
+          "confidence": "high"
+        },
+        {
+          "id": "route_medium_stay",
+          "title": "Medium Stay (Up to 1 Year)",
+          "routeType": "medium_stay",
+          "goals": ["medium_stay", "compare"],
+          "stayDurations": ["three_to_six_months", "six_to_twelve_months"],
+          "entryCountries": ["RU"],
+          "exitCountries": ["RU"],
+          "transitRisks": [],
+          "sourceIds": ["geo-visa-free-ordinance"],
+          "legalFactIds": ["legal-visa-free-one-year"],
+          "requirementIds": ["req-valid-passport"],
+          "personalizationRuleIds": [],
+          "manualReviewQuestions": [],
+          "documents": [
+            {
+              "id": "doc-passport",
+              "title": "Passport",
+              "sourceIds": ["geo-visa-free-ordinance"],
+              "legalFactIds": ["legal-visa-free-one-year"],
+              "notes": ["Valid passport"]
+            }
+          ],
+          "steps": [
+            {
+              "id": "route_medium_stay-step-1",
+              "title": "Arrive at border with valid passport",
+              "description": "Arrive at border with valid passport",
+              "sourceIds": ["geo-visa-free-ordinance"],
+              "legalFactIds": ["legal-visa-free-one-year"],
+              "documents": [],
+              "manualReviewQuestions": []
+            }
+          ],
+          "blockers": [],
+          "unlocks": [],
+          "difficulty": {
+            "documents": 2,
+            "cost": 2,
+            "approvalRisk": 2,
+            "speed": 3,
+            "adaptation": 2
+          },
+          "publicationStatusSuggestion": "needs_review",
+          "confidence": "high"
+        },
+        {
+          "id": "route_residence",
+          "title": "Residence (Long-term Stay)",
+          "routeType": "residence",
+          "goals": ["residence"],
+          "stayDurations": [
+            "six_to_twelve_months",
+            "more_than_year",
+            "permanent_status"
+          ],
+          "entryCountries": ["RU"],
+          "exitCountries": ["RU"],
+          "transitRisks": [],
+          "sourceIds": ["geo-sda-residence", "geo-address-registration"],
+          "legalFactIds": [
+            "legal-residence-permit-required",
+            "legal-address-registration-obligation"
+          ],
+          "requirementIds": [
+            "req-residence-application",
+            "req-address-registration"
+          ],
+          "personalizationRuleIds": [],
+          "manualReviewQuestions": [],
+          "documents": [
+            {
+              "id": "doc-residence-application",
+              "title": "Residence Permit Application",
+              "sourceIds": ["geo-sda-residence", "geo-address-registration"],
+              "legalFactIds": [
+                "legal-residence-permit-required",
+                "legal-address-registration-obligation"
+              ],
+              "notes": [
+                "Complete application form, passport, proof of lawful stay, and evidence for the specific type (work, study, family)."
+              ]
+            },
+            {
+              "id": "doc-address-registration",
+              "title": "Address Registration",
+              "sourceIds": ["geo-sda-residence", "geo-address-registration"],
+              "legalFactIds": [
+                "legal-residence-permit-required",
+                "legal-address-registration-obligation"
+              ],
+              "notes": [
+                "Register address within 1 month after obtaining permit or entry."
+              ]
+            }
+          ],
+          "steps": [
+            {
+              "id": "route_residence-step-1",
+              "title": "Enter Georgia under visa-free or visa",
+              "description": "Enter Georgia under visa-free or visa",
+              "sourceIds": ["geo-sda-residence", "geo-address-registration"],
+              "legalFactIds": [
+                "legal-residence-permit-required",
+                "legal-address-registration-obligation"
+              ],
+              "documents": [],
+              "manualReviewQuestions": []
+            },
+            {
+              "id": "route_residence-step-2",
+              "title": "Submit residence permit application to PSDA",
+              "description": "Submit residence permit application to PSDA",
+              "sourceIds": ["geo-sda-residence", "geo-address-registration"],
+              "legalFactIds": [
+                "legal-residence-permit-required",
+                "legal-address-registration-obligation"
+              ],
+              "documents": [],
+              "manualReviewQuestions": []
+            },
+            {
+              "id": "route_residence-step-3",
+              "title": "After permit approval, register address within 1 month",
+              "description": "After permit approval, register address within 1 month",
+              "sourceIds": ["geo-sda-residence", "geo-address-registration"],
+              "legalFactIds": [
+                "legal-residence-permit-required",
+                "legal-address-registration-obligation"
+              ],
+              "documents": [],
+              "manualReviewQuestions": []
+            }
+          ],
+          "blockers": [],
+          "unlocks": [],
+          "difficulty": {
+            "documents": 4,
+            "cost": 4,
+            "approvalRisk": 4,
+            "speed": 4,
+            "adaptation": 4
+          },
+          "publicationStatusSuggestion": "needs_review",
+          "confidence": "high"
+        },
+        {
+          "id": "route_remote_work",
+          "title": "Foreign Remote Work",
+          "routeType": "remote_work",
+          "goals": ["remote_work", "medium_stay"],
+          "stayDurations": [
+            "one_to_three_months",
+            "three_to_six_months",
+            "six_to_twelve_months"
+          ],
+          "entryCountries": ["RU"],
+          "exitCountries": ["RU"],
+          "transitRisks": [],
+          "sourceIds": ["geo-visa-free-ordinance"],
+          "legalFactIds": ["legal-visa-free-one-year"],
+          "requirementIds": ["req-valid-passport"],
+          "personalizationRuleIds": [],
+          "manualReviewQuestions": [],
+          "documents": [
+            {
+              "id": "doc-passport",
+              "title": "Passport",
+              "sourceIds": ["geo-visa-free-ordinance"],
+              "legalFactIds": ["legal-visa-free-one-year"],
+              "notes": ["Valid passport"]
+            },
+            {
+              "id": "doc-remote-work-evidence",
+              "title": "Proof of remote employment",
+              "sourceIds": ["geo-visa-free-ordinance"],
+              "legalFactIds": ["legal-visa-free-one-year"],
+              "notes": [
+                "Not required for visa-free entry, but may be requested by border officials. Source needed for official stance."
+              ]
+            }
+          ],
+          "steps": [
+            {
+              "id": "route_remote_work-step-1",
+              "title": "Enter Georgia with valid passport",
+              "description": "Enter Georgia with valid passport. Remote work is generally permitted under visa-free stay, but official sources clarifying this are not verified.",
+              "sourceIds": ["geo-visa-free-ordinance"],
+              "legalFactIds": ["legal-visa-free-one-year"],
+              "documents": [],
+              "manualReviewQuestions": []
+            }
+          ],
+          "blockers": [],
+          "unlocks": [],
+          "difficulty": {
+            "documents": 3,
+            "cost": 3,
+            "approvalRisk": 3,
+            "speed": 3,
+            "adaptation": 2
+          },
+          "publicationStatusSuggestion": "draft",
+          "confidence": "medium"
+        },
+        {
+          "id": "route_local_work",
+          "title": "Local Work (Employment)",
+          "routeType": "local_work",
+          "goals": ["local_work", "residence"],
+          "stayDurations": ["six_to_twelve_months", "more_than_year"],
+          "entryCountries": ["RU"],
+          "exitCountries": ["RU"],
+          "transitRisks": [],
+          "sourceIds": ["geo-sda-residence"],
+          "legalFactIds": ["legal-residence-permit-required"],
+          "requirementIds": ["req-residence-application"],
+          "personalizationRuleIds": [],
+          "manualReviewQuestions": [],
+          "documents": [
+            {
+              "id": "doc-work-permit-application",
+              "title": "Work Residence Permit Application",
+              "sourceIds": ["geo-sda-residence"],
+              "legalFactIds": ["legal-residence-permit-required"],
+              "notes": [
+                "Application form, passport, labour contract or entrepreneurial registration, proof of lawful stay."
+              ]
+            }
+          ],
+          "steps": [
+            {
+              "id": "route_local_work-step-1",
+              "title": "Enter Georgia legally (visa-free or visa)",
+              "description": "Enter Georgia legally (visa-free or visa)",
+              "sourceIds": ["geo-sda-residence"],
+              "legalFactIds": ["legal-residence-permit-required"],
+              "documents": [],
+              "manualReviewQuestions": []
+            },
+            {
+              "id": "route_local_work-step-2",
+              "title": "Apply for work residence permit as a registered labour immigrant or entrepreneur",
+              "description": "Apply for work residence permit as a registered labour immigrant or entrepreneur",
+              "sourceIds": ["geo-sda-residence"],
+              "legalFactIds": ["legal-residence-permit-required"],
+              "documents": [],
+              "manualReviewQuestions": []
+            },
+            {
+              "id": "route_local_work-step-3",
+              "title": "After permit approval, register address",
+              "description": "After permit approval, register address",
+              "sourceIds": ["geo-sda-residence"],
+              "legalFactIds": ["legal-residence-permit-required"],
+              "documents": [],
+              "manualReviewQuestions": []
+            }
+          ],
+          "blockers": [],
+          "unlocks": [],
+          "difficulty": {
+            "documents": 4,
+            "cost": 4,
+            "approvalRisk": 4,
+            "speed": 3,
+            "adaptation": 4
+          },
+          "publicationStatusSuggestion": "needs_review",
+          "confidence": "high"
+        },
+        {
+          "id": "route_business",
+          "title": "Business Activities",
+          "routeType": "business",
+          "goals": ["business", "residence"],
+          "stayDurations": ["six_to_twelve_months", "more_than_year"],
+          "entryCountries": ["RU"],
+          "exitCountries": ["RU"],
+          "transitRisks": [],
+          "sourceIds": ["geo-visa-free-ordinance", "geo-sda-residence"],
+          "legalFactIds": [
+            "legal-visa-free-one-year",
+            "legal-residence-permit-required"
+          ],
+          "requirementIds": ["req-valid-passport", "req-residence-application"],
+          "personalizationRuleIds": [],
+          "manualReviewQuestions": [],
+          "documents": [
+            {
+              "id": "doc-passport",
+              "title": "Passport",
+              "sourceIds": ["geo-visa-free-ordinance", "geo-sda-residence"],
+              "legalFactIds": [
+                "legal-visa-free-one-year",
+                "legal-residence-permit-required"
+              ],
+              "notes": ["Valid passport"]
+            },
+            {
+              "id": "doc-business-registration",
+              "title": "Business registration documents",
+              "sourceIds": ["geo-visa-free-ordinance", "geo-sda-residence"],
+              "legalFactIds": [
+                "legal-visa-free-one-year",
+                "legal-residence-permit-required"
+              ],
+              "notes": [
+                "If engaging in entrepreneurial activity beyond occasional, work residence permit may be required. Official definition needs clarification."
+              ]
+            }
+          ],
+          "steps": [
+            {
+              "id": "route_business-step-1",
+              "title": "Enter Georgia (visa-free for up to 1 year)",
+              "description": "Enter Georgia (visa-free for up to 1 year)",
+              "sourceIds": ["geo-visa-free-ordinance", "geo-sda-residence"],
+              "legalFactIds": [
+                "legal-visa-free-one-year",
+                "legal-residence-permit-required"
+              ],
+              "documents": [],
+              "manualReviewQuestions": []
+            },
+            {
+              "id": "route_business-step-2",
+              "title": "If conducting regular business, consider applying for work residence permit as entrepreneur",
+              "description": "If conducting regular business, consider applying for work residence permit as entrepreneur",
+              "sourceIds": ["geo-visa-free-ordinance", "geo-sda-residence"],
+              "legalFactIds": [
+                "legal-visa-free-one-year",
+                "legal-residence-permit-required"
+              ],
+              "documents": [],
+              "manualReviewQuestions": []
+            }
+          ],
+          "blockers": [],
+          "unlocks": [],
+          "difficulty": {
+            "documents": 4,
+            "cost": 5,
+            "approvalRisk": 4,
+            "speed": 3,
+            "adaptation": 2
+          },
+          "publicationStatusSuggestion": "draft",
+          "confidence": "medium"
+        },
+        {
+          "id": "route_family",
+          "title": "Family Reunification",
+          "routeType": "family",
+          "goals": ["family", "residence"],
+          "stayDurations": ["six_to_twelve_months", "more_than_year"],
+          "entryCountries": ["RU"],
+          "exitCountries": ["RU"],
+          "transitRisks": [],
+          "sourceIds": ["geo-sda-residence"],
+          "legalFactIds": ["legal-residence-permit-required"],
+          "requirementIds": ["req-residence-application"],
+          "personalizationRuleIds": [],
+          "manualReviewQuestions": [],
+          "documents": [
+            {
+              "id": "doc-family-reunification-application",
+              "title": "Family Reunification Residence Permit Application",
+              "sourceIds": ["geo-sda-residence"],
+              "legalFactIds": ["legal-residence-permit-required"],
+              "notes": [
+                "Application form, passport, proof of family relationship, proof of sponsor's legal status, proof of lawful stay."
+              ]
+            }
+          ],
+          "steps": [
+            {
+              "id": "route_family-step-1",
+              "title": "Enter Georgia legally",
+              "description": "Enter Georgia legally",
+              "sourceIds": ["geo-sda-residence"],
+              "legalFactIds": ["legal-residence-permit-required"],
+              "documents": [],
+              "manualReviewQuestions": []
+            },
+            {
+              "id": "route_family-step-2",
+              "title": "Submit family reunification residence permit application",
+              "description": "Submit family reunification residence permit application",
+              "sourceIds": ["geo-sda-residence"],
+              "legalFactIds": ["legal-residence-permit-required"],
+              "documents": [],
+              "manualReviewQuestions": []
+            },
+            {
+              "id": "route_family-step-3",
+              "title": "After approval, register address",
+              "description": "After approval, register address",
+              "sourceIds": ["geo-sda-residence"],
+              "legalFactIds": ["legal-residence-permit-required"],
+              "documents": [],
+              "manualReviewQuestions": []
+            }
+          ],
+          "blockers": [],
+          "unlocks": [],
+          "difficulty": {
+            "documents": 3,
+            "cost": 3,
+            "approvalRisk": 3,
+            "speed": 3,
+            "adaptation": 4
+          },
+          "publicationStatusSuggestion": "needs_review",
+          "confidence": "high"
+        },
+        {
+          "id": "route_study",
+          "title": "Study",
+          "routeType": "study",
+          "goals": ["residence", "compare"],
+          "stayDurations": ["six_to_twelve_months", "more_than_year"],
+          "entryCountries": ["RU"],
+          "exitCountries": ["RU"],
+          "transitRisks": [],
+          "sourceIds": ["geo-sda-residence"],
+          "legalFactIds": ["legal-residence-permit-required"],
+          "requirementIds": ["req-residence-application"],
+          "personalizationRuleIds": [],
+          "manualReviewQuestions": [],
+          "documents": [
+            {
+              "id": "doc-study-permit-application",
+              "title": "Study Residence Permit Application",
+              "sourceIds": ["geo-sda-residence"],
+              "legalFactIds": ["legal-residence-permit-required"],
+              "notes": [
+                "Application form, passport, confirmation of enrollment, proof of finances, proof of lawful stay."
+              ]
+            }
+          ],
+          "steps": [
+            {
+              "id": "route_study-step-1",
+              "title": "Enter Georgia legally",
+              "description": "Enter Georgia legally",
+              "sourceIds": ["geo-sda-residence"],
+              "legalFactIds": ["legal-residence-permit-required"],
+              "documents": [],
+              "manualReviewQuestions": []
+            },
+            {
+              "id": "route_study-step-2",
+              "title": "Apply for study residence permit",
+              "description": "Apply for study residence permit",
+              "sourceIds": ["geo-sda-residence"],
+              "legalFactIds": ["legal-residence-permit-required"],
+              "documents": [],
+              "manualReviewQuestions": []
+            },
+            {
+              "id": "route_study-step-3",
+              "title": "After approval, register address",
+              "description": "After approval, register address",
+              "sourceIds": ["geo-sda-residence"],
+              "legalFactIds": ["legal-residence-permit-required"],
+              "documents": [],
+              "manualReviewQuestions": []
+            }
+          ],
+          "blockers": [],
+          "unlocks": [],
+          "difficulty": {
+            "documents": 3,
+            "cost": 3,
+            "approvalRisk": 3,
+            "speed": 3,
+            "adaptation": 4
+          },
+          "publicationStatusSuggestion": "needs_review",
+          "confidence": "high"
+        },
+        {
+          "id": "route_pets",
+          "title": "Pets (Import)",
+          "routeType": "pets",
+          "goals": ["family", "compare"],
+          "stayDurations": ["up_to_one_month", "one_to_three_months"],
+          "entryCountries": ["RU"],
+          "exitCountries": ["RU"],
+          "transitRisks": [],
+          "sourceIds": ["source_needed"],
+          "legalFactIds": [],
+          "requirementIds": [],
+          "personalizationRuleIds": [],
+          "manualReviewQuestions": [],
+          "documents": [
+            {
+              "id": "doc-pet-requirements",
+              "title": "Pet import documentation (microchip, rabies vaccination, etc.)",
+              "sourceIds": ["source_needed"],
+              "legalFactIds": [],
+              "notes": [
+                "Official requirements not verified from official source. Needs manual review."
+              ]
+            }
+          ],
+          "steps": [
+            {
+              "id": "route_pets-step-1",
+              "title": "Consult official source for pet import requirements - source not yet verified",
+              "description": "Consult official source for pet import requirements - source not yet verified.",
+              "sourceIds": ["source_needed"],
+              "legalFactIds": [],
+              "documents": [],
+              "manualReviewQuestions": []
+            }
+          ],
+          "blockers": [],
+          "unlocks": [],
+          "difficulty": {
+            "documents": 2,
+            "cost": 2,
+            "approvalRisk": 2,
+            "speed": 3,
+            "adaptation": 2
+          },
+          "publicationStatusSuggestion": "needs_review",
+          "confidence": "low"
+        }
+      ],
+      "personalizationRules": [],
+      "reviewLog": [
+        {
+          "round": 1,
+          "issue": "Первичный полный ответ DeepSeek был слишком большим: v4-pro timeout, v4-flash завершился по length и дал непригодный общий JSON.",
+          "action": "Граф разбит на отдельные country objects и отправлен на исправление."
+        },
+        {
+          "round": 2,
+          "issue": "Официальная сверка выявила страновые ошибки и недоказанные утверждения.",
+          "action": "DeepSeek получил проверенные официальные факты и вернул отдельный parseable JSON по стране."
+        },
+        {
+          "round": 3,
+          "issue": "Нестандартные routeType enum и недостаточные источники по отдельным веткам.",
+          "action": "routeType нормализованы к production enum; спорные маршруты помечены needs_review/reference_only/source_needed."
+        },
+        {
+          "round": 1,
+          "issue": "DeepSeek produced the initial country graph draft.",
+          "action": "Draft was treated as untrusted source and checked against official sources."
+        },
+        {
+          "round": 2,
+          "issue": "Official-source objections were sent back to DeepSeek.",
+          "action": "Country-split corrected drafts were generated for GE, AM, RS, TR and ME."
+        },
+        {
+          "round": 3,
+          "issue": "DeepSeek output used non-contract field shapes and publication labels.",
+          "action": "Normalized GE graph into the repository production graph schema."
+        }
+      ],
+      "manualReviewQuestions": [
+        "Is foreign remote work explicitly allowed under the 1-year visa-free regime without a work permit? Official source not confirmed.",
+        "What constitutes 'carrying out entrepreneurial activity' that requires a work residence permit? Clarify threshold.",
+        "Find and verify official source for pet import requirements (e.g., ministry of agriculture or customs).",
+        "Проверить официальный источник по ввозу животных в Грузию для некоммерческого перемещения из РФ/третьих стран."
+      ]
+    },
+    {
+      "countryCode": "AM",
+      "countryNameRu": "Армения",
+      "graphStatus": "needs_review",
+      "jurisdictions": [
+        {
+          "id": "AM",
+          "type": "target_country",
+          "name": "Армения",
+          "notes": [
+            "Черновой production graph агента A для волны Кавказ/Балканы."
+          ]
+        }
+      ],
+      "sourceNodes": [
+        {
+          "id": "armenia-mfa-visa",
+          "title": "Armenia MFA Visa Information",
+          "url": "https://www.mfa.am/en/visa/",
+          "sourceType": "government_portal",
+          "jurisdiction": "AM",
+          "language": "en",
+          "lastCheckedAt": "2025-03-28",
+          "appliesToCitizenship": ["RU"],
+          "confidence": "medium",
+          "officialness": "official",
+          "quoteOrFact": "Armenia MFA Visa Information"
+        },
+        {
+          "id": "armenia-mfa-residency",
+          "title": "Armenia MFA Residency Information",
+          "url": "https://www.mfa.am/en/residency/",
+          "sourceType": "government_portal",
+          "jurisdiction": "AM",
+          "language": "en",
+          "lastCheckedAt": "2025-03-28",
+          "appliesToCitizenship": ["RU"],
+          "confidence": "medium",
+          "officialness": "official",
+          "quoteOrFact": "Armenia MFA Residency Information"
+        },
+        {
+          "id": "armenia-egov-residency-docs",
+          "title": "Armenia e-Gov Residency Documents",
+          "url": "https://migration.e-gov.am/en/service/residency_application/info",
+          "sourceType": "government_portal",
+          "jurisdiction": "AM",
+          "language": "en",
+          "lastCheckedAt": "2025-03-28",
+          "appliesToCitizenship": ["RU"],
+          "confidence": "medium",
+          "officialness": "official",
+          "quoteOrFact": "Armenia e-Gov Residency Documents"
+        },
+        {
+          "id": "armenia-work-residence",
+          "title": "Armenia e-Gov Work Permits",
+          "url": "https://migration.e-gov.am/en/service/work_permits/info",
+          "sourceType": "government_portal",
+          "jurisdiction": "AM",
+          "language": "en",
+          "lastCheckedAt": "2025-03-28",
+          "appliesToCitizenship": ["RU"],
+          "confidence": "medium",
+          "officialness": "official",
+          "quoteOrFact": "Armenia e-Gov Work Permits"
+        },
+        {
+          "id": "source_needed",
+          "title": "Нужен официальный источник: Армения",
+          "url": "source_needed",
+          "sourceType": "source_needed",
+          "jurisdiction": "AM",
+          "language": "ru",
+          "lastCheckedAt": "2026-06-20",
+          "appliesToCitizenship": ["RU"],
+          "confidence": "low",
+          "officialness": "source_needed",
+          "quoteOrFact": "Требуется дополнительная официальная проверка перед публикацией маршрута."
+        }
+      ],
+      "legalFactNodes": [
+        {
+          "id": "fact-visa-free-russian",
+          "sourceIds": ["armenia-mfa-visa"],
+          "factType": "entry",
+          "fact": "Citizens of Russian Federation can stay in Armenia visa-free for no more than 180 days during one year.",
+          "appliesWhen": [],
+          "exceptions": [],
+          "needsManualReview": false,
+          "confidence": "medium"
+        },
+        {
+          "id": "fact-temp-residence-1year",
+          "sourceIds": ["armenia-mfa-residency"],
+          "factType": "residence",
+          "fact": "Temporary resident card issued for up to one year; eligibility includes study, work permit, spouse/parent/child of temporary resident, family/relatives of Armenian citizen, business activity, Armenian nationality, other cases by law.",
+          "appliesWhen": [],
+          "exceptions": [],
+          "needsManualReview": false,
+          "confidence": "medium"
+        },
+        {
+          "id": "fact-residence-docs-required",
+          "sourceIds": ["armenia-egov-residency-docs"],
+          "factType": "residence",
+          "fact": "Documents include passport/travel document and notary certified Armenian translation, photos, legality of stay and documents justifying residence status; business activity documents for business basis.",
+          "appliesWhen": [],
+          "exceptions": [],
+          "needsManualReview": false,
+          "confidence": "medium"
+        },
+        {
+          "id": "fact-work-permit-online",
+          "sourceIds": ["armenia-work-residence"],
+          "factType": "work",
+          "fact": "Employer willing to involve a foreign national employee submits the application online for employment-based residence status.",
+          "appliesWhen": [],
+          "exceptions": [],
+          "needsManualReview": false,
+          "confidence": "medium"
+        },
+        {
+          "id": "fact-pets-source-needed",
+          "sourceIds": ["source_needed"],
+          "factType": "pets",
+          "fact": "No official source verified for pet entry rules; further research required.",
+          "appliesWhen": [],
+          "exceptions": [],
+          "needsManualReview": true,
+          "confidence": "medium"
+        }
+      ],
+      "requirementNodes": [
+        {
+          "id": "req-passport",
+          "title": "Valid passport",
+          "sourceIds": ["armenia-egov-residency-docs"],
+          "legalFactIds": [],
+          "appliesWhen": [],
+          "documents": [],
+          "hardBlockerWhenMissing": false,
+          "affects": ["documents", "approvalRisk"],
+          "confidence": "medium"
+        },
+        {
+          "id": "req-passport-translation",
+          "title": "Notary certified Armenian translation of passport",
+          "sourceIds": ["armenia-egov-residency-docs"],
+          "legalFactIds": [],
+          "appliesWhen": [],
+          "documents": [],
+          "hardBlockerWhenMissing": false,
+          "affects": ["documents", "approvalRisk"],
+          "confidence": "medium"
+        },
+        {
+          "id": "req-photos",
+          "title": "Passport photos",
+          "sourceIds": ["armenia-egov-residency-docs"],
+          "legalFactIds": [],
+          "appliesWhen": [],
+          "documents": [],
+          "hardBlockerWhenMissing": false,
+          "affects": ["documents", "approvalRisk"],
+          "confidence": "medium"
+        },
+        {
+          "id": "req-legality-stay",
+          "title": "Proof of legal stay",
+          "sourceIds": ["armenia-egov-residency-docs"],
+          "legalFactIds": [],
+          "appliesWhen": [],
+          "documents": [],
+          "hardBlockerWhenMissing": false,
+          "affects": ["documents", "approvalRisk"],
+          "confidence": "medium"
+        },
+        {
+          "id": "req-justificatory-docs",
+          "title": "Documents justifying residence status",
+          "sourceIds": ["armenia-egov-residency-docs"],
+          "legalFactIds": [],
+          "appliesWhen": [],
+          "documents": [],
+          "hardBlockerWhenMissing": false,
+          "affects": ["documents"],
+          "confidence": "medium"
+        },
+        {
+          "id": "req-business-docs",
+          "title": "Business activity documents",
+          "sourceIds": ["armenia-egov-residency-docs"],
+          "legalFactIds": [],
+          "appliesWhen": [],
+          "documents": [],
+          "hardBlockerWhenMissing": false,
+          "affects": ["documents"],
+          "confidence": "medium"
+        },
+        {
+          "id": "req-employer-submission",
+          "title": "Employer submission of work permit application",
+          "sourceIds": ["armenia-work-residence"],
+          "legalFactIds": [],
+          "appliesWhen": [],
+          "documents": [],
+          "hardBlockerWhenMissing": false,
+          "affects": ["approvalRisk"],
+          "confidence": "medium"
+        }
+      ],
+      "routeNodes": [
+        {
+          "id": "route-short_entry",
+          "title": "Short Entry (Visa-Free)",
+          "routeType": "short_entry",
+          "goals": ["quick_exit", "compare"],
+          "stayDurations": ["up_to_one_month", "one_to_three_months"],
+          "entryCountries": ["RU"],
+          "exitCountries": ["AM"],
+          "transitRisks": [],
+          "sourceIds": ["armenia-mfa-visa"],
+          "legalFactIds": ["fact-visa-free-russian"],
+          "requirementIds": [],
+          "personalizationRuleIds": [],
+          "manualReviewQuestions": [],
+          "documents": [
+            {
+              "title": "Passport (valid)",
+              "sourceIds": ["armenia-mfa-visa"],
+              "legalFactIds": ["fact-visa-free-russian"],
+              "notes": []
+            }
+          ],
+          "steps": [
+            {
+              "id": "route-short_entry-step-1",
+              "title": "Arrive at Armenian border with valid passport",
+              "description": "Arrive at Armenian border with valid passport",
+              "sourceIds": ["armenia-mfa-visa"],
+              "legalFactIds": ["fact-visa-free-russian"],
+              "documents": [],
+              "manualReviewQuestions": []
+            },
+            {
+              "id": "route-short_entry-step-2",
+              "title": "Border control officer may check stay limit",
+              "description": "Border control officer may check stay limit",
+              "sourceIds": ["armenia-mfa-visa"],
+              "legalFactIds": ["fact-visa-free-russian"],
+              "documents": [],
+              "manualReviewQuestions": []
+            }
+          ],
+          "blockers": [
+            "Visa-free regime only confirmed for Russian citizens; other nationals may need visa."
+          ],
+          "unlocks": [],
+          "difficulty": {
+            "documents": 1,
+            "cost": 1,
+            "approvalRisk": 1,
+            "speed": 1,
+            "adaptation": 2
+          },
+          "publicationStatusSuggestion": "needs_review",
+          "confidence": "high"
+        },
+        {
+          "id": "route-medium_stay",
+          "title": "Medium Stay (Visa Required for non-RU)",
+          "routeType": "medium_stay",
+          "goals": ["medium_stay", "compare"],
+          "stayDurations": ["three_to_six_months", "six_to_twelve_months"],
+          "entryCountries": ["RU"],
+          "exitCountries": ["AM"],
+          "transitRisks": [],
+          "sourceIds": ["armenia-mfa-visa"],
+          "legalFactIds": ["fact-visa-free-russian"],
+          "requirementIds": ["req-passport"],
+          "personalizationRuleIds": [],
+          "manualReviewQuestions": [
+            "Verify visa-free country list",
+            "Specify visa types and durations"
+          ],
+          "documents": [
+            {
+              "title": "Passport",
+              "sourceIds": ["armenia-mfa-visa"],
+              "legalFactIds": ["fact-visa-free-russian"],
+              "notes": []
+            },
+            {
+              "title": "Visa (if needed)",
+              "sourceIds": ["armenia-mfa-visa"],
+              "legalFactIds": ["fact-visa-free-russian"],
+              "notes": []
+            }
+          ],
+          "steps": [
+            {
+              "id": "route-medium_stay-step-1",
+              "title": "Check visa requirements based on citizenship",
+              "description": "Check visa requirements based on citizenship",
+              "sourceIds": ["armenia-mfa-visa"],
+              "legalFactIds": ["fact-visa-free-russian"],
+              "documents": [],
+              "manualReviewQuestions": []
+            },
+            {
+              "id": "route-medium_stay-step-2",
+              "title": "Apply for visa if required",
+              "description": "Apply for visa if required",
+              "sourceIds": ["armenia-mfa-visa"],
+              "legalFactIds": ["fact-visa-free-russian"],
+              "documents": [],
+              "manualReviewQuestions": []
+            },
+            {
+              "id": "route-medium_stay-step-3",
+              "title": "Enter Armenia",
+              "description": "Enter Armenia",
+              "sourceIds": ["armenia-mfa-visa"],
+              "legalFactIds": ["fact-visa-free-russian"],
+              "documents": [],
+              "manualReviewQuestions": []
+            }
+          ],
+          "blockers": [
+            "Most nationals require a visa; exact list not verified."
+          ],
+          "unlocks": [],
+          "difficulty": {
+            "documents": 2,
+            "cost": 2,
+            "approvalRisk": 2,
+            "speed": 3,
+            "adaptation": 2
+          },
+          "publicationStatusSuggestion": "draft",
+          "confidence": "low"
+        },
+        {
+          "id": "route-residence",
+          "title": "Temporary Residence (up to 1 year)",
+          "routeType": "residence",
+          "goals": ["residence"],
+          "stayDurations": [
+            "six_to_twelve_months",
+            "more_than_year",
+            "permanent_status"
+          ],
+          "entryCountries": ["RU"],
+          "exitCountries": ["AM"],
+          "transitRisks": [],
+          "sourceIds": ["armenia-mfa-residency", "armenia-egov-residency-docs"],
+          "legalFactIds": [
+            "fact-temp-residence-1year",
+            "fact-residence-docs-required"
+          ],
+          "requirementIds": [
+            "req-passport",
+            "req-passport-translation",
+            "req-photos",
+            "req-legality-stay",
+            "req-justificatory-docs"
+          ],
+          "personalizationRuleIds": [],
+          "manualReviewQuestions": [],
+          "documents": [
+            {
+              "title": "Passport with translation",
+              "sourceIds": [
+                "armenia-mfa-residency",
+                "armenia-egov-residency-docs"
+              ],
+              "legalFactIds": [
+                "fact-temp-residence-1year",
+                "fact-residence-docs-required"
+              ],
+              "notes": []
+            },
+            {
+              "title": "Photos",
+              "sourceIds": [
+                "armenia-mfa-residency",
+                "armenia-egov-residency-docs"
+              ],
+              "legalFactIds": [
+                "fact-temp-residence-1year",
+                "fact-residence-docs-required"
+              ],
+              "notes": []
+            },
+            {
+              "title": "Proof of legal stay",
+              "sourceIds": [
+                "armenia-mfa-residency",
+                "armenia-egov-residency-docs"
+              ],
+              "legalFactIds": [
+                "fact-temp-residence-1year",
+                "fact-residence-docs-required"
+              ],
+              "notes": []
+            },
+            {
+              "title": "Justificatory documents",
+              "sourceIds": [
+                "armenia-mfa-residency",
+                "armenia-egov-residency-docs"
+              ],
+              "legalFactIds": [
+                "fact-temp-residence-1year",
+                "fact-residence-docs-required"
+              ],
+              "notes": []
+            }
+          ],
+          "steps": [
+            {
+              "id": "route-residence-step-1",
+              "title": "Prepare documents",
+              "description": "Prepare documents",
+              "sourceIds": [
+                "armenia-mfa-residency",
+                "armenia-egov-residency-docs"
+              ],
+              "legalFactIds": [
+                "fact-temp-residence-1year",
+                "fact-residence-docs-required"
+              ],
+              "documents": [],
+              "manualReviewQuestions": []
+            },
+            {
+              "id": "route-residence-step-2",
+              "title": "Submit application to Migration Service",
+              "description": "Submit application to Migration Service",
+              "sourceIds": [
+                "armenia-mfa-residency",
+                "armenia-egov-residency-docs"
+              ],
+              "legalFactIds": [
+                "fact-temp-residence-1year",
+                "fact-residence-docs-required"
+              ],
+              "documents": [],
+              "manualReviewQuestions": []
+            },
+            {
+              "id": "route-residence-step-3",
+              "title": "Wait for processing (extension must be at least 30 days before expiry)",
+              "description": "Wait for processing (extension must be at least 30 days before expiry)",
+              "sourceIds": [
+                "armenia-mfa-residency",
+                "armenia-egov-residency-docs"
+              ],
+              "legalFactIds": [
+                "fact-temp-residence-1year",
+                "fact-residence-docs-required"
+              ],
+              "documents": [],
+              "manualReviewQuestions": []
+            }
+          ],
+          "blockers": [],
+          "unlocks": [],
+          "difficulty": {
+            "documents": 4,
+            "cost": 4,
+            "approvalRisk": 4,
+            "speed": 4,
+            "adaptation": 4
+          },
+          "publicationStatusSuggestion": "needs_review",
+          "confidence": "high"
+        },
+        {
+          "id": "route-remote_work",
+          "title": "Remote Work (Digital Nomad)",
+          "routeType": "remote_work",
+          "goals": ["remote_work", "medium_stay"],
+          "stayDurations": [
+            "one_to_three_months",
+            "three_to_six_months",
+            "six_to_twelve_months"
+          ],
+          "entryCountries": ["RU"],
+          "exitCountries": ["AM"],
+          "transitRisks": [],
+          "sourceIds": ["source_needed"],
+          "legalFactIds": [],
+          "requirementIds": [],
+          "personalizationRuleIds": [],
+          "manualReviewQuestions": [
+            "Research if Armenia has a digital nomad or remote work visa",
+            "Check if residence based on self-employment applies"
+          ],
+          "documents": [],
+          "steps": [
+            {
+              "id": "route-remote_work-step-1",
+              "title": "Проверить актуальные условия маршрута Remote Work (Digital Nomad) по официальным источникам",
+              "description": "Проверить актуальные условия маршрута Remote Work (Digital Nomad) по официальным источникам.",
+              "sourceIds": ["source_needed"],
+              "legalFactIds": [],
+              "documents": [],
+              "manualReviewQuestions": []
+            },
+            {
+              "id": "route-remote_work-step-2",
+              "title": "Собрать документы и подать заявление в порядке, указанном компетентным органом",
+              "description": "Собрать документы и подать заявление в порядке, указанном компетентным органом.",
+              "sourceIds": ["source_needed"],
+              "legalFactIds": [],
+              "documents": [],
+              "manualReviewQuestions": []
+            }
+          ],
+          "blockers": [
+            "No official remote work visa or route found; may fall under other residence categories."
+          ],
+          "unlocks": [],
+          "difficulty": {
+            "documents": 3,
+            "cost": 3,
+            "approvalRisk": 3,
+            "speed": 3,
+            "adaptation": 2
+          },
+          "publicationStatusSuggestion": "needs_review",
+          "confidence": "low"
+        },
+        {
+          "id": "route-local_work",
+          "title": "Local Employment (Work Permit)",
+          "routeType": "local_work",
+          "goals": ["local_work", "residence"],
+          "stayDurations": ["six_to_twelve_months", "more_than_year"],
+          "entryCountries": ["RU"],
+          "exitCountries": ["AM"],
+          "transitRisks": [],
+          "sourceIds": ["armenia-work-residence", "armenia-mfa-residency"],
+          "legalFactIds": [
+            "fact-work-permit-online",
+            "fact-temp-residence-1year",
+            "fact-residence-docs-required"
+          ],
+          "requirementIds": [
+            "req-employer-submission",
+            "req-passport",
+            "req-passport-translation",
+            "req-photos",
+            "req-legality-stay"
+          ],
+          "personalizationRuleIds": [],
+          "manualReviewQuestions": [],
+          "documents": [
+            {
+              "title": "Employer submits online",
+              "sourceIds": ["armenia-work-residence", "armenia-mfa-residency"],
+              "legalFactIds": [
+                "fact-work-permit-online",
+                "fact-temp-residence-1year",
+                "fact-residence-docs-required"
+              ],
+              "notes": []
+            },
+            {
+              "title": "Passport with translation",
+              "sourceIds": ["armenia-work-residence", "armenia-mfa-residency"],
+              "legalFactIds": [
+                "fact-work-permit-online",
+                "fact-temp-residence-1year",
+                "fact-residence-docs-required"
+              ],
+              "notes": []
+            },
+            {
+              "title": "Photos",
+              "sourceIds": ["armenia-work-residence", "armenia-mfa-residency"],
+              "legalFactIds": [
+                "fact-work-permit-online",
+                "fact-temp-residence-1year",
+                "fact-residence-docs-required"
+              ],
+              "notes": []
+            },
+            {
+              "title": "Proof of legal stay",
+              "sourceIds": ["armenia-work-residence", "armenia-mfa-residency"],
+              "legalFactIds": [
+                "fact-work-permit-online",
+                "fact-temp-residence-1year",
+                "fact-residence-docs-required"
+              ],
+              "notes": []
+            }
+          ],
+          "steps": [
+            {
+              "id": "route-local_work-step-1",
+              "title": "Employer initiates work permit application online",
+              "description": "Employer initiates work permit application online",
+              "sourceIds": ["armenia-work-residence", "armenia-mfa-residency"],
+              "legalFactIds": [
+                "fact-work-permit-online",
+                "fact-temp-residence-1year",
+                "fact-residence-docs-required"
+              ],
+              "documents": [],
+              "manualReviewQuestions": []
+            },
+            {
+              "id": "route-local_work-step-2",
+              "title": "Foreign national may need to provide passport and documents",
+              "description": "Foreign national may need to provide passport and documents",
+              "sourceIds": ["armenia-work-residence", "armenia-mfa-residency"],
+              "legalFactIds": [
+                "fact-work-permit-online",
+                "fact-temp-residence-1year",
+                "fact-residence-docs-required"
+              ],
+              "documents": [],
+              "manualReviewQuestions": []
+            },
+            {
+              "id": "route-local_work-step-3",
+              "title": "After approval, apply for temporary residence card",
+              "description": "After approval, apply for temporary residence card",
+              "sourceIds": ["armenia-work-residence", "armenia-mfa-residency"],
+              "legalFactIds": [
+                "fact-work-permit-online",
+                "fact-temp-residence-1year",
+                "fact-residence-docs-required"
+              ],
+              "documents": [],
+              "manualReviewQuestions": []
+            }
+          ],
+          "blockers": [],
+          "unlocks": [],
+          "difficulty": {
+            "documents": 4,
+            "cost": 4,
+            "approvalRisk": 4,
+            "speed": 3,
+            "adaptation": 4
+          },
+          "publicationStatusSuggestion": "needs_review",
+          "confidence": "high"
+        },
+        {
+          "id": "route-business",
+          "title": "Business Activity",
+          "routeType": "business",
+          "goals": ["business", "residence"],
+          "stayDurations": ["six_to_twelve_months", "more_than_year"],
+          "entryCountries": ["RU"],
+          "exitCountries": ["AM"],
+          "transitRisks": [],
+          "sourceIds": ["armenia-mfa-residency", "armenia-egov-residency-docs"],
+          "legalFactIds": [
+            "fact-temp-residence-1year",
+            "fact-residence-docs-required"
+          ],
+          "requirementIds": [
+            "req-passport",
+            "req-passport-translation",
+            "req-photos",
+            "req-legality-stay",
+            "req-business-docs"
+          ],
+          "personalizationRuleIds": [],
+          "manualReviewQuestions": [],
+          "documents": [
+            {
+              "title": "Passport with translation",
+              "sourceIds": [
+                "armenia-mfa-residency",
+                "armenia-egov-residency-docs"
+              ],
+              "legalFactIds": [
+                "fact-temp-residence-1year",
+                "fact-residence-docs-required"
+              ],
+              "notes": []
+            },
+            {
+              "title": "Photos",
+              "sourceIds": [
+                "armenia-mfa-residency",
+                "armenia-egov-residency-docs"
+              ],
+              "legalFactIds": [
+                "fact-temp-residence-1year",
+                "fact-residence-docs-required"
+              ],
+              "notes": []
+            },
+            {
+              "title": "Proof of legal stay",
+              "sourceIds": [
+                "armenia-mfa-residency",
+                "armenia-egov-residency-docs"
+              ],
+              "legalFactIds": [
+                "fact-temp-residence-1year",
+                "fact-residence-docs-required"
+              ],
+              "notes": []
+            },
+            {
+              "title": "Business activity documents",
+              "sourceIds": [
+                "armenia-mfa-residency",
+                "armenia-egov-residency-docs"
+              ],
+              "legalFactIds": [
+                "fact-temp-residence-1year",
+                "fact-residence-docs-required"
+              ],
+              "notes": []
+            }
+          ],
+          "steps": [
+            {
+              "id": "route-business-step-1",
+              "title": "Prepare business registration and activity proof",
+              "description": "Prepare business registration and activity proof",
+              "sourceIds": [
+                "armenia-mfa-residency",
+                "armenia-egov-residency-docs"
+              ],
+              "legalFactIds": [
+                "fact-temp-residence-1year",
+                "fact-residence-docs-required"
+              ],
+              "documents": [],
+              "manualReviewQuestions": []
+            },
+            {
+              "id": "route-business-step-2",
+              "title": "Submit residence application with business documents",
+              "description": "Submit residence application with business documents",
+              "sourceIds": [
+                "armenia-mfa-residency",
+                "armenia-egov-residency-docs"
+              ],
+              "legalFactIds": [
+                "fact-temp-residence-1year",
+                "fact-residence-docs-required"
+              ],
+              "documents": [],
+              "manualReviewQuestions": []
+            }
+          ],
+          "blockers": [],
+          "unlocks": [],
+          "difficulty": {
+            "documents": 4,
+            "cost": 5,
+            "approvalRisk": 4,
+            "speed": 3,
+            "adaptation": 2
+          },
+          "publicationStatusSuggestion": "needs_review",
+          "confidence": "high"
+        },
+        {
+          "id": "route-family",
+          "title": "Family Reunification",
+          "routeType": "family",
+          "goals": ["family", "residence"],
+          "stayDurations": ["six_to_twelve_months", "more_than_year"],
+          "entryCountries": ["RU"],
+          "exitCountries": ["AM"],
+          "transitRisks": [],
+          "sourceIds": ["armenia-mfa-residency", "armenia-egov-residency-docs"],
+          "legalFactIds": [
+            "fact-temp-residence-1year",
+            "fact-residence-docs-required"
+          ],
+          "requirementIds": [
+            "req-passport",
+            "req-passport-translation",
+            "req-photos",
+            "req-legality-stay",
+            "req-justificatory-docs"
+          ],
+          "personalizationRuleIds": [],
+          "manualReviewQuestions": [],
+          "documents": [
+            {
+              "title": "Passport with translation",
+              "sourceIds": [
+                "armenia-mfa-residency",
+                "armenia-egov-residency-docs"
+              ],
+              "legalFactIds": [
+                "fact-temp-residence-1year",
+                "fact-residence-docs-required"
+              ],
+              "notes": []
+            },
+            {
+              "title": "Photos",
+              "sourceIds": [
+                "armenia-mfa-residency",
+                "armenia-egov-residency-docs"
+              ],
+              "legalFactIds": [
+                "fact-temp-residence-1year",
+                "fact-residence-docs-required"
+              ],
+              "notes": []
+            },
+            {
+              "title": "Proof of legal stay",
+              "sourceIds": [
+                "armenia-mfa-residency",
+                "armenia-egov-residency-docs"
+              ],
+              "legalFactIds": [
+                "fact-temp-residence-1year",
+                "fact-residence-docs-required"
+              ],
+              "notes": []
+            },
+            {
+              "title": "Family relationship documents (marriage, birth, etc.)",
+              "sourceIds": [
+                "armenia-mfa-residency",
+                "armenia-egov-residency-docs"
+              ],
+              "legalFactIds": [
+                "fact-temp-residence-1year",
+                "fact-residence-docs-required"
+              ],
+              "notes": []
+            }
+          ],
+          "steps": [
+            {
+              "id": "route-family-step-1",
+              "title": "Collect relationship evidence",
+              "description": "Collect relationship evidence",
+              "sourceIds": [
+                "armenia-mfa-residency",
+                "armenia-egov-residency-docs"
+              ],
+              "legalFactIds": [
+                "fact-temp-residence-1year",
+                "fact-residence-docs-required"
+              ],
+              "documents": [],
+              "manualReviewQuestions": []
+            },
+            {
+              "id": "route-family-step-2",
+              "title": "Submit residence application with family justification",
+              "description": "Submit residence application with family justification",
+              "sourceIds": [
+                "armenia-mfa-residency",
+                "armenia-egov-residency-docs"
+              ],
+              "legalFactIds": [
+                "fact-temp-residence-1year",
+                "fact-residence-docs-required"
+              ],
+              "documents": [],
+              "manualReviewQuestions": []
+            }
+          ],
+          "blockers": [],
+          "unlocks": [],
+          "difficulty": {
+            "documents": 3,
+            "cost": 3,
+            "approvalRisk": 3,
+            "speed": 3,
+            "adaptation": 4
+          },
+          "publicationStatusSuggestion": "needs_review",
+          "confidence": "high"
+        },
+        {
+          "id": "route-study",
+          "title": "Study",
+          "routeType": "study",
+          "goals": ["residence", "compare"],
+          "stayDurations": ["six_to_twelve_months", "more_than_year"],
+          "entryCountries": ["RU"],
+          "exitCountries": ["AM"],
+          "transitRisks": [],
+          "sourceIds": ["armenia-mfa-residency", "armenia-egov-residency-docs"],
+          "legalFactIds": [
+            "fact-temp-residence-1year",
+            "fact-residence-docs-required"
+          ],
+          "requirementIds": [
+            "req-passport",
+            "req-passport-translation",
+            "req-photos",
+            "req-legality-stay",
+            "req-justificatory-docs"
+          ],
+          "personalizationRuleIds": [],
+          "manualReviewQuestions": [],
+          "documents": [
+            {
+              "title": "Passport with translation",
+              "sourceIds": [
+                "armenia-mfa-residency",
+                "armenia-egov-residency-docs"
+              ],
+              "legalFactIds": [
+                "fact-temp-residence-1year",
+                "fact-residence-docs-required"
+              ],
+              "notes": []
+            },
+            {
+              "title": "Photos",
+              "sourceIds": [
+                "armenia-mfa-residency",
+                "armenia-egov-residency-docs"
+              ],
+              "legalFactIds": [
+                "fact-temp-residence-1year",
+                "fact-residence-docs-required"
+              ],
+              "notes": []
+            },
+            {
+              "title": "Proof of legal stay",
+              "sourceIds": [
+                "armenia-mfa-residency",
+                "armenia-egov-residency-docs"
+              ],
+              "legalFactIds": [
+                "fact-temp-residence-1year",
+                "fact-residence-docs-required"
+              ],
+              "notes": []
+            },
+            {
+              "title": "Enrollment documents from educational institution",
+              "sourceIds": [
+                "armenia-mfa-residency",
+                "armenia-egov-residency-docs"
+              ],
+              "legalFactIds": [
+                "fact-temp-residence-1year",
+                "fact-residence-docs-required"
+              ],
+              "notes": []
+            }
+          ],
+          "steps": [
+            {
+              "id": "route-study-step-1",
+              "title": "Obtain acceptance from Armenian educational institution",
+              "description": "Obtain acceptance from Armenian educational institution",
+              "sourceIds": [
+                "armenia-mfa-residency",
+                "armenia-egov-residency-docs"
+              ],
+              "legalFactIds": [
+                "fact-temp-residence-1year",
+                "fact-residence-docs-required"
+              ],
+              "documents": [],
+              "manualReviewQuestions": []
+            },
+            {
+              "id": "route-study-step-2",
+              "title": "Submit residence application with study documents",
+              "description": "Submit residence application with study documents",
+              "sourceIds": [
+                "armenia-mfa-residency",
+                "armenia-egov-residency-docs"
+              ],
+              "legalFactIds": [
+                "fact-temp-residence-1year",
+                "fact-residence-docs-required"
+              ],
+              "documents": [],
+              "manualReviewQuestions": []
+            }
+          ],
+          "blockers": [],
+          "unlocks": [],
+          "difficulty": {
+            "documents": 3,
+            "cost": 3,
+            "approvalRisk": 3,
+            "speed": 3,
+            "adaptation": 4
+          },
+          "publicationStatusSuggestion": "needs_review",
+          "confidence": "medium"
+        },
+        {
+          "id": "route-pets",
+          "title": "Pets Entry",
+          "routeType": "pets",
+          "goals": ["family", "compare"],
+          "stayDurations": ["up_to_one_month", "one_to_three_months"],
+          "entryCountries": ["RU"],
+          "exitCountries": ["AM"],
+          "transitRisks": [],
+          "sourceIds": ["source_needed"],
+          "legalFactIds": ["fact-pets-source-needed"],
+          "requirementIds": [],
+          "personalizationRuleIds": [],
+          "manualReviewQuestions": [
+            "Find official Armenian pet import regulations",
+            "Check microchip, rabies vaccination, and health certificate requirements"
+          ],
+          "documents": [],
+          "steps": [
+            {
+              "id": "route-pets-step-1",
+              "title": "Проверить актуальные условия маршрута Pets Entry по официальным источникам",
+              "description": "Проверить актуальные условия маршрута Pets Entry по официальным источникам.",
+              "sourceIds": ["source_needed"],
+              "legalFactIds": ["fact-pets-source-needed"],
+              "documents": [],
+              "manualReviewQuestions": []
+            },
+            {
+              "id": "route-pets-step-2",
+              "title": "Собрать документы и подать заявление в порядке, указанном компетентным органом",
+              "description": "Собрать документы и подать заявление в порядке, указанном компетентным органом.",
+              "sourceIds": ["source_needed"],
+              "legalFactIds": ["fact-pets-source-needed"],
+              "documents": [],
+              "manualReviewQuestions": []
+            }
+          ],
+          "blockers": [
+            "Pet entry requirements have not been verified from official sources."
+          ],
+          "unlocks": [],
+          "difficulty": {
+            "documents": 2,
+            "cost": 2,
+            "approvalRisk": 2,
+            "speed": 3,
+            "adaptation": 2
+          },
+          "publicationStatusSuggestion": "needs_review",
+          "confidence": "low"
+        }
+      ],
+      "personalizationRules": [],
+      "reviewLog": [
+        {
+          "round": 1,
+          "issue": "DeepSeek review issue",
+          "action": "Normalized into production graph schema after official source review."
+        },
+        {
+          "round": 1,
+          "issue": "Первичный полный ответ DeepSeek был слишком большим: v4-pro timeout, v4-flash завершился по length и дал непригодный общий JSON.",
+          "action": "Граф разбит на отдельные country objects и отправлен на исправление."
+        },
+        {
+          "round": 2,
+          "issue": "Официальная сверка выявила страновые ошибки и недоказанные утверждения.",
+          "action": "DeepSeek получил проверенные официальные факты и вернул отдельный parseable JSON по стране."
+        },
+        {
+          "round": 3,
+          "issue": "Нестандартные routeType enum и недостаточные источники по отдельным веткам.",
+          "action": "routeType нормализованы к production enum; спорные маршруты помечены needs_review/reference_only/source_needed."
+        },
+        {
+          "round": 1,
+          "issue": "DeepSeek produced the initial country graph draft.",
+          "action": "Draft was treated as untrusted source and checked against official sources."
+        },
+        {
+          "round": 2,
+          "issue": "Official-source objections were sent back to DeepSeek.",
+          "action": "Country-split corrected drafts were generated for GE, AM, RS, TR and ME."
+        },
+        {
+          "round": 3,
+          "issue": "DeepSeek output used non-contract field shapes and publication labels.",
+          "action": "Normalized AM graph into the repository production graph schema."
+        }
+      ],
+      "manualReviewQuestions": [
+        "Translate all route titles and descriptions into Russian for the graph",
+        "Verify exact visa-free country list from MFA page (only RU confirmed currently)",
+        "Confirm maximum stay for visa-free (180 days per year) applies to all visa-free countries",
+        "Provide specific pet entry requirements with official source",
+        "Check if remote work can be done under business activity or requires separate route",
+        "Specify visa types and durations for non-RU nationals for medium_stay route",
+        "Проверить официальный источник по ввозу животных в Армению для граждан РФ/въезда из РФ или третьих стран."
+      ]
+    },
+    {
+      "countryCode": "RS",
+      "countryNameRu": "Сербия",
+      "graphStatus": "needs_review",
+      "jurisdictions": [
+        {
+          "id": "RS",
+          "type": "target_country",
+          "name": "Сербия",
+          "notes": [
+            "Черновой production graph агента A для волны Кавказ/Балканы."
+          ]
+        }
+      ],
+      "sourceNodes": [
+        {
+          "id": "serbia-mfa-russia-visa-regime",
+          "title": "Visa regime for Russian Federation",
+          "url": "https://www.mfa.gov.rs/en/citizens/travel-serbia/visa-regime/ruska-federacija",
+          "sourceType": "official_body",
+          "jurisdiction": "RS",
+          "language": "en",
+          "lastCheckedAt": "2026-06-20",
+          "appliesToCitizenship": ["RU"],
+          "confidence": "medium",
+          "officialness": "official",
+          "quoteOrFact": "Visa regime for Russian Federation"
+        },
+        {
+          "id": "serbia-temporary-residence",
+          "title": "Temporary residence in Serbia",
+          "url": "https://welcometoserbia.gov.rs/temporary-residence",
+          "sourceType": "official_body",
+          "jurisdiction": "RS",
+          "language": "en",
+          "lastCheckedAt": "2026-06-20",
+          "appliesToCitizenship": ["RU"],
+          "confidence": "medium",
+          "officialness": "official",
+          "quoteOrFact": "Temporary residence in Serbia"
+        },
+        {
+          "id": "serbia-eforeigner-help",
+          "title": "eForeigner help portal",
+          "url": "https://eforeigner.welcometoserbia.gov.rs/help",
+          "sourceType": "official_body",
+          "jurisdiction": "RS",
+          "language": "en",
+          "lastCheckedAt": "2026-06-20",
+          "appliesToCitizenship": ["RU"],
+          "confidence": "medium",
+          "officialness": "official",
+          "quoteOrFact": "eForeigner help portal"
+        },
+        {
+          "id": "serbia-digital-nomads-context",
+          "title": "Digital nomads in Serbia (lifestyle context)",
+          "url": "https://welcometoserbia.gov.rs/digital-nomads-in-serbia",
+          "sourceType": "government_portal",
+          "jurisdiction": "RS",
+          "language": "en",
+          "lastCheckedAt": "2026-06-20",
+          "appliesToCitizenship": ["RU"],
+          "confidence": "medium",
+          "officialness": "official",
+          "quoteOrFact": "Digital nomads in Serbia (lifestyle context)"
+        },
+        {
+          "id": "serbia-veterinary-directorate",
+          "title": "Veterinary Directorate",
+          "url": "https://www.vet.minpolj.gov.rs/en/about-the-veterinary-directorate/",
+          "sourceType": "official_body",
+          "jurisdiction": "RS",
+          "language": "en",
+          "lastCheckedAt": "2026-06-20",
+          "appliesToCitizenship": ["RU"],
+          "confidence": "medium",
+          "officialness": "official",
+          "quoteOrFact": "Veterinary Directorate"
+        },
+        {
+          "id": "source_needed",
+          "title": "Нужен официальный источник: Сербия",
+          "url": "source_needed",
+          "sourceType": "source_needed",
+          "jurisdiction": "RS",
+          "language": "ru",
+          "lastCheckedAt": "2026-06-20",
+          "appliesToCitizenship": ["RU"],
+          "confidence": "low",
+          "officialness": "source_needed",
+          "quoteOrFact": "Требуется дополнительная официальная проверка перед публикацией маршрута."
+        }
+      ],
+      "legalFactNodes": [
+        {
+          "id": "rs-visa-free-russian-30days",
+          "sourceIds": ["serbia-mfa-russia-visa-regime"],
+          "factType": "entry",
+          "fact": "Ordinary Russian passport holders do not require a visa for visits up to 30 days.",
+          "appliesWhen": [],
+          "exceptions": [],
+          "needsManualReview": false,
+          "confidence": "medium"
+        },
+        {
+          "id": "rs-temporary-residence-single-permit",
+          "sourceIds": ["serbia-temporary-residence", "serbia-eforeigner-help"],
+          "factType": "residence",
+          "fact": "Temporary residence and single permit can be issued up to 3 years depending on basis; electronic submission available.",
+          "appliesWhen": [],
+          "exceptions": [],
+          "needsManualReview": false,
+          "confidence": "medium"
+        },
+        {
+          "id": "rs-no-dedicated-digital-nomad-visa",
+          "sourceIds": ["serbia-digital-nomads-context"],
+          "factType": "entry",
+          "fact": "Serbia does not have a specific digital nomad visa; remote work may be possible via self-employment or single permit.",
+          "appliesWhen": [],
+          "exceptions": [],
+          "needsManualReview": false,
+          "confidence": "medium"
+        },
+        {
+          "id": "rs-single-permit-grounds",
+          "sourceIds": ["serbia-eforeigner-help"],
+          "factType": "residence",
+          "fact": "Unified permit grounds: employment, posted worker, intracompany movement, independent professional, training, self-employment.",
+          "appliesWhen": [],
+          "exceptions": [],
+          "needsManualReview": false,
+          "confidence": "medium"
+        }
+      ],
+      "requirementNodes": [
+        {
+          "id": "rs-valid-passport",
+          "title": "Valid passport",
+          "sourceIds": ["serbia-mfa-russia-visa-regime"],
+          "legalFactIds": [],
+          "appliesWhen": [],
+          "documents": [],
+          "hardBlockerWhenMissing": false,
+          "affects": ["documents", "approvalRisk"],
+          "confidence": "medium"
+        },
+        {
+          "id": "rs-proof-of-accommodation",
+          "title": "Proof of accommodation",
+          "sourceIds": ["serbia-temporary-residence"],
+          "legalFactIds": [],
+          "appliesWhen": [],
+          "documents": [],
+          "hardBlockerWhenMissing": false,
+          "affects": ["documents", "approvalRisk"],
+          "confidence": "medium"
+        },
+        {
+          "id": "rs-health-insurance",
+          "title": "Health insurance",
+          "sourceIds": ["serbia-temporary-residence"],
+          "legalFactIds": [],
+          "appliesWhen": [],
+          "documents": [],
+          "hardBlockerWhenMissing": false,
+          "affects": ["documents", "approvalRisk"],
+          "confidence": "medium"
+        },
+        {
+          "id": "rs-application-form",
+          "title": "Electronic application form",
+          "sourceIds": ["serbia-eforeigner-help"],
+          "legalFactIds": [],
+          "appliesWhen": [],
+          "documents": [],
+          "hardBlockerWhenMissing": false,
+          "affects": ["documents", "approvalRisk"],
+          "confidence": "medium"
+        }
+      ],
+      "routeNodes": [
+        {
+          "id": "short_entry",
+          "title": "Short-term entry (visa-free)",
+          "routeType": "short_entry",
+          "goals": ["quick_exit", "compare"],
+          "stayDurations": ["up_to_one_month", "one_to_three_months"],
+          "entryCountries": ["RU"],
+          "exitCountries": ["RS"],
+          "transitRisks": [],
+          "sourceIds": ["serbia-mfa-russia-visa-regime"],
+          "legalFactIds": ["rs-visa-free-russian-30days"],
+          "requirementIds": ["rs-valid-passport"],
+          "personalizationRuleIds": [],
+          "manualReviewQuestions": [],
+          "documents": [
+            {
+              "title": "Valid passport",
+              "sourceIds": ["serbia-mfa-russia-visa-regime"],
+              "legalFactIds": ["rs-visa-free-russian-30days"],
+              "notes": []
+            }
+          ],
+          "steps": [
+            {
+              "id": "short_entry-step-1",
+              "title": "Arrive at border control",
+              "description": "Arrive at border control",
+              "sourceIds": ["serbia-mfa-russia-visa-regime"],
+              "legalFactIds": ["rs-visa-free-russian-30days"],
+              "documents": [],
+              "manualReviewQuestions": []
+            },
+            {
+              "id": "short_entry-step-2",
+              "title": "Present passport",
+              "description": "Present passport",
+              "sourceIds": ["serbia-mfa-russia-visa-regime"],
+              "legalFactIds": ["rs-visa-free-russian-30days"],
+              "documents": [],
+              "manualReviewQuestions": []
+            },
+            {
+              "id": "short_entry-step-3",
+              "title": "Receive entry stamp",
+              "description": "Receive entry stamp",
+              "sourceIds": ["serbia-mfa-russia-visa-regime"],
+              "legalFactIds": ["rs-visa-free-russian-30days"],
+              "documents": [],
+              "manualReviewQuestions": []
+            }
+          ],
+          "blockers": [],
+          "unlocks": [],
+          "difficulty": {
+            "documents": 1,
+            "cost": 1,
+            "approvalRisk": 1,
+            "speed": 1,
+            "adaptation": 2
+          },
+          "publicationStatusSuggestion": "needs_review",
+          "confidence": "high"
+        },
+        {
+          "id": "medium_stay",
+          "title": "Medium-term stay (30-90 days)",
+          "routeType": "medium_stay",
+          "goals": ["medium_stay", "compare"],
+          "stayDurations": ["three_to_six_months", "six_to_twelve_months"],
+          "entryCountries": ["RU"],
+          "exitCountries": ["RS"],
+          "transitRisks": [],
+          "sourceIds": ["source_needed"],
+          "legalFactIds": [],
+          "requirementIds": [],
+          "personalizationRuleIds": [],
+          "manualReviewQuestions": [],
+          "documents": [],
+          "steps": [
+            {
+              "id": "medium_stay-step-1",
+              "title": "Проверить актуальные условия маршрута Medium-term stay (30-90 days) по официальным источникам",
+              "description": "Проверить актуальные условия маршрута Medium-term stay (30-90 days) по официальным источникам.",
+              "sourceIds": ["source_needed"],
+              "legalFactIds": [],
+              "documents": [],
+              "manualReviewQuestions": []
+            },
+            {
+              "id": "medium_stay-step-2",
+              "title": "Собрать документы и подать заявление в порядке, указанном компетентным органом",
+              "description": "Собрать документы и подать заявление в порядке, указанном компетентным органом.",
+              "sourceIds": ["source_needed"],
+              "legalFactIds": [],
+              "documents": [],
+              "manualReviewQuestions": []
+            }
+          ],
+          "blockers": [
+            "No separate medium-stay visa; visa-free limited to 30 days for Russian citizens"
+          ],
+          "unlocks": [],
+          "difficulty": {
+            "documents": 2,
+            "cost": 2,
+            "approvalRisk": 2,
+            "speed": 3,
+            "adaptation": 2
+          },
+          "publicationStatusSuggestion": "needs_review",
+          "confidence": "low"
+        },
+        {
+          "id": "residence",
+          "title": "Temporary residence / single permit",
+          "routeType": "residence",
+          "goals": ["residence"],
+          "stayDurations": [
+            "six_to_twelve_months",
+            "more_than_year",
+            "permanent_status"
+          ],
+          "entryCountries": ["RU"],
+          "exitCountries": ["RS"],
+          "transitRisks": [],
+          "sourceIds": ["serbia-temporary-residence", "serbia-eforeigner-help"],
+          "legalFactIds": [
+            "rs-temporary-residence-single-permit",
+            "rs-single-permit-grounds"
+          ],
+          "requirementIds": [
+            "rs-valid-passport",
+            "rs-proof-of-accommodation",
+            "rs-health-insurance",
+            "rs-application-form"
+          ],
+          "personalizationRuleIds": [],
+          "manualReviewQuestions": [],
+          "documents": [
+            {
+              "title": "Valid passport",
+              "sourceIds": [
+                "serbia-temporary-residence",
+                "serbia-eforeigner-help"
+              ],
+              "legalFactIds": [
+                "rs-temporary-residence-single-permit",
+                "rs-single-permit-grounds"
+              ],
+              "notes": []
+            },
+            {
+              "title": "Proof of accommodation",
+              "sourceIds": [
+                "serbia-temporary-residence",
+                "serbia-eforeigner-help"
+              ],
+              "legalFactIds": [
+                "rs-temporary-residence-single-permit",
+                "rs-single-permit-grounds"
+              ],
+              "notes": []
+            },
+            {
+              "title": "Health insurance",
+              "sourceIds": [
+                "serbia-temporary-residence",
+                "serbia-eforeigner-help"
+              ],
+              "legalFactIds": [
+                "rs-temporary-residence-single-permit",
+                "rs-single-permit-grounds"
+              ],
+              "notes": []
+            },
+            {
+              "title": "Application form",
+              "sourceIds": [
+                "serbia-temporary-residence",
+                "serbia-eforeigner-help"
+              ],
+              "legalFactIds": [
+                "rs-temporary-residence-single-permit",
+                "rs-single-permit-grounds"
+              ],
+              "notes": []
+            },
+            {
+              "title": "Proof of purpose (e.g., work contract, enrollment)",
+              "sourceIds": [
+                "serbia-temporary-residence",
+                "serbia-eforeigner-help"
+              ],
+              "legalFactIds": [
+                "rs-temporary-residence-single-permit",
+                "rs-single-permit-grounds"
+              ],
+              "notes": []
+            }
+          ],
+          "steps": [
+            {
+              "id": "residence-step-1",
+              "title": "Prepare documents",
+              "description": "Prepare documents",
+              "sourceIds": [
+                "serbia-temporary-residence",
+                "serbia-eforeigner-help"
+              ],
+              "legalFactIds": [
+                "rs-temporary-residence-single-permit",
+                "rs-single-permit-grounds"
+              ],
+              "documents": [],
+              "manualReviewQuestions": []
+            },
+            {
+              "id": "residence-step-2",
+              "title": "Submit electronic application via eForeigner",
+              "description": "Submit electronic application via eForeigner",
+              "sourceIds": [
+                "serbia-temporary-residence",
+                "serbia-eforeigner-help"
+              ],
+              "legalFactIds": [
+                "rs-temporary-residence-single-permit",
+                "rs-single-permit-grounds"
+              ],
+              "documents": [],
+              "manualReviewQuestions": []
+            },
+            {
+              "id": "residence-step-3",
+              "title": "Wait for approval",
+              "description": "Wait for approval",
+              "sourceIds": [
+                "serbia-temporary-residence",
+                "serbia-eforeigner-help"
+              ],
+              "legalFactIds": [
+                "rs-temporary-residence-single-permit",
+                "rs-single-permit-grounds"
+              ],
+              "documents": [],
+              "manualReviewQuestions": []
+            },
+            {
+              "id": "residence-step-4",
+              "title": "Receive single permit",
+              "description": "Receive single permit",
+              "sourceIds": [
+                "serbia-temporary-residence",
+                "serbia-eforeigner-help"
+              ],
+              "legalFactIds": [
+                "rs-temporary-residence-single-permit",
+                "rs-single-permit-grounds"
+              ],
+              "documents": [],
+              "manualReviewQuestions": []
+            }
+          ],
+          "blockers": [
+            "Must apply from abroad or during lawful stay",
+            "Not a guarantee of entry"
+          ],
+          "unlocks": ["Right to stay and work during validity"],
+          "difficulty": {
+            "documents": 4,
+            "cost": 4,
+            "approvalRisk": 4,
+            "speed": 4,
+            "adaptation": 4
+          },
+          "publicationStatusSuggestion": "needs_review",
+          "confidence": "high"
+        },
+        {
+          "id": "remote_work",
+          "title": "Remote work / digital nomad",
+          "routeType": "remote_work",
+          "goals": ["remote_work", "medium_stay"],
+          "stayDurations": [
+            "one_to_three_months",
+            "three_to_six_months",
+            "six_to_twelve_months"
+          ],
+          "entryCountries": ["RU"],
+          "exitCountries": ["RS"],
+          "transitRisks": [],
+          "sourceIds": [
+            "serbia-digital-nomads-context",
+            "serbia-eforeigner-help",
+            "source_needed"
+          ],
+          "legalFactIds": [
+            "rs-no-dedicated-digital-nomad-visa",
+            "rs-single-permit-grounds"
+          ],
+          "requirementIds": [
+            "rs-valid-passport",
+            "rs-proof-of-accommodation",
+            "rs-health-insurance",
+            "rs-application-form"
+          ],
+          "personalizationRuleIds": [],
+          "manualReviewQuestions": [],
+          "documents": [
+            {
+              "title": "Proof of remote work/income",
+              "sourceIds": [
+                "serbia-digital-nomads-context",
+                "serbia-eforeigner-help",
+                "source_needed"
+              ],
+              "legalFactIds": [
+                "rs-no-dedicated-digital-nomad-visa",
+                "rs-single-permit-grounds"
+              ],
+              "notes": []
+            },
+            {
+              "title": "Self-employment registration",
+              "sourceIds": [
+                "serbia-digital-nomads-context",
+                "serbia-eforeigner-help",
+                "source_needed"
+              ],
+              "legalFactIds": [
+                "rs-no-dedicated-digital-nomad-visa",
+                "rs-single-permit-grounds"
+              ],
+              "notes": []
+            },
+            {
+              "title": "Standard single permit documents",
+              "sourceIds": [
+                "serbia-digital-nomads-context",
+                "serbia-eforeigner-help",
+                "source_needed"
+              ],
+              "legalFactIds": [
+                "rs-no-dedicated-digital-nomad-visa",
+                "rs-single-permit-grounds"
+              ],
+              "notes": []
+            }
+          ],
+          "steps": [
+            {
+              "id": "remote_work-step-1",
+              "title": "Register as self-employed if applicable",
+              "description": "Register as self-employed if applicable",
+              "sourceIds": [
+                "serbia-digital-nomads-context",
+                "serbia-eforeigner-help",
+                "source_needed"
+              ],
+              "legalFactIds": [
+                "rs-no-dedicated-digital-nomad-visa",
+                "rs-single-permit-grounds"
+              ],
+              "documents": [],
+              "manualReviewQuestions": []
+            },
+            {
+              "id": "remote_work-step-2",
+              "title": "Apply for single permit as independent professional",
+              "description": "Apply for single permit as independent professional",
+              "sourceIds": [
+                "serbia-digital-nomads-context",
+                "serbia-eforeigner-help",
+                "source_needed"
+              ],
+              "legalFactIds": [
+                "rs-no-dedicated-digital-nomad-visa",
+                "rs-single-permit-grounds"
+              ],
+              "documents": [],
+              "manualReviewQuestions": []
+            }
+          ],
+          "blockers": [
+            "No dedicated visa; must use self-employment or other ground"
+          ],
+          "unlocks": [],
+          "difficulty": {
+            "documents": 3,
+            "cost": 3,
+            "approvalRisk": 3,
+            "speed": 3,
+            "adaptation": 2
+          },
+          "publicationStatusSuggestion": "reference_only",
+          "confidence": "low"
+        },
+        {
+          "id": "local_work",
+          "title": "Local employment",
+          "routeType": "local_work",
+          "goals": ["local_work", "residence"],
+          "stayDurations": ["six_to_twelve_months", "more_than_year"],
+          "entryCountries": ["RU"],
+          "exitCountries": ["RS"],
+          "transitRisks": [],
+          "sourceIds": ["serbia-eforeigner-help"],
+          "legalFactIds": ["rs-single-permit-grounds"],
+          "requirementIds": [
+            "rs-valid-passport",
+            "rs-proof-of-accommodation",
+            "rs-health-insurance",
+            "rs-application-form"
+          ],
+          "personalizationRuleIds": [],
+          "manualReviewQuestions": [],
+          "documents": [
+            {
+              "title": "Work contract",
+              "sourceIds": ["serbia-eforeigner-help"],
+              "legalFactIds": ["rs-single-permit-grounds"],
+              "notes": []
+            },
+            {
+              "title": "Employer registration",
+              "sourceIds": ["serbia-eforeigner-help"],
+              "legalFactIds": ["rs-single-permit-grounds"],
+              "notes": []
+            },
+            {
+              "title": "Standard single permit documents",
+              "sourceIds": ["serbia-eforeigner-help"],
+              "legalFactIds": ["rs-single-permit-grounds"],
+              "notes": []
+            }
+          ],
+          "steps": [
+            {
+              "id": "local_work-step-1",
+              "title": "Obtain job offer",
+              "description": "Obtain job offer",
+              "sourceIds": ["serbia-eforeigner-help"],
+              "legalFactIds": ["rs-single-permit-grounds"],
+              "documents": [],
+              "manualReviewQuestions": []
+            },
+            {
+              "id": "local_work-step-2",
+              "title": "Employer may assist",
+              "description": "Employer may assist",
+              "sourceIds": ["serbia-eforeigner-help"],
+              "legalFactIds": ["rs-single-permit-grounds"],
+              "documents": [],
+              "manualReviewQuestions": []
+            },
+            {
+              "id": "local_work-step-3",
+              "title": "Submit single permit application",
+              "description": "Submit single permit application",
+              "sourceIds": ["serbia-eforeigner-help"],
+              "legalFactIds": ["rs-single-permit-grounds"],
+              "documents": [],
+              "manualReviewQuestions": []
+            }
+          ],
+          "blockers": ["Must have job offer from Serbian employer"],
+          "unlocks": ["Work authorization"],
+          "difficulty": {
+            "documents": 4,
+            "cost": 4,
+            "approvalRisk": 4,
+            "speed": 3,
+            "adaptation": 4
+          },
+          "publicationStatusSuggestion": "needs_review",
+          "confidence": "high"
+        },
+        {
+          "id": "business",
+          "title": "Business activities",
+          "routeType": "business",
+          "goals": ["business", "residence"],
+          "stayDurations": ["six_to_twelve_months", "more_than_year"],
+          "entryCountries": ["RU"],
+          "exitCountries": ["RS"],
+          "transitRisks": [],
+          "sourceIds": [
+            "serbia-mfa-russia-visa-regime",
+            "serbia-temporary-residence"
+          ],
+          "legalFactIds": [
+            "rs-visa-free-russian-30days",
+            "rs-temporary-residence-single-permit"
+          ],
+          "requirementIds": ["rs-valid-passport"],
+          "personalizationRuleIds": [],
+          "manualReviewQuestions": [],
+          "documents": [
+            {
+              "title": "Passport",
+              "sourceIds": [
+                "serbia-mfa-russia-visa-regime",
+                "serbia-temporary-residence"
+              ],
+              "legalFactIds": [
+                "rs-visa-free-russian-30days",
+                "rs-temporary-residence-single-permit"
+              ],
+              "notes": []
+            },
+            {
+              "title": "Invitation letter (optional for short stay)",
+              "sourceIds": [
+                "serbia-mfa-russia-visa-regime",
+                "serbia-temporary-residence"
+              ],
+              "legalFactIds": [
+                "rs-visa-free-russian-30days",
+                "rs-temporary-residence-single-permit"
+              ],
+              "notes": []
+            }
+          ],
+          "steps": [
+            {
+              "id": "business-step-1",
+              "title": "For short stay: enter visa-free",
+              "description": "For short stay: enter visa-free",
+              "sourceIds": [
+                "serbia-mfa-russia-visa-regime",
+                "serbia-temporary-residence"
+              ],
+              "legalFactIds": [
+                "rs-visa-free-russian-30days",
+                "rs-temporary-residence-single-permit"
+              ],
+              "documents": [],
+              "manualReviewQuestions": []
+            },
+            {
+              "id": "business-step-2",
+              "title": "For long stay: apply for single permit",
+              "description": "For long stay: apply for single permit",
+              "sourceIds": [
+                "serbia-mfa-russia-visa-regime",
+                "serbia-temporary-residence"
+              ],
+              "legalFactIds": [
+                "rs-visa-free-russian-30days",
+                "rs-temporary-residence-single-permit"
+              ],
+              "documents": [],
+              "manualReviewQuestions": []
+            }
+          ],
+          "blockers": [],
+          "unlocks": [],
+          "difficulty": {
+            "documents": 4,
+            "cost": 5,
+            "approvalRisk": 4,
+            "speed": 3,
+            "adaptation": 2
+          },
+          "publicationStatusSuggestion": "needs_review",
+          "confidence": "high"
+        },
+        {
+          "id": "family",
+          "title": "Family reunification",
+          "routeType": "family",
+          "goals": ["family", "residence"],
+          "stayDurations": ["six_to_twelve_months", "more_than_year"],
+          "entryCountries": ["RU"],
+          "exitCountries": ["RS"],
+          "transitRisks": [],
+          "sourceIds": ["serbia-eforeigner-help"],
+          "legalFactIds": ["rs-single-permit-grounds"],
+          "requirementIds": [
+            "rs-valid-passport",
+            "rs-proof-of-accommodation",
+            "rs-health-insurance",
+            "rs-application-form"
+          ],
+          "personalizationRuleIds": [],
+          "manualReviewQuestions": [],
+          "documents": [
+            {
+              "title": "Proof of relationship (marriage/birth certificate)",
+              "sourceIds": ["serbia-eforeigner-help"],
+              "legalFactIds": ["rs-single-permit-grounds"],
+              "notes": []
+            },
+            {
+              "title": "Family member's residence permit",
+              "sourceIds": ["serbia-eforeigner-help"],
+              "legalFactIds": ["rs-single-permit-grounds"],
+              "notes": []
+            },
+            {
+              "title": "Standard documents",
+              "sourceIds": ["serbia-eforeigner-help"],
+              "legalFactIds": ["rs-single-permit-grounds"],
+              "notes": []
+            }
+          ],
+          "steps": [
+            {
+              "id": "family-step-1",
+              "title": "Family member must have residence",
+              "description": "Family member must have residence",
+              "sourceIds": ["serbia-eforeigner-help"],
+              "legalFactIds": ["rs-single-permit-grounds"],
+              "documents": [],
+              "manualReviewQuestions": []
+            },
+            {
+              "id": "family-step-2",
+              "title": "Submit single permit application",
+              "description": "Submit single permit application",
+              "sourceIds": ["serbia-eforeigner-help"],
+              "legalFactIds": ["rs-single-permit-grounds"],
+              "documents": [],
+              "manualReviewQuestions": []
+            }
+          ],
+          "blockers": ["Requires family member with valid residence"],
+          "unlocks": ["Residence and work rights"],
+          "difficulty": {
+            "documents": 3,
+            "cost": 3,
+            "approvalRisk": 3,
+            "speed": 3,
+            "adaptation": 4
+          },
+          "publicationStatusSuggestion": "needs_review",
+          "confidence": "high"
+        },
+        {
+          "id": "study",
+          "title": "Study",
+          "routeType": "study",
+          "goals": ["residence", "compare"],
+          "stayDurations": ["six_to_twelve_months", "more_than_year"],
+          "entryCountries": ["RU"],
+          "exitCountries": ["RS"],
+          "transitRisks": [],
+          "sourceIds": ["serbia-eforeigner-help"],
+          "legalFactIds": ["rs-single-permit-grounds"],
+          "requirementIds": [
+            "rs-valid-passport",
+            "rs-proof-of-accommodation",
+            "rs-health-insurance",
+            "rs-application-form"
+          ],
+          "personalizationRuleIds": [],
+          "manualReviewQuestions": [],
+          "documents": [
+            {
+              "title": "Acceptance letter from educational institution",
+              "sourceIds": ["serbia-eforeigner-help"],
+              "legalFactIds": ["rs-single-permit-grounds"],
+              "notes": []
+            },
+            {
+              "title": "Proof of financial means",
+              "sourceIds": ["serbia-eforeigner-help"],
+              "legalFactIds": ["rs-single-permit-grounds"],
+              "notes": []
+            },
+            {
+              "title": "Standard documents",
+              "sourceIds": ["serbia-eforeigner-help"],
+              "legalFactIds": ["rs-single-permit-grounds"],
+              "notes": []
+            }
+          ],
+          "steps": [
+            {
+              "id": "study-step-1",
+              "title": "Get admission",
+              "description": "Get admission",
+              "sourceIds": ["serbia-eforeigner-help"],
+              "legalFactIds": ["rs-single-permit-grounds"],
+              "documents": [],
+              "manualReviewQuestions": []
+            },
+            {
+              "id": "study-step-2",
+              "title": "Submit single permit application",
+              "description": "Submit single permit application",
+              "sourceIds": ["serbia-eforeigner-help"],
+              "legalFactIds": ["rs-single-permit-grounds"],
+              "documents": [],
+              "manualReviewQuestions": []
+            }
+          ],
+          "blockers": ["Must be enrolled in recognized institution"],
+          "unlocks": ["Residence and possible work rights"],
+          "difficulty": {
+            "documents": 3,
+            "cost": 3,
+            "approvalRisk": 3,
+            "speed": 3,
+            "adaptation": 4
+          },
+          "publicationStatusSuggestion": "needs_review",
+          "confidence": "high"
+        },
+        {
+          "id": "pets",
+          "title": "Pet import",
+          "routeType": "pets",
+          "goals": ["family", "compare"],
+          "stayDurations": ["up_to_one_month", "one_to_three_months"],
+          "entryCountries": ["RU"],
+          "exitCountries": ["RS"],
+          "transitRisks": [],
+          "sourceIds": ["serbia-veterinary-directorate", "source_needed"],
+          "legalFactIds": [],
+          "requirementIds": [],
+          "personalizationRuleIds": [],
+          "manualReviewQuestions": [],
+          "documents": [],
+          "steps": [
+            {
+              "id": "pets-step-1",
+              "title": "Check with Veterinary Directorate for specific requirements",
+              "description": "Check with Veterinary Directorate for specific requirements",
+              "sourceIds": ["serbia-veterinary-directorate", "source_needed"],
+              "legalFactIds": [],
+              "documents": [],
+              "manualReviewQuestions": []
+            }
+          ],
+          "blockers": [
+            "Specific requirements not confirmed from official source"
+          ],
+          "unlocks": [],
+          "difficulty": {
+            "documents": 2,
+            "cost": 2,
+            "approvalRisk": 2,
+            "speed": 3,
+            "adaptation": 2
+          },
+          "publicationStatusSuggestion": "needs_review",
+          "confidence": "low"
+        }
+      ],
+      "personalizationRules": [],
+      "reviewLog": [
+        {
+          "round": 1,
+          "issue": "DeepSeek review issue",
+          "action": "corrected"
+        },
+        {
+          "round": 1,
+          "issue": "Первичный полный ответ DeepSeek был слишком большим: v4-pro timeout, v4-flash завершился по length и дал непригодный общий JSON.",
+          "action": "Граф разбит на отдельные country objects и отправлен на исправление."
+        },
+        {
+          "round": 2,
+          "issue": "Официальная сверка выявила страновые ошибки и недоказанные утверждения.",
+          "action": "DeepSeek получил проверенные официальные факты и вернул отдельный parseable JSON по стране."
+        },
+        {
+          "round": 3,
+          "issue": "Нестандартные routeType enum и недостаточные источники по отдельным веткам.",
+          "action": "routeType нормализованы к production enum; спорные маршруты помечены needs_review/reference_only/source_needed."
+        },
+        {
+          "round": 1,
+          "issue": "DeepSeek produced the initial country graph draft.",
+          "action": "Draft was treated as untrusted source and checked against official sources."
+        },
+        {
+          "round": 2,
+          "issue": "Official-source objections were sent back to DeepSeek.",
+          "action": "Country-split corrected drafts were generated for GE, AM, RS, TR and ME."
+        },
+        {
+          "round": 3,
+          "issue": "DeepSeek output used non-contract field shapes and publication labels.",
+          "action": "Normalized RS graph into the repository production graph schema."
+        }
+      ],
+      "manualReviewQuestions": [
+        "What are the exact pet import requirements (vaccinations, microchip, etc.)?",
+        "Confirm that medium_stay (30-90 days) has no separate visa for Russian citizens; is there any other route?",
+        "Нужен конкретный официальный источник по требованиям ввоза домашних животных в Сербию; страницы ведомства как контекста недостаточно."
+      ]
+    },
+    {
+      "countryCode": "TR",
+      "countryNameRu": "Турция",
+      "graphStatus": "needs_review",
+      "jurisdictions": [
+        {
+          "id": "TR",
+          "type": "target_country",
+          "name": "Турция",
+          "notes": [
+            "Черновой production graph агента A для волны Кавказ/Балканы."
+          ]
+        }
+      ],
+      "sourceNodes": [
+        {
+          "id": "turkiye-mfa-visa-info",
+          "title": "МФА Турции — визовая информация",
+          "url": "https://www.mfa.gov.tr/visa-information-for-foreigners.en.mfa",
+          "sourceType": "government_portal",
+          "jurisdiction": "tr-national",
+          "language": "en",
+          "lastCheckedAt": "2026-06-20",
+          "appliesToCitizenship": ["RU"],
+          "confidence": "high",
+          "officialness": "official",
+          "quoteOrFact": "МФА Турции — визовая информация"
+        },
+        {
+          "id": "turkiye-residence-permit",
+          "title": "Управление миграции Турции — виды ВНЖ",
+          "url": "https://en.goc.gov.tr/residence-permit-types",
+          "sourceType": "government_portal",
+          "jurisdiction": "tr-national",
+          "language": "en",
+          "lastCheckedAt": "2026-06-20",
+          "appliesToCitizenship": ["RU"],
+          "confidence": "high",
+          "officialness": "official",
+          "quoteOrFact": "Управление миграции Турции — виды ВНЖ"
+        },
+        {
+          "id": "turkiye-digital-nomad",
+          "title": "GoTurkiye — цифровой кочевник",
+          "url": "https://goturkiye.com/digitalnomads/application-requirements-for-digital-nomad-visa-and-short-term-residence",
+          "sourceType": "government_portal",
+          "jurisdiction": "tr-national",
+          "language": "en",
+          "lastCheckedAt": "2026-06-20",
+          "appliesToCitizenship": ["RU"],
+          "confidence": "high",
+          "officialness": "official",
+          "quoteOrFact": "GoTurkiye — цифровой кочевник"
+        },
+        {
+          "id": "turkiye-work-permit-types",
+          "title": "Министерство труда Турции — виды разрешений на работу",
+          "url": "https://www.csgb.gov.tr/uigm/en/calisma-izni/calisma-izni-turleri/",
+          "sourceType": "government_portal",
+          "jurisdiction": "tr-national",
+          "language": "en",
+          "lastCheckedAt": "2026-06-20",
+          "appliesToCitizenship": ["RU"],
+          "confidence": "high",
+          "officialness": "official",
+          "quoteOrFact": "Министерство труда Турции — виды разрешений на работу"
+        },
+        {
+          "id": "turkiye-work-permit-docs",
+          "title": "Министерство труда Турции — документы для РНР",
+          "url": "https://www.csgb.gov.tr/uigm/en/general-information/information-and-documents-required-in-the-work-permit-evaluation-process/",
+          "sourceType": "government_portal",
+          "jurisdiction": "tr-national",
+          "language": "en",
+          "lastCheckedAt": "2026-06-20",
+          "appliesToCitizenship": ["RU"],
+          "confidence": "high",
+          "officialness": "official",
+          "quoteOrFact": "Министерство труда Турции — документы для РНР"
+        },
+        {
+          "id": "turkiye-invest-business",
+          "title": "Invest.gov.tr — регистрация бизнеса",
+          "url": "https://www.invest.gov.tr/en/investmentguide/pages/establishing-a-business.aspx",
+          "sourceType": "government_portal",
+          "jurisdiction": "tr-national",
+          "language": "en",
+          "lastCheckedAt": "2026-06-20",
+          "appliesToCitizenship": ["RU"],
+          "confidence": "high",
+          "officialness": "official",
+          "quoteOrFact": "Invest.gov.tr — регистрация бизнеса"
+        },
+        {
+          "id": "turkiye-pets-import",
+          "title": "Минсельхоз Турции — ввоз животных",
+          "url": "https://www.tarimorman.gov.tr/Konular/Veteriner-Hizmetleri/Ihracat-Ithalat/Ithalat",
+          "sourceType": "government_portal",
+          "jurisdiction": "tr-national",
+          "language": "en",
+          "lastCheckedAt": "2026-06-20",
+          "appliesToCitizenship": ["RU"],
+          "confidence": "high",
+          "officialness": "official",
+          "quoteOrFact": "Минсельхоз Турции — ввоз животных"
+        }
+      ],
+      "legalFactNodes": [
+        {
+          "id": "tr-visa-free-tourist-business-60",
+          "sourceIds": ["turkiye-mfa-visa-info"],
+          "factType": "business",
+          "fact": "Граждане РФ могут въезжать в Турцию без визы с целью туризма или деловых поездок на срок до 60 дней.",
+          "appliesWhen": [],
+          "exceptions": [],
+          "needsManualReview": false,
+          "confidence": "high"
+        },
+        {
+          "id": "tr-residence-permit-category-conditions",
+          "sourceIds": ["turkiye-residence-permit"],
+          "factType": "residence",
+          "fact": "Краткосрочный ВНЖ не выдаётся, аннулируется или не продлевается, если условия не соблюдены или разрешение используется не по назначению.",
+          "appliesWhen": [],
+          "exceptions": [],
+          "needsManualReview": false,
+          "confidence": "high"
+        },
+        {
+          "id": "tr-digital-nomad-eligibility-russia",
+          "sourceIds": ["turkiye-digital-nomad"],
+          "factType": "residence",
+          "fact": "Граждане РФ могут подавать заявление на визу цифрового кочевника и последующий краткосрочный ВНЖ.",
+          "appliesWhen": [],
+          "exceptions": [],
+          "needsManualReview": false,
+          "confidence": "high"
+        },
+        {
+          "id": "tr-digital-nomad-requirements",
+          "sourceIds": ["turkiye-digital-nomad"],
+          "factType": "residence",
+          "fact": "Заявитель должен быть в возрасте от 21 до 55 лет, иметь диплом о высшем образовании, трудовой договор с компанией за пределами Турции или договор самозанятого с зарубежным заказчиком, а также подтверждённый ежемесячный доход не менее 3000 USD (или 36000 USD в год).",
+          "appliesWhen": [],
+          "exceptions": [],
+          "needsManualReview": false,
+          "confidence": "high"
+        },
+        {
+          "id": "tr-work-permit-fixed-term",
+          "sourceIds": ["turkiye-work-permit-types"],
+          "factType": "work",
+          "fact": "Первичное разрешение на работу выдаётся на срок до одного года, привязано к конкретному работодателю, месту работы и должности.",
+          "appliesWhen": [],
+          "exceptions": [],
+          "needsManualReview": false,
+          "confidence": "high"
+        },
+        {
+          "id": "tr-work-permit-application-process",
+          "sourceIds": ["turkiye-work-permit-docs"],
+          "factType": "work",
+          "fact": "Обычно заявление подаётся через консульство; внутренняя подача возможна при наличии действующего ВНЖ сроком не менее 6 месяцев. Паспорт должен действовать не менее 60 дней на момент подачи.",
+          "appliesWhen": [],
+          "exceptions": [],
+          "needsManualReview": false,
+          "confidence": "high"
+        },
+        {
+          "id": "tr-business-setup-no-auto-right",
+          "sourceIds": ["turkiye-invest-business"],
+          "factType": "business",
+          "fact": "Учреждение компании в Турции само по себе не предоставляет права на ВНЖ или разрешение на работу; требуются отдельные процедуры.",
+          "appliesWhen": [],
+          "exceptions": [],
+          "needsManualReview": false,
+          "confidence": "high"
+        },
+        {
+          "id": "tr-pet-import-health-cert",
+          "sourceIds": ["turkiye-pets-import"],
+          "factType": "pets",
+          "fact": "При ввозе домашних животных (собаки, кошки, хорьки) необходимо предоставить ветеринарный сертификат, оформленный в установленном порядке.",
+          "appliesWhen": [],
+          "exceptions": [],
+          "needsManualReview": false,
+          "confidence": "high"
+        }
+      ],
+      "requirementNodes": [
+        {
+          "id": "tr-passport-valid-6mo",
+          "title": "Паспорт действителен не менее 6 месяцев с даты въезда",
+          "sourceIds": ["turkiye-mfa-visa-info", "turkiye-digital-nomad"],
+          "legalFactIds": [],
+          "appliesWhen": [],
+          "documents": [],
+          "hardBlockerWhenMissing": false,
+          "affects": ["documents"],
+          "confidence": "high"
+        },
+        {
+          "id": "tr-no-visa-tourist-business-60",
+          "title": "Виза не требуется для туризма и бизнеса до 60 дней",
+          "sourceIds": ["turkiye-mfa-visa-info"],
+          "legalFactIds": [],
+          "appliesWhen": [],
+          "documents": [],
+          "hardBlockerWhenMissing": false,
+          "affects": ["documents", "approvalRisk"],
+          "confidence": "high"
+        },
+        {
+          "id": "tr-residence-permit-application",
+          "title": "Подача заявления на ВНЖ в миграционной службе",
+          "sourceIds": ["turkiye-residence-permit"],
+          "legalFactIds": [],
+          "appliesWhen": [],
+          "documents": [],
+          "hardBlockerWhenMissing": false,
+          "affects": ["documents", "approvalRisk"],
+          "confidence": "high"
+        },
+        {
+          "id": "tr-digital-nomad-age-degree-contract-income",
+          "title": "Возраст 21–55, диплом, контракт с зарубежной компанией, доход от 3000 USD/мес",
+          "sourceIds": ["turkiye-digital-nomad"],
+          "legalFactIds": [],
+          "appliesWhen": [],
+          "documents": [],
+          "hardBlockerWhenMissing": false,
+          "affects": ["cost"],
+          "confidence": "high"
+        },
+        {
+          "id": "tr-digital-nomad-certificate-first",
+          "title": "Сначала сертификат, затем обращение в визовый центр/консульство",
+          "sourceIds": ["turkiye-digital-nomad"],
+          "legalFactIds": [],
+          "appliesWhen": [],
+          "documents": [],
+          "hardBlockerWhenMissing": false,
+          "affects": ["documents", "approvalRisk"],
+          "confidence": "high"
+        },
+        {
+          "id": "tr-work-permit-employer-specific",
+          "title": "Разрешение на работу привязано к работодателю, должности и месту работы",
+          "sourceIds": ["turkiye-work-permit-types"],
+          "legalFactIds": [],
+          "appliesWhen": [],
+          "documents": [],
+          "hardBlockerWhenMissing": false,
+          "affects": ["documents", "approvalRisk"],
+          "confidence": "high"
+        },
+        {
+          "id": "tr-work-permit-application-consulate-or-residence",
+          "title": "Заявление на РНР через консульство или при наличии ВНЖ от 6 мес.",
+          "sourceIds": ["turkiye-work-permit-docs"],
+          "legalFactIds": [],
+          "appliesWhen": [],
+          "documents": [],
+          "hardBlockerWhenMissing": false,
+          "affects": ["documents", "approvalRisk"],
+          "confidence": "high"
+        },
+        {
+          "id": "tr-passport-valid-60days-at-application",
+          "title": "Паспорт должен действовать не менее 60 дней на момент подачи заявления на РНР",
+          "sourceIds": ["turkiye-work-permit-docs"],
+          "legalFactIds": [],
+          "appliesWhen": [],
+          "documents": [],
+          "hardBlockerWhenMissing": false,
+          "affects": ["documents"],
+          "confidence": "high"
+        },
+        {
+          "id": "tr-business-registration-process",
+          "title": "Регистрация компании в торговом реестре",
+          "sourceIds": ["turkiye-invest-business"],
+          "legalFactIds": [],
+          "appliesWhen": [],
+          "documents": [],
+          "hardBlockerWhenMissing": false,
+          "affects": ["documents", "approvalRisk"],
+          "confidence": "high"
+        },
+        {
+          "id": "tr-pet-health-certificate",
+          "title": "Ветеринарный сертификат для ввоза животных",
+          "sourceIds": ["turkiye-pets-import"],
+          "legalFactIds": [],
+          "appliesWhen": [],
+          "documents": [],
+          "hardBlockerWhenMissing": false,
+          "affects": ["documents", "approvalRisk"],
+          "confidence": "high"
+        }
+      ],
+      "routeNodes": [
+        {
+          "id": "short_entry",
+          "title": "Краткосрочный въезд (туризм/бизнес до 60 дней)",
+          "routeType": "short_entry",
+          "goals": ["quick_exit", "compare"],
+          "stayDurations": ["up_to_one_month", "one_to_three_months"],
+          "entryCountries": ["RU"],
+          "exitCountries": ["TR"],
+          "transitRisks": [],
+          "sourceIds": ["turkiye-mfa-visa-info"],
+          "legalFactIds": ["tr-visa-free-tourist-business-60"],
+          "requirementIds": [
+            "tr-passport-valid-6mo",
+            "tr-no-visa-tourist-business-60"
+          ],
+          "personalizationRuleIds": [],
+          "manualReviewQuestions": [],
+          "documents": [
+            {
+              "title": "загранпаспорт, действительный не менее 6 месяцев",
+              "sourceIds": ["turkiye-mfa-visa-info"],
+              "legalFactIds": ["tr-visa-free-tourist-business-60"],
+              "notes": []
+            }
+          ],
+          "steps": [
+            {
+              "id": "short_entry-step-1",
+              "title": "Убедиться, что паспорт действителен не менее 6 месяцев с даты въезда",
+              "description": "Убедиться, что паспорт действителен не менее 6 месяцев с даты въезда.",
+              "sourceIds": ["turkiye-mfa-visa-info"],
+              "legalFactIds": ["tr-visa-free-tourist-business-60"],
+              "documents": [],
+              "manualReviewQuestions": []
+            },
+            {
+              "id": "short_entry-step-2",
+              "title": "Прибыть в Турцию, предъявить паспорт на границе",
+              "description": "Прибыть в Турцию, предъявить паспорт на границе.",
+              "sourceIds": ["turkiye-mfa-visa-info"],
+              "legalFactIds": ["tr-visa-free-tourist-business-60"],
+              "documents": [],
+              "manualReviewQuestions": []
+            },
+            {
+              "id": "short_entry-step-3",
+              "title": "Не превышать срок пребывания 60 дней",
+              "description": "Не превышать срок пребывания 60 дней.",
+              "sourceIds": ["turkiye-mfa-visa-info"],
+              "legalFactIds": ["tr-visa-free-tourist-business-60"],
+              "documents": [],
+              "manualReviewQuestions": []
+            }
+          ],
+          "blockers": ["превышение срока пребывания"],
+          "unlocks": [],
+          "difficulty": {
+            "documents": 1,
+            "cost": 1,
+            "approvalRisk": 1,
+            "speed": 1,
+            "adaptation": 2
+          },
+          "publicationStatusSuggestion": "reviewed",
+          "confidence": "high"
+        },
+        {
+          "id": "medium_stay",
+          "title": "Среднесрочное пребывание (ВНЖ)",
+          "routeType": "medium_stay",
+          "goals": ["medium_stay", "compare"],
+          "stayDurations": ["three_to_six_months", "six_to_twelve_months"],
+          "entryCountries": ["RU"],
+          "exitCountries": ["TR"],
+          "transitRisks": [],
+          "sourceIds": ["turkiye-residence-permit"],
+          "legalFactIds": ["tr-residence-permit-category-conditions"],
+          "requirementIds": [
+            "tr-passport-valid-6mo",
+            "tr-residence-permit-application"
+          ],
+          "personalizationRuleIds": [],
+          "manualReviewQuestions": [],
+          "documents": [
+            {
+              "title": "загранпаспорт",
+              "sourceIds": ["turkiye-residence-permit"],
+              "legalFactIds": ["tr-residence-permit-category-conditions"],
+              "notes": []
+            },
+            {
+              "title": "заявление на ВНЖ",
+              "sourceIds": ["turkiye-residence-permit"],
+              "legalFactIds": ["tr-residence-permit-category-conditions"],
+              "notes": []
+            },
+            {
+              "title": "документы, подтверждающие цель и условия категории",
+              "sourceIds": ["turkiye-residence-permit"],
+              "legalFactIds": ["tr-residence-permit-category-conditions"],
+              "notes": []
+            }
+          ],
+          "steps": [
+            {
+              "id": "medium_stay-step-1",
+              "title": "Определить подходящую категорию ВНЖ",
+              "description": "Определить подходящую категорию ВНЖ.",
+              "sourceIds": ["turkiye-residence-permit"],
+              "legalFactIds": ["tr-residence-permit-category-conditions"],
+              "documents": [],
+              "manualReviewQuestions": []
+            },
+            {
+              "id": "medium_stay-step-2",
+              "title": "Подготовить пакет документов",
+              "description": "Подготовить пакет документов.",
+              "sourceIds": ["turkiye-residence-permit"],
+              "legalFactIds": ["tr-residence-permit-category-conditions"],
+              "documents": [],
+              "manualReviewQuestions": []
+            },
+            {
+              "id": "medium_stay-step-3",
+              "title": "Подать заявление в Управление миграции Турции",
+              "description": "Подать заявление в Управление миграции Турции.",
+              "sourceIds": ["turkiye-residence-permit"],
+              "legalFactIds": ["tr-residence-permit-category-conditions"],
+              "documents": [],
+              "manualReviewQuestions": []
+            },
+            {
+              "id": "medium_stay-step-4",
+              "title": "Дождаться решения",
+              "description": "Дождаться решения.",
+              "sourceIds": ["turkiye-residence-permit"],
+              "legalFactIds": ["tr-residence-permit-category-conditions"],
+              "documents": [],
+              "manualReviewQuestions": []
+            }
+          ],
+          "blockers": [
+            "несоблюдение условий категории",
+            "использование ВНЖ не по назначению"
+          ],
+          "unlocks": [],
+          "difficulty": {
+            "documents": 2,
+            "cost": 2,
+            "approvalRisk": 2,
+            "speed": 3,
+            "adaptation": 2
+          },
+          "publicationStatusSuggestion": "reviewed",
+          "confidence": "high"
+        },
+        {
+          "id": "residence",
+          "title": "Постоянное проживание (долгосрочный ВНЖ)",
+          "routeType": "residence",
+          "goals": ["residence"],
+          "stayDurations": [
+            "six_to_twelve_months",
+            "more_than_year",
+            "permanent_status"
+          ],
+          "entryCountries": ["RU"],
+          "exitCountries": ["TR"],
+          "transitRisks": [],
+          "sourceIds": ["turkiye-residence-permit"],
+          "legalFactIds": ["tr-residence-permit-category-conditions"],
+          "requirementIds": [
+            "tr-passport-valid-6mo",
+            "tr-residence-permit-application"
+          ],
+          "personalizationRuleIds": [],
+          "manualReviewQuestions": [],
+          "documents": [
+            {
+              "title": "загранпаспорт",
+              "sourceIds": ["turkiye-residence-permit"],
+              "legalFactIds": ["tr-residence-permit-category-conditions"],
+              "notes": []
+            },
+            {
+              "title": "заявление на ВНЖ",
+              "sourceIds": ["turkiye-residence-permit"],
+              "legalFactIds": ["tr-residence-permit-category-conditions"],
+              "notes": []
+            },
+            {
+              "title": "документы по категории",
+              "sourceIds": ["turkiye-residence-permit"],
+              "legalFactIds": ["tr-residence-permit-category-conditions"],
+              "notes": []
+            }
+          ],
+          "steps": [
+            {
+              "id": "residence-step-1",
+              "title": "Оформить краткосрочный ВНЖ",
+              "description": "Оформить краткосрочный ВНЖ.",
+              "sourceIds": ["turkiye-residence-permit"],
+              "legalFactIds": ["tr-residence-permit-category-conditions"],
+              "documents": [],
+              "manualReviewQuestions": []
+            },
+            {
+              "id": "residence-step-2",
+              "title": "По истечении срока подать на продление или смену категории",
+              "description": "По истечении срока подать на продление или смену категории.",
+              "sourceIds": ["turkiye-residence-permit"],
+              "legalFactIds": ["tr-residence-permit-category-conditions"],
+              "documents": [],
+              "manualReviewQuestions": []
+            },
+            {
+              "id": "residence-step-3",
+              "title": "Соблюдать условия для долгосрочного ВНЖ",
+              "description": "Соблюдать условия для долгосрочного ВНЖ.",
+              "sourceIds": ["turkiye-residence-permit"],
+              "legalFactIds": ["tr-residence-permit-category-conditions"],
+              "documents": [],
+              "manualReviewQuestions": []
+            }
+          ],
+          "blockers": ["несоблюдение условий"],
+          "unlocks": [],
+          "difficulty": {
+            "documents": 4,
+            "cost": 4,
+            "approvalRisk": 4,
+            "speed": 4,
+            "adaptation": 4
+          },
+          "publicationStatusSuggestion": "draft",
+          "confidence": "medium"
+        },
+        {
+          "id": "remote_work",
+          "title": "Удалённая работа (цифровой кочевник)",
+          "routeType": "remote_work",
+          "goals": ["remote_work", "medium_stay"],
+          "stayDurations": [
+            "one_to_three_months",
+            "three_to_six_months",
+            "six_to_twelve_months"
+          ],
+          "entryCountries": ["RU"],
+          "exitCountries": ["TR"],
+          "transitRisks": [],
+          "sourceIds": ["turkiye-digital-nomad"],
+          "legalFactIds": [
+            "tr-digital-nomad-eligibility-russia",
+            "tr-digital-nomad-requirements"
+          ],
+          "requirementIds": [
+            "tr-passport-valid-6mo",
+            "tr-digital-nomad-age-degree-contract-income",
+            "tr-digital-nomad-certificate-first"
+          ],
+          "personalizationRuleIds": [],
+          "manualReviewQuestions": [],
+          "documents": [
+            {
+              "title": "загранпаспорт (срок действия не менее 6 месяцев)",
+              "sourceIds": ["turkiye-digital-nomad"],
+              "legalFactIds": [
+                "tr-digital-nomad-eligibility-russia",
+                "tr-digital-nomad-requirements"
+              ],
+              "notes": []
+            },
+            {
+              "title": "диплом о высшем образовании",
+              "sourceIds": ["turkiye-digital-nomad"],
+              "legalFactIds": [
+                "tr-digital-nomad-eligibility-russia",
+                "tr-digital-nomad-requirements"
+              ],
+              "notes": []
+            },
+            {
+              "title": "трудовой договор с компанией вне Турции или договор самозанятого с зарубежным заказчиком",
+              "sourceIds": ["turkiye-digital-nomad"],
+              "legalFactIds": [
+                "tr-digital-nomad-eligibility-russia",
+                "tr-digital-nomad-requirements"
+              ],
+              "notes": []
+            },
+            {
+              "title": "подтверждение дохода от 3000 USD/мес",
+              "sourceIds": ["turkiye-digital-nomad"],
+              "legalFactIds": [
+                "tr-digital-nomad-eligibility-russia",
+                "tr-digital-nomad-requirements"
+              ],
+              "notes": []
+            }
+          ],
+          "steps": [
+            {
+              "id": "remote_work-step-1",
+              "title": "Проверить соответствие возрасту (21–55 лет)",
+              "description": "Проверить соответствие возрасту (21–55 лет).",
+              "sourceIds": ["turkiye-digital-nomad"],
+              "legalFactIds": [
+                "tr-digital-nomad-eligibility-russia",
+                "tr-digital-nomad-requirements"
+              ],
+              "documents": [],
+              "manualReviewQuestions": []
+            },
+            {
+              "id": "remote_work-step-2",
+              "title": "Подготовить документы: диплом, контракт, подтверждение дохода",
+              "description": "Подготовить документы: диплом, контракт, подтверждение дохода.",
+              "sourceIds": ["turkiye-digital-nomad"],
+              "legalFactIds": [
+                "tr-digital-nomad-eligibility-russia",
+                "tr-digital-nomad-requirements"
+              ],
+              "documents": [],
+              "manualReviewQuestions": []
+            },
+            {
+              "id": "remote_work-step-3",
+              "title": "Получить сертификат цифрового кочевника",
+              "description": "Получить сертификат цифрового кочевника.",
+              "sourceIds": ["turkiye-digital-nomad"],
+              "legalFactIds": [
+                "tr-digital-nomad-eligibility-russia",
+                "tr-digital-nomad-requirements"
+              ],
+              "documents": [],
+              "manualReviewQuestions": []
+            },
+            {
+              "id": "remote_work-step-4",
+              "title": "Обратиться в визовый центр или консульство Турции",
+              "description": "Обратиться в визовый центр или консульство Турции.",
+              "sourceIds": ["turkiye-digital-nomad"],
+              "legalFactIds": [
+                "tr-digital-nomad-eligibility-russia",
+                "tr-digital-nomad-requirements"
+              ],
+              "documents": [],
+              "manualReviewQuestions": []
+            },
+            {
+              "id": "remote_work-step-5",
+              "title": "После въезда подать на краткосрочный ВНЖ",
+              "description": "После въезда подать на краткосрочный ВНЖ.",
+              "sourceIds": ["turkiye-digital-nomad"],
+              "legalFactIds": [
+                "tr-digital-nomad-eligibility-russia",
+                "tr-digital-nomad-requirements"
+              ],
+              "documents": [],
+              "manualReviewQuestions": []
+            }
+          ],
+          "blockers": [
+            "несоответствие возрасту",
+            "отсутствие диплома",
+            "недостаточный доход",
+            "контракт с турецкой компанией"
+          ],
+          "unlocks": [],
+          "difficulty": {
+            "documents": 3,
+            "cost": 3,
+            "approvalRisk": 3,
+            "speed": 3,
+            "adaptation": 2
+          },
+          "publicationStatusSuggestion": "reviewed",
+          "confidence": "high"
+        },
+        {
+          "id": "local_work",
+          "title": "Местная работа (разрешение на работу)",
+          "routeType": "local_work",
+          "goals": ["local_work", "residence"],
+          "stayDurations": ["six_to_twelve_months", "more_than_year"],
+          "entryCountries": ["RU"],
+          "exitCountries": ["TR"],
+          "transitRisks": [],
+          "sourceIds": [
+            "turkiye-work-permit-types",
+            "turkiye-work-permit-docs"
+          ],
+          "legalFactIds": [
+            "tr-work-permit-fixed-term",
+            "tr-work-permit-application-process"
+          ],
+          "requirementIds": [
+            "tr-work-permit-employer-specific",
+            "tr-work-permit-application-consulate-or-residence",
+            "tr-passport-valid-60days-at-application"
+          ],
+          "personalizationRuleIds": [],
+          "manualReviewQuestions": [],
+          "documents": [
+            {
+              "title": "загранпаспорт (срок действия не менее 60 дней на момент подачи)",
+              "sourceIds": [
+                "turkiye-work-permit-types",
+                "turkiye-work-permit-docs"
+              ],
+              "legalFactIds": [
+                "tr-work-permit-fixed-term",
+                "tr-work-permit-application-process"
+              ],
+              "notes": []
+            },
+            {
+              "title": "трудовой договор с турецким работодателем",
+              "sourceIds": [
+                "turkiye-work-permit-types",
+                "turkiye-work-permit-docs"
+              ],
+              "legalFactIds": [
+                "tr-work-permit-fixed-term",
+                "tr-work-permit-application-process"
+              ],
+              "notes": []
+            },
+            {
+              "title": "документы, подтверждающие квалификацию",
+              "sourceIds": [
+                "turkiye-work-permit-types",
+                "turkiye-work-permit-docs"
+              ],
+              "legalFactIds": [
+                "tr-work-permit-fixed-term",
+                "tr-work-permit-application-process"
+              ],
+              "notes": []
+            }
+          ],
+          "steps": [
+            {
+              "id": "local_work-step-1",
+              "title": "Найти работодателя в Турции",
+              "description": "Найти работодателя в Турции.",
+              "sourceIds": [
+                "turkiye-work-permit-types",
+                "turkiye-work-permit-docs"
+              ],
+              "legalFactIds": [
+                "tr-work-permit-fixed-term",
+                "tr-work-permit-application-process"
+              ],
+              "documents": [],
+              "manualReviewQuestions": []
+            },
+            {
+              "id": "local_work-step-2",
+              "title": "Работодатель подаёт заявление на разрешение на работу (обычно через консульство)",
+              "description": "Работодатель подаёт заявление на разрешение на работу (обычно через консульство).",
+              "sourceIds": [
+                "turkiye-work-permit-types",
+                "turkiye-work-permit-docs"
+              ],
+              "legalFactIds": [
+                "tr-work-permit-fixed-term",
+                "tr-work-permit-application-process"
+              ],
+              "documents": [],
+              "manualReviewQuestions": []
+            },
+            {
+              "id": "local_work-step-3",
+              "title": "При наличии ВНЖ от 6 месяцев возможна подача внутри страны",
+              "description": "При наличии ВНЖ от 6 месяцев возможна подача внутри страны.",
+              "sourceIds": [
+                "turkiye-work-permit-types",
+                "turkiye-work-permit-docs"
+              ],
+              "legalFactIds": [
+                "tr-work-permit-fixed-term",
+                "tr-work-permit-application-process"
+              ],
+              "documents": [],
+              "manualReviewQuestions": []
+            },
+            {
+              "id": "local_work-step-4",
+              "title": "Дождаться решения Министерства труда",
+              "description": "Дождаться решения Министерства труда.",
+              "sourceIds": [
+                "turkiye-work-permit-types",
+                "turkiye-work-permit-docs"
+              ],
+              "legalFactIds": [
+                "tr-work-permit-fixed-term",
+                "tr-work-permit-application-process"
+              ],
+              "documents": [],
+              "manualReviewQuestions": []
+            }
+          ],
+          "blockers": [
+            "отсутствие предложения от работодателя",
+            "паспорт менее 60 дней действия",
+            "отсутствие ВНЖ при внутренней подаче"
+          ],
+          "unlocks": [],
+          "difficulty": {
+            "documents": 4,
+            "cost": 4,
+            "approvalRisk": 4,
+            "speed": 3,
+            "adaptation": 4
+          },
+          "publicationStatusSuggestion": "reviewed",
+          "confidence": "high"
+        },
+        {
+          "id": "business",
+          "title": "Открытие бизнеса",
+          "routeType": "business",
+          "goals": ["business", "residence"],
+          "stayDurations": ["six_to_twelve_months", "more_than_year"],
+          "entryCountries": ["RU"],
+          "exitCountries": ["TR"],
+          "transitRisks": [],
+          "sourceIds": ["turkiye-invest-business"],
+          "legalFactIds": ["tr-business-setup-no-auto-right"],
+          "requirementIds": ["tr-business-registration-process"],
+          "personalizationRuleIds": [],
+          "manualReviewQuestions": [],
+          "documents": [
+            {
+              "title": "учредительные документы",
+              "sourceIds": ["turkiye-invest-business"],
+              "legalFactIds": ["tr-business-setup-no-auto-right"],
+              "notes": []
+            },
+            {
+              "title": "регистрация в торговом реестре",
+              "sourceIds": ["turkiye-invest-business"],
+              "legalFactIds": ["tr-business-setup-no-auto-right"],
+              "notes": []
+            }
+          ],
+          "steps": [
+            {
+              "id": "business-step-1",
+              "title": "Выбрать организационно-правовую форму",
+              "description": "Выбрать организационно-правовую форму.",
+              "sourceIds": ["turkiye-invest-business"],
+              "legalFactIds": ["tr-business-setup-no-auto-right"],
+              "documents": [],
+              "manualReviewQuestions": []
+            },
+            {
+              "id": "business-step-2",
+              "title": "Подготовить учредительные документы",
+              "description": "Подготовить учредительные документы.",
+              "sourceIds": ["turkiye-invest-business"],
+              "legalFactIds": ["tr-business-setup-no-auto-right"],
+              "documents": [],
+              "manualReviewQuestions": []
+            },
+            {
+              "id": "business-step-3",
+              "title": "Зарегистрировать компанию в торговом реестре",
+              "description": "Зарегистрировать компанию в торговом реестре.",
+              "sourceIds": ["turkiye-invest-business"],
+              "legalFactIds": ["tr-business-setup-no-auto-right"],
+              "documents": [],
+              "manualReviewQuestions": []
+            },
+            {
+              "id": "business-step-4",
+              "title": "Открыть счёт в банке (при необходимости)",
+              "description": "Открыть счёт в банке (при необходимости).",
+              "sourceIds": ["turkiye-invest-business"],
+              "legalFactIds": ["tr-business-setup-no-auto-right"],
+              "documents": [],
+              "manualReviewQuestions": []
+            }
+          ],
+          "blockers": [
+            "регистрация бизнеса не даёт права на проживание или работу",
+            "Регистрация бизнеса сама по себе не подтверждает право на проживание или работу без отдельного основания."
+          ],
+          "unlocks": [],
+          "difficulty": {
+            "documents": 4,
+            "cost": 5,
+            "approvalRisk": 4,
+            "speed": 3,
+            "adaptation": 2
+          },
+          "publicationStatusSuggestion": "needs_review",
+          "confidence": "high"
+        },
+        {
+          "id": "family",
+          "title": "Воссоединение семьи",
+          "routeType": "family",
+          "goals": ["family", "residence"],
+          "stayDurations": ["six_to_twelve_months", "more_than_year"],
+          "entryCountries": ["RU"],
+          "exitCountries": ["TR"],
+          "transitRisks": [],
+          "sourceIds": ["turkiye-residence-permit"],
+          "legalFactIds": ["tr-residence-permit-category-conditions"],
+          "requirementIds": [
+            "tr-passport-valid-6mo",
+            "tr-residence-permit-application"
+          ],
+          "personalizationRuleIds": [],
+          "manualReviewQuestions": [],
+          "documents": [
+            {
+              "title": "загранпаспорт",
+              "sourceIds": ["turkiye-residence-permit"],
+              "legalFactIds": ["tr-residence-permit-category-conditions"],
+              "notes": []
+            },
+            {
+              "title": "документы, подтверждающие родство",
+              "sourceIds": ["turkiye-residence-permit"],
+              "legalFactIds": ["tr-residence-permit-category-conditions"],
+              "notes": []
+            },
+            {
+              "title": "заявление на ВНЖ по семейным основаниям",
+              "sourceIds": ["turkiye-residence-permit"],
+              "legalFactIds": ["tr-residence-permit-category-conditions"],
+              "notes": []
+            }
+          ],
+          "steps": [
+            {
+              "id": "family-step-1",
+              "title": "Подтвердить родство с гражданином Турции или лицом с ВНЖ",
+              "description": "Подтвердить родство с гражданином Турции или лицом с ВНЖ.",
+              "sourceIds": ["turkiye-residence-permit"],
+              "legalFactIds": ["tr-residence-permit-category-conditions"],
+              "documents": [],
+              "manualReviewQuestions": []
+            },
+            {
+              "id": "family-step-2",
+              "title": "Подать заявление на ВНЖ по семейным основаниям",
+              "description": "Подать заявление на ВНЖ по семейным основаниям.",
+              "sourceIds": ["turkiye-residence-permit"],
+              "legalFactIds": ["tr-residence-permit-category-conditions"],
+              "documents": [],
+              "manualReviewQuestions": []
+            },
+            {
+              "id": "family-step-3",
+              "title": "Дождаться решения",
+              "description": "Дождаться решения.",
+              "sourceIds": ["turkiye-residence-permit"],
+              "legalFactIds": ["tr-residence-permit-category-conditions"],
+              "documents": [],
+              "manualReviewQuestions": []
+            }
+          ],
+          "blockers": ["отсутствие подтверждения родства"],
+          "unlocks": [],
+          "difficulty": {
+            "documents": 3,
+            "cost": 3,
+            "approvalRisk": 3,
+            "speed": 3,
+            "adaptation": 4
+          },
+          "publicationStatusSuggestion": "draft",
+          "confidence": "medium"
+        },
+        {
+          "id": "study",
+          "title": "Обучение",
+          "routeType": "study",
+          "goals": ["residence", "compare"],
+          "stayDurations": ["six_to_twelve_months", "more_than_year"],
+          "entryCountries": ["RU"],
+          "exitCountries": ["TR"],
+          "transitRisks": [],
+          "sourceIds": ["turkiye-residence-permit"],
+          "legalFactIds": ["tr-residence-permit-category-conditions"],
+          "requirementIds": [
+            "tr-passport-valid-6mo",
+            "tr-residence-permit-application"
+          ],
+          "personalizationRuleIds": [],
+          "manualReviewQuestions": [],
+          "documents": [
+            {
+              "title": "загранпаспорт",
+              "sourceIds": ["turkiye-residence-permit"],
+              "legalFactIds": ["tr-residence-permit-category-conditions"],
+              "notes": []
+            },
+            {
+              "title": "подтверждение зачисления в учебное заведение",
+              "sourceIds": ["turkiye-residence-permit"],
+              "legalFactIds": ["tr-residence-permit-category-conditions"],
+              "notes": []
+            },
+            {
+              "title": "заявление на студенческий ВНЖ",
+              "sourceIds": ["turkiye-residence-permit"],
+              "legalFactIds": ["tr-residence-permit-category-conditions"],
+              "notes": []
+            }
+          ],
+          "steps": [
+            {
+              "id": "study-step-1",
+              "title": "Поступить в учебное заведение Турции",
+              "description": "Поступить в учебное заведение Турции.",
+              "sourceIds": ["turkiye-residence-permit"],
+              "legalFactIds": ["tr-residence-permit-category-conditions"],
+              "documents": [],
+              "manualReviewQuestions": []
+            },
+            {
+              "id": "study-step-2",
+              "title": "Получить подтверждение зачисления",
+              "description": "Получить подтверждение зачисления.",
+              "sourceIds": ["turkiye-residence-permit"],
+              "legalFactIds": ["tr-residence-permit-category-conditions"],
+              "documents": [],
+              "manualReviewQuestions": []
+            },
+            {
+              "id": "study-step-3",
+              "title": "Подать заявление на студенческий ВНЖ",
+              "description": "Подать заявление на студенческий ВНЖ.",
+              "sourceIds": ["turkiye-residence-permit"],
+              "legalFactIds": ["tr-residence-permit-category-conditions"],
+              "documents": [],
+              "manualReviewQuestions": []
+            }
+          ],
+          "blockers": ["отсутствие зачисления"],
+          "unlocks": [],
+          "difficulty": {
+            "documents": 3,
+            "cost": 3,
+            "approvalRisk": 3,
+            "speed": 3,
+            "adaptation": 4
+          },
+          "publicationStatusSuggestion": "draft",
+          "confidence": "medium"
+        },
+        {
+          "id": "pets",
+          "title": "Ввоз домашних животных",
+          "routeType": "pets",
+          "goals": ["family", "compare"],
+          "stayDurations": ["up_to_one_month", "one_to_three_months"],
+          "entryCountries": ["RU"],
+          "exitCountries": ["TR"],
+          "transitRisks": [],
+          "sourceIds": ["turkiye-pets-import"],
+          "legalFactIds": ["tr-pet-import-health-cert"],
+          "requirementIds": ["tr-pet-health-certificate"],
+          "personalizationRuleIds": [],
+          "manualReviewQuestions": [],
+          "documents": [
+            {
+              "title": "ветеринарный сертификат здоровья для собак, кошек, хорьков",
+              "sourceIds": ["turkiye-pets-import"],
+              "legalFactIds": ["tr-pet-import-health-cert"],
+              "notes": []
+            }
+          ],
+          "steps": [
+            {
+              "id": "pets-step-1",
+              "title": "Оформить ветеринарный сертификат в стране отправления",
+              "description": "Оформить ветеринарный сертификат в стране отправления.",
+              "sourceIds": ["turkiye-pets-import"],
+              "legalFactIds": ["tr-pet-import-health-cert"],
+              "documents": [],
+              "manualReviewQuestions": []
+            },
+            {
+              "id": "pets-step-2",
+              "title": "Предъявить сертификат при ввозе в Турцию",
+              "description": "Предъявить сертификат при ввозе в Турцию.",
+              "sourceIds": ["turkiye-pets-import"],
+              "legalFactIds": ["tr-pet-import-health-cert"],
+              "documents": [],
+              "manualReviewQuestions": []
+            }
+          ],
+          "blockers": ["отсутствие сертификата"],
+          "unlocks": [],
+          "difficulty": {
+            "documents": 2,
+            "cost": 2,
+            "approvalRisk": 2,
+            "speed": 3,
+            "adaptation": 2
+          },
+          "publicationStatusSuggestion": "reviewed",
+          "confidence": "high"
+        }
+      ],
+      "personalizationRules": [],
+      "reviewLog": [
+        {
+          "round": 1,
+          "issue": "DeepSeek review issue",
+          "action": "Normalized into production graph schema after official source review."
+        },
+        {
+          "round": 1,
+          "issue": "Первичный полный ответ DeepSeek был слишком большим: v4-pro timeout, v4-flash завершился по length и дал непригодный общий JSON.",
+          "action": "Граф разбит на отдельные country objects и отправлен на исправление."
+        },
+        {
+          "round": 2,
+          "issue": "Официальная сверка выявила страновые ошибки и недоказанные утверждения.",
+          "action": "DeepSeek получил проверенные официальные факты и вернул отдельный parseable JSON по стране."
+        },
+        {
+          "round": 3,
+          "issue": "Нестандартные routeType enum и недостаточные источники по отдельным веткам.",
+          "action": "routeType нормализованы к production enum; спорные маршруты помечены needs_review/reference_only/source_needed."
+        },
+        {
+          "round": 1,
+          "issue": "DeepSeek produced the initial country graph draft.",
+          "action": "Draft was treated as untrusted source and checked against official sources."
+        },
+        {
+          "round": 2,
+          "issue": "Official-source objections were sent back to DeepSeek.",
+          "action": "Country-split corrected drafts were generated for GE, AM, RS, TR and ME."
+        },
+        {
+          "round": 3,
+          "issue": "DeepSeek output used non-contract field shapes and publication labels.",
+          "action": "Normalized TR graph into the repository production graph schema."
+        }
+      ],
+      "manualReviewQuestions": [
+        "Уточнить, какие именно категории ВНЖ доступны для граждан РФ (кроме цифрового кочевника).",
+        "Проверить, требуется ли для краткосрочного ВНЖ дополнительное подтверждение дохода или жилья.",
+        "Уточнить процедуру получения независимого разрешения на работу (independent work permit)."
+      ]
+    },
+    {
+      "countryCode": "ME",
+      "countryNameRu": "Черногория",
+      "graphStatus": "needs_review",
+      "jurisdictions": [
+        {
+          "id": "ME",
+          "type": "target_country",
+          "name": "Черногория",
+          "notes": [
+            "Черновой production graph агента A для волны Кавказ/Балканы."
+          ]
+        }
+      ],
+      "sourceNodes": [
+        {
+          "id": "montenegro-visas",
+          "title": "Official visa information",
+          "url": "https://www.gov.me/en/article/visas",
+          "sourceType": "government_portal",
+          "jurisdiction": "ME",
+          "language": "en",
+          "lastCheckedAt": "2025-03-30",
+          "appliesToCitizenship": ["RU"],
+          "confidence": "high",
+          "officialness": "official",
+          "quoteOrFact": "Official visa information"
+        },
+        {
+          "id": "montenegro-temp-residence",
+          "title": "Temporary residence",
+          "url": "https://www.gov.me/en/article/temporary-residence",
+          "sourceType": "government_portal",
+          "jurisdiction": "ME",
+          "language": "en",
+          "lastCheckedAt": "2025-03-30",
+          "appliesToCitizenship": ["RU"],
+          "confidence": "high",
+          "officialness": "official",
+          "quoteOrFact": "Temporary residence"
+        },
+        {
+          "id": "montenegro-work",
+          "title": "Work permits",
+          "url": "https://psc.gov.me/en/sektorske-informacije/ministarstvo-unutrasnjih-poslova/privremeni-boravak-i-rad-radna-dozvola",
+          "sourceType": "government_portal",
+          "jurisdiction": "ME",
+          "language": "en",
+          "lastCheckedAt": "2025-03-30",
+          "appliesToCitizenship": ["RU"],
+          "confidence": "high",
+          "officialness": "official",
+          "quoteOrFact": "Work permits"
+        },
+        {
+          "id": "montenegro-digital-nomad",
+          "title": "Digital nomad legal status",
+          "url": "https://digitalnomads.gov.me/article/legal-status-for-nomads",
+          "sourceType": "government_portal",
+          "jurisdiction": "ME",
+          "language": "en",
+          "lastCheckedAt": "2025-03-30",
+          "appliesToCitizenship": ["RU"],
+          "confidence": "high",
+          "officialness": "official",
+          "quoteOrFact": "Digital nomad legal status"
+        },
+        {
+          "id": "montenegro-pets-certificate",
+          "title": "Animal health certificate",
+          "url": "https://wapi.gov.me/download/8d94409a-a2fc-49af-be17-83896ee24d8b?version=1.0",
+          "sourceType": "government_portal",
+          "jurisdiction": "ME",
+          "language": "en",
+          "lastCheckedAt": "2025-03-30",
+          "appliesToCitizenship": ["RU"],
+          "confidence": "high",
+          "officialness": "official",
+          "quoteOrFact": "Animal health certificate"
+        }
+      ],
+      "legalFactNodes": [
+        {
+          "id": "ru-30-day-visa-free",
+          "sourceIds": ["montenegro-visas"],
+          "factType": "entry",
+          "fact": "Russian Federation citizens may enter, transit and stay in Montenegro up to 30 days with a valid travel document under mutual travel agreements.",
+          "appliesWhen": [],
+          "exceptions": [],
+          "needsManualReview": false,
+          "confidence": "high"
+        },
+        {
+          "id": "visa-free-with-schengen-us-uk-ie",
+          "sourceIds": ["montenegro-visas"],
+          "factType": "entry",
+          "fact": "Holders of valid Schengen, US, UK or Ireland visas or residence permits may enter and stay up to 30 days, not exceeding validity of the visa if shorter.",
+          "appliesWhen": [],
+          "exceptions": [],
+          "needsManualReview": false,
+          "confidence": "high"
+        },
+        {
+          "id": "temporary-residence-over-90-days",
+          "sourceIds": ["montenegro-temp-residence"],
+          "factType": "residence",
+          "fact": "Temporary residence may be granted for stays longer than 90 days for stated purposes including family reunification, study, medical treatment, real estate ownership, and other legal bases.",
+          "appliesWhen": [],
+          "exceptions": [],
+          "needsManualReview": false,
+          "confidence": "high"
+        },
+        {
+          "id": "work-permit-requirement",
+          "sourceIds": ["montenegro-work"],
+          "factType": "work",
+          "fact": "Foreigners may work based on temporary residence and work permit or employment registration certificate, limited to the specific job and employer.",
+          "appliesWhen": [],
+          "exceptions": [],
+          "needsManualReview": false,
+          "confidence": "high"
+        },
+        {
+          "id": "digital-nomad-permit",
+          "sourceIds": ["montenegro-digital-nomad"],
+          "factType": "residence",
+          "fact": "Foreigners working remotely for a foreign company or own company not registered in Montenegro may apply for a temporary residence permit for digital nomads. Valid up to 2 years, extendable by max 2 more. Decision within 40 days.",
+          "appliesWhen": [],
+          "exceptions": [],
+          "needsManualReview": false,
+          "confidence": "high"
+        },
+        {
+          "id": "pets-health-certificate",
+          "sourceIds": ["montenegro-pets-certificate"],
+          "factType": "pets",
+          "fact": "Dogs, cats and ferrets must be accompanied by an animal health certificate for non-commercial movement.",
+          "appliesWhen": [],
+          "exceptions": [],
+          "needsManualReview": false,
+          "confidence": "high"
+        }
+      ],
+      "requirementNodes": [
+        {
+          "id": "req-valid-travel-document",
+          "title": "Valid travel document",
+          "sourceIds": ["montenegro-visas"],
+          "legalFactIds": [],
+          "appliesWhen": [],
+          "documents": [],
+          "hardBlockerWhenMissing": false,
+          "affects": ["documents"],
+          "confidence": "high"
+        },
+        {
+          "id": "req-30-day-limit-ru",
+          "title": "30-day stay limit for Russian citizens",
+          "sourceIds": ["montenegro-visas"],
+          "legalFactIds": [],
+          "appliesWhen": [],
+          "documents": [],
+          "hardBlockerWhenMissing": false,
+          "affects": ["documents", "approvalRisk"],
+          "confidence": "high"
+        },
+        {
+          "id": "req-schengen-us-uk-ie-visa-or-residence",
+          "title": "Valid visa or residence permit from Schengen/US/UK/Ireland",
+          "sourceIds": ["montenegro-visas"],
+          "legalFactIds": [],
+          "appliesWhen": [],
+          "documents": [],
+          "hardBlockerWhenMissing": false,
+          "affects": ["approvalRisk"],
+          "confidence": "high"
+        },
+        {
+          "id": "req-temp-residence-application",
+          "title": "Temporary residence application before 90-day expiry",
+          "sourceIds": ["montenegro-temp-residence"],
+          "legalFactIds": [],
+          "appliesWhen": [],
+          "documents": [],
+          "hardBlockerWhenMissing": false,
+          "affects": ["documents", "approvalRisk"],
+          "confidence": "high"
+        },
+        {
+          "id": "req-digital-nomad-conditions",
+          "title": "Digital nomad conditions",
+          "sourceIds": ["montenegro-digital-nomad"],
+          "legalFactIds": [],
+          "appliesWhen": [],
+          "documents": [],
+          "hardBlockerWhenMissing": false,
+          "affects": ["documents", "approvalRisk"],
+          "confidence": "high"
+        },
+        {
+          "id": "req-pet-health-certificate",
+          "title": "Pet health certificate",
+          "sourceIds": ["montenegro-pets-certificate"],
+          "legalFactIds": [],
+          "appliesWhen": [],
+          "documents": [],
+          "hardBlockerWhenMissing": false,
+          "affects": ["documents", "approvalRisk"],
+          "confidence": "high"
+        }
+      ],
+      "routeNodes": [
+        {
+          "id": "short_entry",
+          "title": "Short entry (up to 30 days)",
+          "routeType": "short_entry",
+          "goals": ["quick_exit", "compare"],
+          "stayDurations": ["up_to_one_month", "one_to_three_months"],
+          "entryCountries": ["RU"],
+          "exitCountries": ["ME"],
+          "transitRisks": [],
+          "sourceIds": ["montenegro-visas"],
+          "legalFactIds": [
+            "ru-30-day-visa-free",
+            "visa-free-with-schengen-us-uk-ie"
+          ],
+          "requirementIds": [
+            "req-valid-travel-document",
+            "req-30-day-limit-ru",
+            "req-schengen-us-uk-ie-visa-or-residence"
+          ],
+          "personalizationRuleIds": [],
+          "manualReviewQuestions": [],
+          "documents": [
+            {
+              "title": "valid passport",
+              "sourceIds": ["montenegro-visas"],
+              "legalFactIds": [
+                "ru-30-day-visa-free",
+                "visa-free-with-schengen-us-uk-ie"
+              ],
+              "notes": []
+            },
+            {
+              "title": "if applicable: valid Schengen/US/UK/Ireland visa or residence permit",
+              "sourceIds": ["montenegro-visas"],
+              "legalFactIds": [
+                "ru-30-day-visa-free",
+                "visa-free-with-schengen-us-uk-ie"
+              ],
+              "notes": []
+            }
+          ],
+          "steps": [
+            {
+              "id": "short_entry-step-1",
+              "title": "Enter with valid travel document",
+              "description": "Enter with valid travel document",
+              "sourceIds": ["montenegro-visas"],
+              "legalFactIds": [
+                "ru-30-day-visa-free",
+                "visa-free-with-schengen-us-uk-ie"
+              ],
+              "documents": [],
+              "manualReviewQuestions": []
+            },
+            {
+              "id": "short_entry-step-2",
+              "title": "Stay up to 30 days",
+              "description": "Stay up to 30 days",
+              "sourceIds": ["montenegro-visas"],
+              "legalFactIds": [
+                "ru-30-day-visa-free",
+                "visa-free-with-schengen-us-uk-ie"
+              ],
+              "documents": [],
+              "manualReviewQuestions": []
+            }
+          ],
+          "blockers": [
+            "Для граждан РФ проверенный официальный источник указывает до 30 дней; нельзя использовать устаревшие 90 дней."
+          ],
+          "unlocks": [],
+          "difficulty": {
+            "documents": 1,
+            "cost": 1,
+            "approvalRisk": 1,
+            "speed": 1,
+            "adaptation": 2
+          },
+          "publicationStatusSuggestion": "reviewed",
+          "confidence": "high"
+        },
+        {
+          "id": "medium_stay",
+          "title": "Medium stay (up to 90 days)",
+          "routeType": "medium_stay",
+          "goals": ["medium_stay", "compare"],
+          "stayDurations": ["three_to_six_months", "six_to_twelve_months"],
+          "entryCountries": ["RU"],
+          "exitCountries": ["ME"],
+          "transitRisks": [],
+          "sourceIds": ["montenegro-visas", "montenegro-temp-residence"],
+          "legalFactIds": ["ru-30-day-visa-free"],
+          "requirementIds": [
+            "req-valid-travel-document",
+            "req-30-day-limit-ru"
+          ],
+          "personalizationRuleIds": [],
+          "manualReviewQuestions": [],
+          "documents": [
+            {
+              "title": "valid passport",
+              "sourceIds": ["montenegro-visas", "montenegro-temp-residence"],
+              "legalFactIds": ["ru-30-day-visa-free"],
+              "notes": []
+            }
+          ],
+          "steps": [
+            {
+              "id": "medium_stay-step-1",
+              "title": "Russian citizens limited to 30 days visa-free; for stays up to 90 days a visa or other authorization may be required",
+              "description": "Russian citizens limited to 30 days visa-free; for stays up to 90 days a visa or other authorization may be required",
+              "sourceIds": ["montenegro-visas", "montenegro-temp-residence"],
+              "legalFactIds": ["ru-30-day-visa-free"],
+              "documents": [],
+              "manualReviewQuestions": []
+            },
+            {
+              "id": "medium_stay-step-2",
+              "title": "Check visa requirements with embassy",
+              "description": "Check visa requirements with embassy",
+              "sourceIds": ["montenegro-visas", "montenegro-temp-residence"],
+              "legalFactIds": ["ru-30-day-visa-free"],
+              "documents": [],
+              "manualReviewQuestions": []
+            }
+          ],
+          "blockers": [
+            "Russian citizens cannot stay more than 30 days without visa or residence permit"
+          ],
+          "unlocks": [],
+          "difficulty": {
+            "documents": 2,
+            "cost": 2,
+            "approvalRisk": 2,
+            "speed": 3,
+            "adaptation": 2
+          },
+          "publicationStatusSuggestion": "draft",
+          "confidence": "medium"
+        },
+        {
+          "id": "residence",
+          "title": "Temporary residence (>90 days)",
+          "routeType": "residence",
+          "goals": ["residence"],
+          "stayDurations": [
+            "six_to_twelve_months",
+            "more_than_year",
+            "permanent_status"
+          ],
+          "entryCountries": ["RU"],
+          "exitCountries": ["ME"],
+          "transitRisks": [],
+          "sourceIds": ["montenegro-temp-residence"],
+          "legalFactIds": ["temporary-residence-over-90-days"],
+          "requirementIds": ["req-temp-residence-application"],
+          "personalizationRuleIds": [],
+          "manualReviewQuestions": [],
+          "documents": [
+            {
+              "title": "valid passport",
+              "sourceIds": ["montenegro-temp-residence"],
+              "legalFactIds": ["temporary-residence-over-90-days"],
+              "notes": []
+            },
+            {
+              "title": "proof of purpose",
+              "sourceIds": ["montenegro-temp-residence"],
+              "legalFactIds": ["temporary-residence-over-90-days"],
+              "notes": []
+            },
+            {
+              "title": "health insurance",
+              "sourceIds": ["montenegro-temp-residence"],
+              "legalFactIds": ["temporary-residence-over-90-days"],
+              "notes": []
+            },
+            {
+              "title": "accommodation proof",
+              "sourceIds": ["montenegro-temp-residence"],
+              "legalFactIds": ["temporary-residence-over-90-days"],
+              "notes": []
+            },
+            {
+              "title": "sufficient funds",
+              "sourceIds": ["montenegro-temp-residence"],
+              "legalFactIds": ["temporary-residence-over-90-days"],
+              "notes": []
+            }
+          ],
+          "steps": [
+            {
+              "id": "residence-step-1",
+              "title": "Enter Montenegro legally",
+              "description": "Enter Montenegro legally",
+              "sourceIds": ["montenegro-temp-residence"],
+              "legalFactIds": ["temporary-residence-over-90-days"],
+              "documents": [],
+              "manualReviewQuestions": []
+            },
+            {
+              "id": "residence-step-2",
+              "title": "Submit temporary residence application before 90-day stay expires",
+              "description": "Submit temporary residence application before 90-day stay expires",
+              "sourceIds": ["montenegro-temp-residence"],
+              "legalFactIds": ["temporary-residence-over-90-days"],
+              "documents": [],
+              "manualReviewQuestions": []
+            },
+            {
+              "id": "residence-step-3",
+              "title": "Await decision; may stay until decision",
+              "description": "Await decision; may stay until decision",
+              "sourceIds": ["montenegro-temp-residence"],
+              "legalFactIds": ["temporary-residence-over-90-days"],
+              "documents": [],
+              "manualReviewQuestions": []
+            }
+          ],
+          "blockers": [],
+          "unlocks": [],
+          "difficulty": {
+            "documents": 4,
+            "cost": 4,
+            "approvalRisk": 4,
+            "speed": 4,
+            "adaptation": 4
+          },
+          "publicationStatusSuggestion": "reviewed",
+          "confidence": "high"
+        },
+        {
+          "id": "remote_work",
+          "title": "Digital nomad (remote work)",
+          "routeType": "remote_work",
+          "goals": ["remote_work", "medium_stay"],
+          "stayDurations": [
+            "one_to_three_months",
+            "three_to_six_months",
+            "six_to_twelve_months"
+          ],
+          "entryCountries": ["RU"],
+          "exitCountries": ["ME"],
+          "transitRisks": [],
+          "sourceIds": ["montenegro-digital-nomad"],
+          "legalFactIds": ["digital-nomad-permit"],
+          "requirementIds": ["req-digital-nomad-conditions"],
+          "personalizationRuleIds": [],
+          "manualReviewQuestions": [],
+          "documents": [
+            {
+              "title": "valid passport (valid at least 3 months beyond permit)",
+              "sourceIds": ["montenegro-digital-nomad"],
+              "legalFactIds": ["digital-nomad-permit"],
+              "notes": []
+            },
+            {
+              "title": "proof of remote work for foreign company or own foreign company",
+              "sourceIds": ["montenegro-digital-nomad"],
+              "legalFactIds": ["digital-nomad-permit"],
+              "notes": []
+            },
+            {
+              "title": "proof of sufficient funds",
+              "sourceIds": ["montenegro-digital-nomad"],
+              "legalFactIds": ["digital-nomad-permit"],
+              "notes": []
+            },
+            {
+              "title": "accommodation proof",
+              "sourceIds": ["montenegro-digital-nomad"],
+              "legalFactIds": ["digital-nomad-permit"],
+              "notes": []
+            },
+            {
+              "title": "health insurance",
+              "sourceIds": ["montenegro-digital-nomad"],
+              "legalFactIds": ["digital-nomad-permit"],
+              "notes": []
+            },
+            {
+              "title": "criminal record certificate",
+              "sourceIds": ["montenegro-digital-nomad"],
+              "legalFactIds": ["digital-nomad-permit"],
+              "notes": []
+            }
+          ],
+          "steps": [
+            {
+              "id": "remote_work-step-1",
+              "title": "Lawful entry into Montenegro",
+              "description": "Lawful entry into Montenegro",
+              "sourceIds": ["montenegro-digital-nomad"],
+              "legalFactIds": ["digital-nomad-permit"],
+              "documents": [],
+              "manualReviewQuestions": []
+            },
+            {
+              "id": "remote_work-step-2",
+              "title": "Apply for digital nomad temporary residence permit",
+              "description": "Apply for digital nomad temporary residence permit",
+              "sourceIds": ["montenegro-digital-nomad"],
+              "legalFactIds": ["digital-nomad-permit"],
+              "documents": [],
+              "manualReviewQuestions": []
+            },
+            {
+              "id": "remote_work-step-3",
+              "title": "Decision within 40 days",
+              "description": "Decision within 40 days",
+              "sourceIds": ["montenegro-digital-nomad"],
+              "legalFactIds": ["digital-nomad-permit"],
+              "documents": [],
+              "manualReviewQuestions": []
+            }
+          ],
+          "blockers": [],
+          "unlocks": [],
+          "difficulty": {
+            "documents": 3,
+            "cost": 3,
+            "approvalRisk": 3,
+            "speed": 3,
+            "adaptation": 2
+          },
+          "publicationStatusSuggestion": "reviewed",
+          "confidence": "high"
+        },
+        {
+          "id": "local_work",
+          "title": "Local employment",
+          "routeType": "local_work",
+          "goals": ["local_work", "residence"],
+          "stayDurations": ["six_to_twelve_months", "more_than_year"],
+          "entryCountries": ["RU"],
+          "exitCountries": ["ME"],
+          "transitRisks": [],
+          "sourceIds": ["montenegro-work"],
+          "legalFactIds": ["work-permit-requirement"],
+          "requirementIds": ["req-temp-residence-application"],
+          "personalizationRuleIds": [],
+          "manualReviewQuestions": [],
+          "documents": [
+            {
+              "title": "valid passport",
+              "sourceIds": ["montenegro-work"],
+              "legalFactIds": ["work-permit-requirement"],
+              "notes": []
+            },
+            {
+              "title": "employment contract",
+              "sourceIds": ["montenegro-work"],
+              "legalFactIds": ["work-permit-requirement"],
+              "notes": []
+            },
+            {
+              "title": "work permit or employment registration certificate",
+              "sourceIds": ["montenegro-work"],
+              "legalFactIds": ["work-permit-requirement"],
+              "notes": []
+            },
+            {
+              "title": "health insurance",
+              "sourceIds": ["montenegro-work"],
+              "legalFactIds": ["work-permit-requirement"],
+              "notes": []
+            },
+            {
+              "title": "accommodation proof",
+              "sourceIds": ["montenegro-work"],
+              "legalFactIds": ["work-permit-requirement"],
+              "notes": []
+            }
+          ],
+          "steps": [
+            {
+              "id": "local_work-step-1",
+              "title": "Obtain job offer from Montenegrin employer",
+              "description": "Obtain job offer from Montenegrin employer",
+              "sourceIds": ["montenegro-work"],
+              "legalFactIds": ["work-permit-requirement"],
+              "documents": [],
+              "manualReviewQuestions": []
+            },
+            {
+              "id": "local_work-step-2",
+              "title": "Employer applies for work permit",
+              "description": "Employer applies for work permit",
+              "sourceIds": ["montenegro-work"],
+              "legalFactIds": ["work-permit-requirement"],
+              "documents": [],
+              "manualReviewQuestions": []
+            },
+            {
+              "id": "local_work-step-3",
+              "title": "Apply for temporary residence based on work",
+              "description": "Apply for temporary residence based on work",
+              "sourceIds": ["montenegro-work"],
+              "legalFactIds": ["work-permit-requirement"],
+              "documents": [],
+              "manualReviewQuestions": []
+            },
+            {
+              "id": "local_work-step-4",
+              "title": "Receive permit limited to specific job/employer",
+              "description": "Receive permit limited to specific job/employer",
+              "sourceIds": ["montenegro-work"],
+              "legalFactIds": ["work-permit-requirement"],
+              "documents": [],
+              "manualReviewQuestions": []
+            }
+          ],
+          "blockers": [],
+          "unlocks": [],
+          "difficulty": {
+            "documents": 4,
+            "cost": 4,
+            "approvalRisk": 4,
+            "speed": 3,
+            "adaptation": 4
+          },
+          "publicationStatusSuggestion": "reviewed",
+          "confidence": "high"
+        },
+        {
+          "id": "business",
+          "title": "Business activities",
+          "routeType": "business",
+          "goals": ["business", "residence"],
+          "stayDurations": ["six_to_twelve_months", "more_than_year"],
+          "entryCountries": ["RU"],
+          "exitCountries": ["ME"],
+          "transitRisks": [],
+          "sourceIds": ["montenegro-visas", "montenegro-temp-residence"],
+          "legalFactIds": [
+            "ru-30-day-visa-free",
+            "temporary-residence-over-90-days"
+          ],
+          "requirementIds": [
+            "req-valid-travel-document",
+            "req-30-day-limit-ru"
+          ],
+          "personalizationRuleIds": [],
+          "manualReviewQuestions": [],
+          "documents": [
+            {
+              "title": "valid passport",
+              "sourceIds": ["montenegro-visas", "montenegro-temp-residence"],
+              "legalFactIds": [
+                "ru-30-day-visa-free",
+                "temporary-residence-over-90-days"
+              ],
+              "notes": []
+            },
+            {
+              "title": "invitation letter if required",
+              "sourceIds": ["montenegro-visas", "montenegro-temp-residence"],
+              "legalFactIds": [
+                "ru-30-day-visa-free",
+                "temporary-residence-over-90-days"
+              ],
+              "notes": []
+            },
+            {
+              "title": "company registration documents if applicable",
+              "sourceIds": ["montenegro-visas", "montenegro-temp-residence"],
+              "legalFactIds": [
+                "ru-30-day-visa-free",
+                "temporary-residence-over-90-days"
+              ],
+              "notes": []
+            }
+          ],
+          "steps": [
+            {
+              "id": "business-step-1",
+              "title": "For short business: enter visa-free up to 30 days",
+              "description": "For short business: enter visa-free up to 30 days",
+              "sourceIds": ["montenegro-visas", "montenegro-temp-residence"],
+              "legalFactIds": [
+                "ru-30-day-visa-free",
+                "temporary-residence-over-90-days"
+              ],
+              "documents": [],
+              "manualReviewQuestions": []
+            },
+            {
+              "id": "business-step-2",
+              "title": "For longer business: apply for temporary residence on business basis",
+              "description": "For longer business: apply for temporary residence on business basis",
+              "sourceIds": ["montenegro-visas", "montenegro-temp-residence"],
+              "legalFactIds": [
+                "ru-30-day-visa-free",
+                "temporary-residence-over-90-days"
+              ],
+              "documents": [],
+              "manualReviewQuestions": []
+            }
+          ],
+          "blockers": [],
+          "unlocks": [],
+          "difficulty": {
+            "documents": 4,
+            "cost": 5,
+            "approvalRisk": 4,
+            "speed": 3,
+            "adaptation": 2
+          },
+          "publicationStatusSuggestion": "reviewed",
+          "confidence": "high"
+        },
+        {
+          "id": "family",
+          "title": "Family reunification",
+          "routeType": "family",
+          "goals": ["family", "residence"],
+          "stayDurations": ["six_to_twelve_months", "more_than_year"],
+          "entryCountries": ["RU"],
+          "exitCountries": ["ME"],
+          "transitRisks": [],
+          "sourceIds": ["montenegro-temp-residence"],
+          "legalFactIds": ["temporary-residence-over-90-days"],
+          "requirementIds": ["req-temp-residence-application"],
+          "personalizationRuleIds": [],
+          "manualReviewQuestions": [],
+          "documents": [
+            {
+              "title": "valid passport",
+              "sourceIds": ["montenegro-temp-residence"],
+              "legalFactIds": ["temporary-residence-over-90-days"],
+              "notes": []
+            },
+            {
+              "title": "proof of family relationship",
+              "sourceIds": ["montenegro-temp-residence"],
+              "legalFactIds": ["temporary-residence-over-90-days"],
+              "notes": []
+            },
+            {
+              "title": "proof of sponsor's legal status",
+              "sourceIds": ["montenegro-temp-residence"],
+              "legalFactIds": ["temporary-residence-over-90-days"],
+              "notes": []
+            },
+            {
+              "title": "health insurance",
+              "sourceIds": ["montenegro-temp-residence"],
+              "legalFactIds": ["temporary-residence-over-90-days"],
+              "notes": []
+            },
+            {
+              "title": "accommodation proof",
+              "sourceIds": ["montenegro-temp-residence"],
+              "legalFactIds": ["temporary-residence-over-90-days"],
+              "notes": []
+            }
+          ],
+          "steps": [
+            {
+              "id": "family-step-1",
+              "title": "Enter Montenegro",
+              "description": "Enter Montenegro",
+              "sourceIds": ["montenegro-temp-residence"],
+              "legalFactIds": ["temporary-residence-over-90-days"],
+              "documents": [],
+              "manualReviewQuestions": []
+            },
+            {
+              "id": "family-step-2",
+              "title": "Submit temporary residence application for family reunification",
+              "description": "Submit temporary residence application for family reunification",
+              "sourceIds": ["montenegro-temp-residence"],
+              "legalFactIds": ["temporary-residence-over-90-days"],
+              "documents": [],
+              "manualReviewQuestions": []
+            },
+            {
+              "id": "family-step-3",
+              "title": "Await decision",
+              "description": "Await decision",
+              "sourceIds": ["montenegro-temp-residence"],
+              "legalFactIds": ["temporary-residence-over-90-days"],
+              "documents": [],
+              "manualReviewQuestions": []
+            }
+          ],
+          "blockers": [],
+          "unlocks": [],
+          "difficulty": {
+            "documents": 3,
+            "cost": 3,
+            "approvalRisk": 3,
+            "speed": 3,
+            "adaptation": 4
+          },
+          "publicationStatusSuggestion": "reviewed",
+          "confidence": "high"
+        },
+        {
+          "id": "study",
+          "title": "Study",
+          "routeType": "study",
+          "goals": ["residence", "compare"],
+          "stayDurations": ["six_to_twelve_months", "more_than_year"],
+          "entryCountries": ["RU"],
+          "exitCountries": ["ME"],
+          "transitRisks": [],
+          "sourceIds": ["montenegro-temp-residence"],
+          "legalFactIds": ["temporary-residence-over-90-days"],
+          "requirementIds": ["req-temp-residence-application"],
+          "personalizationRuleIds": [],
+          "manualReviewQuestions": [],
+          "documents": [
+            {
+              "title": "valid passport",
+              "sourceIds": ["montenegro-temp-residence"],
+              "legalFactIds": ["temporary-residence-over-90-days"],
+              "notes": []
+            },
+            {
+              "title": "enrollment certificate from Montenegrin institution",
+              "sourceIds": ["montenegro-temp-residence"],
+              "legalFactIds": ["temporary-residence-over-90-days"],
+              "notes": []
+            },
+            {
+              "title": "health insurance",
+              "sourceIds": ["montenegro-temp-residence"],
+              "legalFactIds": ["temporary-residence-over-90-days"],
+              "notes": []
+            },
+            {
+              "title": "accommodation proof",
+              "sourceIds": ["montenegro-temp-residence"],
+              "legalFactIds": ["temporary-residence-over-90-days"],
+              "notes": []
+            },
+            {
+              "title": "sufficient funds",
+              "sourceIds": ["montenegro-temp-residence"],
+              "legalFactIds": ["temporary-residence-over-90-days"],
+              "notes": []
+            }
+          ],
+          "steps": [
+            {
+              "id": "study-step-1",
+              "title": "Apply and be accepted by educational institution",
+              "description": "Apply and be accepted by educational institution",
+              "sourceIds": ["montenegro-temp-residence"],
+              "legalFactIds": ["temporary-residence-over-90-days"],
+              "documents": [],
+              "manualReviewQuestions": []
+            },
+            {
+              "id": "study-step-2",
+              "title": "Enter Montenegro",
+              "description": "Enter Montenegro",
+              "sourceIds": ["montenegro-temp-residence"],
+              "legalFactIds": ["temporary-residence-over-90-days"],
+              "documents": [],
+              "manualReviewQuestions": []
+            },
+            {
+              "id": "study-step-3",
+              "title": "Apply for temporary residence for study",
+              "description": "Apply for temporary residence for study",
+              "sourceIds": ["montenegro-temp-residence"],
+              "legalFactIds": ["temporary-residence-over-90-days"],
+              "documents": [],
+              "manualReviewQuestions": []
+            }
+          ],
+          "blockers": [],
+          "unlocks": [],
+          "difficulty": {
+            "documents": 3,
+            "cost": 3,
+            "approvalRisk": 3,
+            "speed": 3,
+            "adaptation": 4
+          },
+          "publicationStatusSuggestion": "reviewed",
+          "confidence": "high"
+        },
+        {
+          "id": "pets",
+          "title": "Pets (dogs, cats, ferrets)",
+          "routeType": "pets",
+          "goals": ["family", "compare"],
+          "stayDurations": ["up_to_one_month", "one_to_three_months"],
+          "entryCountries": ["RU"],
+          "exitCountries": ["ME"],
+          "transitRisks": [],
+          "sourceIds": ["montenegro-pets-certificate"],
+          "legalFactIds": ["pets-health-certificate"],
+          "requirementIds": ["req-pet-health-certificate"],
+          "personalizationRuleIds": [],
+          "manualReviewQuestions": [],
+          "documents": [
+            {
+              "title": "animal health certificate for non-commercial movement",
+              "sourceIds": ["montenegro-pets-certificate"],
+              "legalFactIds": ["pets-health-certificate"],
+              "notes": []
+            },
+            {
+              "title": "vaccination records",
+              "sourceIds": ["montenegro-pets-certificate"],
+              "legalFactIds": ["pets-health-certificate"],
+              "notes": []
+            },
+            {
+              "title": "microchip",
+              "sourceIds": ["montenegro-pets-certificate"],
+              "legalFactIds": ["pets-health-certificate"],
+              "notes": []
+            }
+          ],
+          "steps": [
+            {
+              "id": "pets-step-1",
+              "title": "Obtain animal health certificate before travel",
+              "description": "Obtain animal health certificate before travel",
+              "sourceIds": ["montenegro-pets-certificate"],
+              "legalFactIds": ["pets-health-certificate"],
+              "documents": [],
+              "manualReviewQuestions": []
+            },
+            {
+              "id": "pets-step-2",
+              "title": "Ensure pet meets EU-style requirements (microchip, rabies vaccination)",
+              "description": "Ensure pet meets EU-style requirements (microchip, rabies vaccination)",
+              "sourceIds": ["montenegro-pets-certificate"],
+              "legalFactIds": ["pets-health-certificate"],
+              "documents": [],
+              "manualReviewQuestions": []
+            },
+            {
+              "id": "pets-step-3",
+              "title": "Present certificate at border",
+              "description": "Present certificate at border",
+              "sourceIds": ["montenegro-pets-certificate"],
+              "legalFactIds": ["pets-health-certificate"],
+              "documents": [],
+              "manualReviewQuestions": []
+            }
+          ],
+          "blockers": [],
+          "unlocks": [],
+          "difficulty": {
+            "documents": 2,
+            "cost": 2,
+            "approvalRisk": 2,
+            "speed": 3,
+            "adaptation": 2
+          },
+          "publicationStatusSuggestion": "reviewed",
+          "confidence": "high"
+        }
+      ],
+      "personalizationRules": [],
+      "reviewLog": [
+        {
+          "round": 1,
+          "issue": "DeepSeek review issue",
+          "action": "corrected"
+        },
+        {
+          "round": 1,
+          "issue": "Первичный полный ответ DeepSeek был слишком большим: v4-pro timeout, v4-flash завершился по length и дал непригодный общий JSON.",
+          "action": "Граф разбит на отдельные country objects и отправлен на исправление."
+        },
+        {
+          "round": 2,
+          "issue": "Официальная сверка выявила страновые ошибки и недоказанные утверждения.",
+          "action": "DeepSeek получил проверенные официальные факты и вернул отдельный parseable JSON по стране."
+        },
+        {
+          "round": 3,
+          "issue": "Нестандартные routeType enum и недостаточные источники по отдельным веткам.",
+          "action": "routeType нормализованы к production enum; спорные маршруты помечены needs_review/reference_only/source_needed."
+        },
+        {
+          "round": 1,
+          "issue": "DeepSeek produced the initial country graph draft.",
+          "action": "Draft was treated as untrusted source and checked against official sources."
+        },
+        {
+          "round": 2,
+          "issue": "Official-source objections were sent back to DeepSeek.",
+          "action": "Country-split corrected drafts were generated for GE, AM, RS, TR and ME."
+        },
+        {
+          "round": 3,
+          "issue": "DeepSeek output used non-contract field shapes and publication labels.",
+          "action": "Normalized ME graph into the repository production graph schema."
+        }
+      ],
+      "manualReviewQuestions": [
+        "Confirm that Russian citizens have no other visa-free options beyond 30 days for tourism.",
+        "Verify if any bilateral agreement allows longer visa-free stay for Russian citizens beyond 30 days.",
+        "Check if medium_stay route for Russian citizens requires a visa or can be covered by other means."
+      ]
+    }
+  ]
+}

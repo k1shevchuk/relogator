@@ -1,0 +1,14 @@
+[
+  {
+    "id": "hungary-guest-self-employment",
+    "title": "OIF Hungary: guest self-employment",
+    "url": "https://oif.gov.hu/factsheets/residence-permit-for-guest-self-employment",
+    "sourceType": "official_body",
+    "countryCode": "HU",
+    "language": "en",
+    "lastReviewedAt": "2026-06-18",
+    "description": "Официальная справка по ВНЖ для гостевой самозанятости",
+    "confidence": "medium",
+    "appliesToCitizenship": ["RU"]
+  }
+]

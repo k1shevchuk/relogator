@@ -1,0 +1,14 @@
+{
+  "code": "TR",
+  "name": "Турция",
+  "slug": "turkiye",
+  "status": "reviewed",
+  "summary": "Безвизовый туристический въезд и отдельная процедура ВНЖ.",
+  "sourceIds": [
+    "turkiye-mfa-visa-info",
+    "turkiye-residence-permit",
+    "turkiye-oecd-migration-2025",
+    "turkiye-invest-business"
+  ],
+  "lastReviewedAt": "2026-06-18"
+}

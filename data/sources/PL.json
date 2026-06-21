@@ -1,0 +1,14 @@
+[
+  {
+    "id": "poland-national-visa",
+    "title": "МИД Польши: национальная виза D",
+    "url": "https://www.gov.pl/web/diplomacy/visas",
+    "sourceType": "official_body",
+    "countryCode": "PL",
+    "language": "en",
+    "lastReviewedAt": "2026-06-18",
+    "description": "Официальная информация о национальной визе и сроках пребывания",
+    "confidence": "high",
+    "appliesToCitizenship": ["RU"]
+  }
+]

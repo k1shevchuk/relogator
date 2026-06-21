@@ -1,0 +1,14 @@
+[
+  {
+    "id": "bulgaria-visa",
+    "title": "МИД Болгарии: визы",
+    "url": "https://www.mfa.bg/en/services-travel/consular-services/travel-bulgaria/visa-bulgaria",
+    "sourceType": "official_body",
+    "countryCode": "BG",
+    "language": "en",
+    "lastReviewedAt": "2026-06-18",
+    "description": "Официальная справка по визам, долгосрочным визам и ВНЖ",
+    "confidence": "high",
+    "appliesToCitizenship": ["RU"]
+  }
+]

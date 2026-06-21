@@ -1,0 +1,26 @@
+[
+  {
+    "id": "spain-non-lucrative-visa",
+    "title": "МИД Испании: ВНЖ без права работы",
+    "url": "https://www.exteriores.gob.es/Consulados/losangeles/en/ServiciosConsulares/Paginas/Consular/Visado-de-residencia-no-lucrativa.aspx",
+    "sourceType": "consulate",
+    "countryCode": "ES",
+    "language": "en",
+    "lastReviewedAt": "2026-06-18",
+    "description": "Консульский перечень документов для национальной визы без права работы",
+    "confidence": "medium",
+    "appliesToCitizenship": ["RU"]
+  },
+  {
+    "id": "eurostat-migr-resfirst",
+    "title": "Eurostat migr_resfirst: первые разрешения на проживание",
+    "url": "https://ec.europa.eu/eurostat/databrowser/view/migr_resfirst/default/table",
+    "sourceType": "statistics",
+    "countryCode": "ES",
+    "language": "en",
+    "lastReviewedAt": "2026-06-18",
+    "description": "Статистика первых разрешений на проживание в Европе по причинам и гражданству",
+    "confidence": "medium",
+    "appliesToCitizenship": ["RU"]
+  }
+]

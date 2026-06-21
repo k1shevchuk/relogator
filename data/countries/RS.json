@@ -1,0 +1,13 @@
+{
+  "code": "RS",
+  "name": "Сербия",
+  "slug": "serbia",
+  "status": "reviewed",
+  "summary": "Короткий безвизовый въезд и отдельные процедуры временного проживания.",
+  "sourceIds": [
+    "serbia-mfa-russia-visa-regime",
+    "serbia-temporary-residence",
+    "serbia-stat-foreign-migration"
+  ],
+  "lastReviewedAt": "2026-06-18"
+}
