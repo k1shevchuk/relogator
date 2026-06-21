@@ -1,5 +1,7 @@
 import type { Metadata } from "next"
 import { Geist_Mono, Inter } from "next/font/google"
+import { CookieNotice } from "@/components/cookie-notice"
+import { SiteFooter } from "@/components/site-footer"
 import "./globals.css"
 
 const inter = Inter({
@@ -29,7 +31,11 @@ export default function RootLayout({
       lang="ru"
       className={`${inter.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="flex min-h-full flex-col">
+        {children}
+        <SiteFooter />
+        <CookieNotice />
+      </body>
     </html>
   )
 }

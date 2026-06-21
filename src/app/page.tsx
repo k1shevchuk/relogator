@@ -4,6 +4,7 @@ import {
   ArrowRight,
   ClipboardCheck,
   FileText,
+  LockKeyhole,
   Map,
   ShieldCheck,
 } from "lucide-react"
@@ -24,9 +25,13 @@ import { dataManifest } from "@/domain/data-catalog"
 import { routes } from "@/domain/routes"
 
 export default function Home() {
-  const examples = routes
-    .filter((route) => route.publicationStatus === "reviewed")
-    .slice(0, 3)
+  const popularRoutes = [
+    "georgia-visa-free-one-year",
+    "serbia-temporary-residence-business-work",
+    "armenia-visa-free-180",
+  ]
+    .map((routeId) => routes.find((route) => route.id === routeId))
+    .filter((route): route is (typeof routes)[number] => Boolean(route))
   const countryCount = countries.length
   const routeCount = routes.length
 
@@ -103,35 +108,45 @@ export default function Home() {
         <section className="flex flex-col gap-4">
           <div className="flex flex-col gap-2">
             <h2 className="font-heading text-2xl font-semibold">
-              Несколько примеров маршрутов
+              Топ-3 популярных направления
             </h2>
             <p className="text-sm leading-6 text-muted-foreground">
-              Это не весь каталог, а несколько проверенных карточек из базы.
-              После анкеты пользователь увидит практические варианты с
-              документами и рисками.
+              Стартовый список MVP для быстрых сценариев из РФ. После
+              накопления анкет этот блок нужно заменить реальной статистикой
+              выбора пользователей. Пошаговый план открывается после входа.
             </p>
           </div>
           <div className="grid gap-4 md:grid-cols-3">
-            {examples.map((route) => (
-              <Card key={route.id} className="rounded-lg">
-                <CardHeader>
-                  <CardTitle>
-                    {
-                      countries.find(
-                        (country) => country.code === route.countryCode
-                      )?.name
-                    }
-                  </CardTitle>
-                  <CardDescription>{route.title}</CardDescription>
-                </CardHeader>
-                <CardContent className="flex flex-col gap-3 text-sm leading-6 text-muted-foreground">
-                  <p>{route.shortDescription}</p>
-                  <div className="flex items-center gap-2 text-foreground">
-                    <FileText />
-                    <span>{route.documents.length} ключевых документа</span>
-                  </div>
-                </CardContent>
-              </Card>
+            {popularRoutes.map((route) => (
+              <Link
+                key={route.id}
+                href={`/routes/${route.id}`}
+                className="group rounded-lg outline-none focus-visible:ring-3 focus-visible:ring-ring/50"
+              >
+                <Card className="h-full rounded-lg transition-colors group-hover:bg-muted/50">
+                  <CardHeader>
+                    <CardTitle>
+                      {
+                        countries.find(
+                          (country) => country.code === route.countryCode
+                        )?.name
+                      }
+                    </CardTitle>
+                    <CardDescription>{route.title}</CardDescription>
+                  </CardHeader>
+                  <CardContent className="flex flex-col gap-3 text-sm leading-6 text-muted-foreground">
+                    <p>{route.shortDescription}</p>
+                    <div className="flex items-center gap-2 text-foreground">
+                      <FileText />
+                      <span>{route.documents.length} ключевых документа</span>
+                    </div>
+                    <div className="flex items-center gap-2 text-foreground">
+                      <LockKeyhole />
+                      <span>План доступен после входа</span>
+                    </div>
+                  </CardContent>
+                </Card>
+              </Link>
             ))}
           </div>
         </section>

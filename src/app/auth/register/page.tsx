@@ -3,6 +3,7 @@ import { UserPlus } from "lucide-react"
 
 import { SiteHeader } from "@/components/site-header"
 import { Button } from "@/components/ui/button"
+import { Checkbox } from "@/components/ui/checkbox"
 import {
   Card,
   CardContent,
@@ -26,9 +27,10 @@ export default async function RegisterPage({
   searchParams: Promise<{
     error?: string | string[]
     message?: string | string[]
+    next?: string | string[]
   }>
 }) {
-  const { error, message } = await readAuthSearchParams(searchParams)
+  const { error, message, next } = await readAuthSearchParams(searchParams)
   const configured = isSupabaseConfigured()
 
   return (
@@ -49,6 +51,7 @@ export default async function RegisterPage({
             {!configured && <SupabaseSetupNotice />}
             <AuthFormMessage error={error} message={message} />
             <form action={signUpAction} className="flex flex-col gap-4">
+              <input name="next" type="hidden" value={next} />
               <div className="flex flex-col gap-2">
                 <Label htmlFor="email">Email</Label>
                 <Input
@@ -70,6 +73,50 @@ export default async function RegisterPage({
                   required
                 />
               </div>
+              <label className="flex cursor-pointer items-start gap-3 text-sm leading-6">
+                <Checkbox
+                  name="termsAccepted"
+                  required
+                  aria-label="Согласие с пользовательским соглашением"
+                />
+                <span>
+                  Я принимаю{" "}
+                  <Link
+                    className="underline-offset-4 hover:underline"
+                    href="/legal/terms"
+                    target="_blank"
+                  >
+                    пользовательское соглашение
+                  </Link>
+                  .
+                </span>
+              </label>
+              <label className="flex cursor-pointer items-start gap-3 text-sm leading-6">
+                <Checkbox
+                  name="personalDataConsent"
+                  required
+                  aria-label="Согласие на обработку персональных данных"
+                />
+                <span>
+                  Я даю отдельное{" "}
+                  <Link
+                    className="underline-offset-4 hover:underline"
+                    href="/legal/personal-data-consent"
+                    target="_blank"
+                  >
+                    согласие на обработку персональных данных
+                  </Link>{" "}
+                  и ознакомлен с{" "}
+                  <Link
+                    className="underline-offset-4 hover:underline"
+                    href="/legal/privacy"
+                    target="_blank"
+                  >
+                    политикой обработки персональных данных
+                  </Link>
+                  .
+                </span>
+              </label>
               <Button type="submit" disabled={!configured}>
                 <UserPlus data-icon="inline-start" />
                 Зарегистрироваться

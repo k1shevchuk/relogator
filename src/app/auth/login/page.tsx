@@ -26,9 +26,10 @@ export default async function LoginPage({
   searchParams: Promise<{
     error?: string | string[]
     message?: string | string[]
+    next?: string | string[]
   }>
 }) {
-  const { error, message } = await readAuthSearchParams(searchParams)
+  const { error, message, next } = await readAuthSearchParams(searchParams)
   const configured = isSupabaseConfigured()
 
   return (
@@ -49,6 +50,7 @@ export default async function LoginPage({
             {!configured && <SupabaseSetupNotice />}
             <AuthFormMessage error={error} message={message} />
             <form action={signInAction} className="flex flex-col gap-4">
+              <input name="next" type="hidden" value={next} />
               <div className="flex flex-col gap-2">
                 <Label htmlFor="email">Email</Label>
                 <Input
@@ -83,7 +85,7 @@ export default async function LoginPage({
               </Link>
               <Link
                 className="underline-offset-4 hover:underline"
-                href="/auth/register"
+                href={`/auth/register?${new URLSearchParams({ next })}`}
               >
                 Создать аккаунт
               </Link>

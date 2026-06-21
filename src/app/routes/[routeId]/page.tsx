@@ -1,8 +1,11 @@
-import { notFound } from "next/navigation"
+import { notFound, redirect } from "next/navigation"
 
 import { SiteHeader } from "@/components/site-header"
 import { getRoute, routes } from "@/domain/routes"
 import { RouteDetailClient } from "@/features/routes/route-detail-client"
+import { getCurrentSupabaseUser } from "@/lib/supabase/server"
+
+export const dynamic = "force-dynamic"
 
 export function generateStaticParams() {
   return routes.map((route) => ({ routeId: route.id }))
@@ -17,6 +20,17 @@ export default async function RoutePage({
 
   if (!getRoute(routeId)) {
     notFound()
+  }
+
+  const user = await getCurrentSupabaseUser()
+
+  if (!user) {
+    redirect(
+      `/auth/login?${new URLSearchParams({
+        message: "Войдите, чтобы открыть пошаговый план и сохранить прогресс.",
+        next: `/routes/${routeId}`,
+      })}`
+    )
   }
 
   return (

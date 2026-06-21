@@ -3,7 +3,11 @@
 import { headers } from "next/headers"
 import { redirect } from "next/navigation"
 
-import { getAuthCallbackUrl, isSupabaseConfigured } from "@/lib/supabase/config"
+import {
+  getAuthCallbackUrl,
+  isSupabaseConfigured,
+  sanitizeNextPath,
+} from "@/lib/supabase/config"
 import { createSupabaseServerClient } from "@/lib/supabase/server"
 import {
   newPasswordSchema,
@@ -13,23 +17,31 @@ import {
 } from "@/features/auth/validation"
 
 export async function signInAction(formData: FormData) {
+  const nextPath = sanitizeNextPath(String(formData.get("next") ?? ""))
   const result = await signInWithEmail(formData)
 
   if (result.status === "error") {
-    redirectWithMessage("/auth/login", "error", result.message)
+    redirectWithMessage("/auth/login", "error", result.message, {
+      next: nextPath,
+    })
   }
 
-  redirect("/account")
+  redirect(nextPath)
 }
 
 export async function signUpAction(formData: FormData) {
+  const nextPath = sanitizeNextPath(String(formData.get("next") ?? ""))
   const result = await signUpWithEmail(formData)
 
   if (result.status === "error") {
-    redirectWithMessage("/auth/register", "error", result.message)
+    redirectWithMessage("/auth/register", "error", result.message, {
+      next: nextPath,
+    })
   }
 
-  redirectWithMessage("/auth/login", "message", result.message)
+  redirectWithMessage("/auth/login", "message", result.message, {
+    next: nextPath,
+  })
 }
 
 export async function requestPasswordResetAction(formData: FormData) {
@@ -98,16 +110,23 @@ async function signUpWithEmail(formData: FormData): Promise<AuthActionState> {
   const credentials = signUpSchema.safeParse(readFormFields(formData))
 
   if (!credentials.success) {
-    return authErrorState("Укажите корректный email и пароль от 8 символов.")
+    return authErrorState(
+      "Укажите корректный email, пароль от 8 символов и подтвердите оба согласия."
+    )
   }
 
+  const { email, password } = credentials.data
   const supabase = await createSupabaseServerClient()
   const { error } = await supabase.auth.signUp({
-    ...credentials.data,
+    email,
+    password,
     options: {
-      emailRedirectTo: getAuthCallbackUrl("/account", {
-        requestOrigin: await getRequestOrigin(),
-      }),
+      emailRedirectTo: getAuthCallbackUrl(
+        sanitizeNextPath(String(formData.get("next") ?? "")),
+        {
+          requestOrigin: await getRequestOrigin(),
+        }
+      ),
     },
   })
 
@@ -193,6 +212,8 @@ function readFormFields(formData: FormData) {
       .trim()
       .toLowerCase(),
     password: String(formData.get("password") ?? ""),
+    personalDataConsent: formData.get("personalDataConsent") === "on",
+    termsAccepted: formData.get("termsAccepted") === "on",
   }
 }
 
@@ -220,7 +241,8 @@ function authErrorState(message: string): AuthActionState {
 function redirectWithMessage(
   path: string,
   key: "error" | "message",
-  value: string
+  value: string,
+  extraParams: Record<string, string> = {}
 ) {
-  redirect(`${path}?${new URLSearchParams({ [key]: value })}`)
+  redirect(`${path}?${new URLSearchParams({ [key]: value, ...extraParams })}`)
 }

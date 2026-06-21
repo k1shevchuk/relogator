@@ -211,7 +211,16 @@ export function SpecialistRequestForm({
             />
             <span>
               Я согласен передать ответы анкеты, выбранную страну, маршрут и
-              вопрос специалисту для ответа по консультации.
+              вопрос специалисту для ответа по консультации. Передача данных
+              выполняется с учетом{" "}
+              <Link
+                className="underline-offset-4 hover:underline"
+                href="/legal/privacy"
+                target="_blank"
+              >
+                политики обработки персональных данных
+              </Link>
+              .
             </span>
           </label>
 

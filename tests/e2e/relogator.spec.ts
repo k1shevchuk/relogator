@@ -33,7 +33,7 @@ test("empty questionnaire step cannot be skipped", async ({ page }) => {
   ).toBeVisible()
 })
 
-test("user can complete questionnaire and open a route plan", async ({
+test("user can complete questionnaire, request help and see protected route plan", async ({
   page,
 }) => {
   await page.goto("/")
@@ -72,25 +72,9 @@ test("user can complete questionnaire and open a route plan", async ({
   ).toBeVisible()
 
   await page
-    .getByRole("link", { name: /Открыть пошаговый план/ })
+    .getByRole("button", { name: "Задать вопрос специалисту" })
     .first()
     .click()
-  await expect(page).toHaveURL(/\/routes\//)
-
-  await expect(
-    page.getByRole("heading", { name: "Пошаговый план" })
-  ).toBeVisible()
-  await expect(
-    page.getByRole("heading", { name: "Персональная оценка" })
-  ).toBeVisible()
-  await expect(
-    page.getByRole("heading", { name: "Что проверить до решения" })
-  ).toBeVisible()
-  await expect(
-    page.getByRole("heading", { name: "Что сделать в первые 30 дней" })
-  ).toBeVisible()
-
-  await page.getByRole("button", { name: "Задать вопрос специалисту" }).click()
   await page.getByLabel("Имя").fill("Анна")
   await page.getByLabel("Способ связи").fill("@anna")
   await page
@@ -104,6 +88,19 @@ test("user can complete questionnaire and open a route plan", async ({
   await expect(page.getByText("Локальный реестр заявок")).toBeVisible()
   await expect(page.getByText("Анна")).toBeVisible()
   await expect(page.getByRole("button", { name: "Скачать JSON" })).toBeEnabled()
+})
+
+test("route plan is protected for guests", async ({ page }) => {
+  await page.goto("/routes/armenia-visa-free-180")
+
+  await expect(page).toHaveURL(/\/auth\/login/)
+  await expect(page).toHaveURL(/next=%2Froutes%2Farmenia-visa-free-180/)
+  await expect(
+    page.getByText("Войдите, чтобы открыть пошаговый план")
+  ).toBeVisible()
+  await expect(
+    page.getByRole("heading", { name: "Вход в Relogator" })
+  ).toBeVisible()
 })
 
 test("mobile layout has no horizontal page overflow", async ({ page }) => {
@@ -124,6 +121,12 @@ test("auth pages render without sending real emails", async ({ page }) => {
   await expect(page.getByRole("heading", { name: "Регистрация" })).toBeVisible()
   await expect(page.getByLabel("Email")).toBeVisible()
   await expect(page.getByLabel("Пароль")).toBeVisible()
+  await expect(
+    page.getByLabel("Согласие с пользовательским соглашением")
+  ).toBeVisible()
+  await expect(
+    page.getByLabel("Согласие на обработку персональных данных")
+  ).toBeVisible()
 
   await page.goto("/auth/login")
   await expect(

@@ -1,4 +1,5 @@
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
+import { sanitizeNextPath } from "@/lib/supabase/config"
 
 type AuthFormMessageProps = {
   error?: string
@@ -23,6 +24,7 @@ export function AuthFormMessage({ error, message }: AuthFormMessageProps) {
 export type AuthSearchParams = Promise<{
   error?: string | string[]
   message?: string | string[]
+  next?: string | string[]
 }>
 
 export async function readAuthSearchParams(searchParams: AuthSearchParams) {
@@ -31,6 +33,7 @@ export async function readAuthSearchParams(searchParams: AuthSearchParams) {
   return {
     error: firstParam(params.error),
     message: firstParam(params.message),
+    next: sanitizeNextPath(firstParam(params.next)),
   }
 }
 

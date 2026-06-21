@@ -16,7 +16,14 @@ export const signInSchema = z.object({
   password: passwordSchema,
 })
 
-export const signUpSchema = signInSchema
+export const signUpSchema = signInSchema.extend({
+  personalDataConsent: z.literal(true, {
+    error: "Нужно отдельное согласие на обработку персональных данных",
+  }),
+  termsAccepted: z.literal(true, {
+    error: "Нужно принять пользовательское соглашение",
+  }),
+})
 
 export const passwordResetRequestSchema = z.object({
   email: emailSchema,
