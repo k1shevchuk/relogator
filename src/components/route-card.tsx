@@ -38,6 +38,7 @@ type RouteCardProps = {
 export function RouteCard({ assessment, tone = "best" }: RouteCardProps) {
   const metricSummaries = buildRouteMetricSummaries(assessment)
   const toneStyle = routeCardToneStyles[tone]
+  const difficultyStyle = getDifficultyBadgeStyle(assessment.difficulty.level)
 
   return (
     <Card
@@ -67,7 +68,7 @@ export function RouteCard({ assessment, tone = "best" }: RouteCardProps) {
               variant={
                 assessment.difficulty.level <= 2 ? "secondary" : "outline"
               }
-              className={toneStyle.subtleBadge}
+              className={difficultyStyle.subtleBadge}
             >
               {assessment.difficulty.label}
             </Badge>
@@ -104,7 +105,7 @@ export function RouteCard({ assessment, tone = "best" }: RouteCardProps) {
               <span
                 className={cn(
                   "rounded-md px-2 py-1 text-xs font-medium",
-                  toneStyle.scoreBadge
+                  difficultyStyle.scoreBadge
                 )}
               >
                 сложность {assessment.difficulty.level}/5
@@ -186,34 +187,47 @@ const routeCardToneStyles: Record<
   {
     card: string
     header: string
-    scoreBadge: string
-    subtleBadge: string
   }
 > = {
   best: {
     card: "border-emerald-200/80",
     header: "border-l-emerald-600 bg-emerald-50/80",
-    scoreBadge: "bg-emerald-700 text-white",
-    subtleBadge: "border-emerald-200 bg-emerald-50 text-emerald-950",
   },
   medium: {
     card: "border-amber-200/90",
     header: "border-l-amber-500 bg-amber-50/80",
-    scoreBadge: "bg-amber-600 text-white",
-    subtleBadge: "border-amber-200 bg-amber-50 text-amber-950",
   },
   weak: {
     card: "border-rose-200/90",
     header: "border-l-rose-500 bg-rose-50/80",
-    scoreBadge: "bg-rose-700 text-white",
-    subtleBadge: "border-rose-200 bg-rose-50 text-rose-950",
   },
   blocked: {
     card: "border-zinc-300/90 opacity-90",
     header: "border-l-zinc-950 bg-zinc-100/80",
-    scoreBadge: "bg-zinc-950 text-white",
-    subtleBadge: "border-zinc-300 bg-zinc-100 text-zinc-950",
   },
+}
+
+function getDifficultyBadgeStyle(
+  level: RouteAssessment["difficulty"]["level"]
+) {
+  if (level <= 2) {
+    return {
+      scoreBadge: "bg-emerald-700 text-white",
+      subtleBadge: "border-emerald-200 bg-emerald-50 text-emerald-950",
+    }
+  }
+
+  if (level === 3) {
+    return {
+      scoreBadge: "bg-amber-600 text-white",
+      subtleBadge: "border-amber-200 bg-amber-50 text-amber-950",
+    }
+  }
+
+  return {
+    scoreBadge: "bg-rose-700 text-white",
+    subtleBadge: "border-rose-200 bg-rose-50 text-rose-950",
+  }
 }
 
 function InfoLine({
