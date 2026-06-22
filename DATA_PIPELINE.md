@@ -6,7 +6,7 @@
 
 Главный принцип:
 
-`источник -> факт -> условие -> правило -> маршрут -> персональная оценка`
+`источник -> факт -> условие -> этап -> переход -> правило -> маршрутный план -> персональная оценка`
 
 ИИ может помогать собирать, нормализовать и проверять данные, но основной пользовательский путь должен работать без обязательного ИИ.
 
@@ -22,11 +22,16 @@
 - справка о несудимости нужна не везде, но влияет на многие долгие статусы;
 - срок выезда меняет доступность маршрутов.
 
-Поэтому базовая модель должна быть графом правил и фактов:
+Поэтому базовая модель должна быть графом правил, фактов и состояний во времени:
 
 - страны;
 - источники;
 - маршруты;
+- этапы пребывания;
+- переходы между этапами;
+- законные действия;
+- дедлайны;
+- запасные планы;
 - требования;
 - документы;
 - шаги;
@@ -69,6 +74,12 @@ data/
   rules/
     route-availability.json
     dimension-scoring.json
+  route-graph/
+    stage-nodes.json
+    transition-edges.json
+    legal-actions.json
+    deadlines.json
+    fallback-plans.json
   drafts/
     agent-submissions/
 ```
@@ -150,6 +161,71 @@ type Route = {
   stepIds: string[]
   lastReviewedAt: string
   confidence: "high" | "medium" | "low"
+}
+```
+
+### StageNode
+
+```ts
+type StageNode = {
+  id: string
+  routeId: string
+  countryCode: string
+  type:
+    | "prepare"
+    | "entry"
+    | "registration"
+    | "short_stay"
+    | "extension"
+    | "status_application"
+    | "waiting_decision"
+    | "maintain_status"
+    | "exit"
+  title: string
+  description: string
+  sourceIds: string[]
+  lastReviewedAt: string
+  publicationStatus: "reviewed" | "needs_review" | "reference_only" | "stale"
+}
+```
+
+### TransitionEdge
+
+```ts
+type TransitionEdge = {
+  id: string
+  routeId: string
+  fromStageId: string
+  toStageId: string
+  transitionType:
+    | "extend"
+    | "apply_status"
+    | "change_basis"
+    | "exit_and_reenter"
+    | "switch_to_work"
+    | "switch_to_study"
+    | "switch_to_family"
+    | "finish_route"
+  legalActionIds: string[]
+  conditionIds: string[]
+  deadlineIds: string[]
+  fallbackPlanIds: string[]
+  sourceIds: string[]
+  confidence: "high" | "medium" | "low"
+}
+```
+
+### FallbackPlan
+
+```ts
+type FallbackPlan = {
+  id: string
+  title: string
+  appliesWhen: RuleCondition[]
+  actions: string[]
+  risks: string[]
+  sourceIds: string[]
+  needsSpecialistReview: boolean
 }
 ```
 
@@ -380,7 +456,7 @@ type RouteEvaluation = {
 Результат:
 
 - `simulateAnswerImpact`;
-- блок "Что может открыть больше вариантов";
+- блок "Что улучшит подбор и какие переходы станут доступнее";
 - шкалы документов, расходов, срока, риска и адаптации;
 - маршруты со статусами `available`, `conditional`, `blocked`, `unknown`.
 
@@ -545,7 +621,7 @@ type RouteEvaluation = {
 7. Замени жесткое скрытие маршрутов на статусы available, conditional, blocked, unknown.
 8. Добавь шкалы documents, cost, approvalRisk, speed, adaptation.
 9. Добавь simulateAnswerImpact(profile, field, value, routes).
-10. На результатах покажи блок "Что может открыть больше вариантов".
+10. На результатах покажи блок "Что улучшит подбор и какие переходы станут доступнее".
 
 Ограничения:
 - не пиши свою авторизацию;
@@ -581,7 +657,7 @@ type RouteEvaluation = {
 - подсказки "что изменится" во время анкеты;
 - результаты с группами доступности;
 - карточки со шкалами documents, cost, approvalRisk, speed, adaptation;
-- блок "Что может открыть больше вариантов";
+- блок "Что улучшит подбор и какие переходы станут доступнее";
 - понятное объяснение переводов, нотариальных копий и апостиля;
 - мобильную версию без горизонтальной прокрутки.
 

@@ -39,9 +39,8 @@ export function LegalPage({ children, description, title }: LegalPageProps) {
           <CardHeader>
             <CardTitle>Редакция от 21 июня 2026 года</CardTitle>
             <CardDescription>
-              Документ подготовлен для MVP. Перед публичной рекламой и приемом
-              платежей его нужно проверить с юристом и заполнить реквизиты
-              оператора.
+              Документ описывает текущие правила сервиса. Реквизиты оператора и
+              порядок платных услуг уточняются в соответствующих разделах.
             </CardDescription>
           </CardHeader>
           <CardContent className="prose prose-slate max-w-none text-sm leading-7 text-foreground">

@@ -46,6 +46,38 @@ export type PassportStatus =
   | "less_than_6_months"
   | "none"
 
+export type VisaHistory =
+  | "none"
+  | "short_stay_visas_last_3y"
+  | "long_stay_or_residence_last_5y"
+  | "not_sure"
+
+export type SchengenHistory =
+  | "valid_now"
+  | "expired_last_3y"
+  | "none"
+  | "not_sure"
+
+export type VisaIssue =
+  | "schengen_refusal"
+  | "other_visa_refusal"
+  | "entry_refusal"
+  | "overstay"
+  | "ban_or_deportation"
+  | "not_sure"
+
+export type PreparedDocument =
+  | "income_proof"
+  | "bank_statements"
+  | "employment_contract"
+  | "business_registration"
+  | "criminal_record_certificate"
+  | "marriage_certificate"
+  | "birth_certificates"
+  | "education_documents"
+  | "pet_documents"
+  | "translations_or_apostille"
+
 export type Companion = "alone" | "partner" | "children" | "parents" | "pets"
 
 export type MoneyLevel = "none" | "low" | "medium" | "high"
@@ -68,6 +100,10 @@ export type QuestionnaireDraft = {
   departureWindow?: DepartureWindow
   stayDuration?: StayDuration
   passportStatus?: PassportStatus
+  visaHistory?: VisaHistory
+  schengenHistory?: SchengenHistory
+  visaIssues?: VisaIssue[]
+  preparedDocuments?: PreparedDocument[]
   companions?: Companion[]
   hasProvableIncome?: boolean
   monthlyIncomeLevel?: MonthlyIncomeLevel

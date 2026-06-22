@@ -18,7 +18,7 @@
 
 Для каждой страны построить граф:
 
-`официальный источник -> правовой факт -> условие применимости -> документ -> маршрут -> шаг -> правило оценки -> персональный вывод`
+`официальный источник -> правовой факт -> условие применимости -> этап -> переход -> документ -> маршрутный план -> правило оценки -> персональный вывод`
 
 Граф должен учитывать:
 
@@ -31,6 +31,7 @@
 - внутренние правила целевой страны: въезд, пребывание, работа, ВНЖ, семья, учеба, бизнес, животные;
 - исключения, ограничения, санкционные/политические риски;
 - дату проверки и уверенность.
+- законные последовательности действий для долгого пребывания: въезд, разрешенный срок, продление, выезд и новый въезд там, где это подтверждено источником, смена основания, подача на статус, ожидание решения и запасной план.
 
 ## Что агент должен делать
 
@@ -155,6 +156,56 @@ data/drafts/production-graphs/graph-d-europe-schengen.json
           "confidence": "medium"
         }
       ],
+      "stageNodes": [
+        {
+          "id": "georgia-short-entry-stage",
+          "routeId": "georgia-short-entry-ru",
+          "stageType": "prepare|entry|registration|short_stay|extension|status_application|waiting_decision|maintain_status|exit",
+          "title": "Название этапа",
+          "description": "Что законно происходит на этом этапе",
+          "legalFactIds": [],
+          "sourceIds": [],
+          "deadlineIds": [],
+          "publicationStatusSuggestion": "needs_review",
+          "confidence": "medium"
+        }
+      ],
+      "transitionEdges": [
+        {
+          "id": "georgia-short-entry-to-extension",
+          "routeId": "georgia-short-entry-ru",
+          "fromStageId": "georgia-short-entry-stage",
+          "toStageId": "georgia-extension-stage",
+          "transitionType": "extend|apply_status|change_basis|exit_and_reenter|switch_to_work|switch_to_study|switch_to_family|finish_route",
+          "conditions": [],
+          "legalActions": [],
+          "deadlineIds": [],
+          "fallbackPlanIds": [],
+          "sourceIds": [],
+          "needsManualReview": true,
+          "confidence": "low"
+        }
+      ],
+      "deadlineNodes": [
+        {
+          "id": "georgia-extension-deadline",
+          "title": "Когда начать следующий шаг",
+          "rule": "Краткое правило или source_needed",
+          "bufferRecommendation": "Редакционная рекомендация или source_needed",
+          "sourceIds": [],
+          "confidence": "low"
+        }
+      ],
+      "fallbackPlans": [
+        {
+          "id": "georgia-extension-fallback",
+          "title": "Что делать, если переход не сработал",
+          "actions": [],
+          "risks": [],
+          "sourceIds": [],
+          "needsSpecialistReview": true
+        }
+      ],
       "personalizationRules": [
         {
           "id": "if-no-passport-block",
@@ -237,6 +288,14 @@ python C:\Users\kirill\.codex\skills\openrouter-delegate\scripts\openrouter_call
 - family;
 - study;
 - pets.
+
+Для каждой ветки обязательно опиши:
+- стартовый этап;
+- максимальный или ориентировочный срок первичного пребывания, если он есть в источнике;
+- законные переходы к следующему этапу;
+- что нужно сделать до дедлайна;
+- что делать, если переход невозможен, отказан или не подтвержден источником;
+- где нужна ручная проверка.
 
 Для каждой страны учти:
 - внутренние правила целевой страны;

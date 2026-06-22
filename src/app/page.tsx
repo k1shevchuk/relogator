@@ -82,7 +82,7 @@ export default async function Home() {
             <section className="rounded-lg border bg-foreground p-5 text-background shadow-sm sm:p-6">
               <div className="flex items-start justify-between gap-4">
                 <div className="flex flex-col gap-2">
-                  <p className="text-sm text-background/65">Каталог MVP</p>
+                  <p className="text-sm text-background/65">База маршрутов</p>
                   <h2 className="font-heading text-2xl font-semibold">
                     {countryCount} стран, {routeCount} маршрут, {sourceCount}{" "}
                     источник
@@ -96,8 +96,8 @@ export default async function Home() {
                 <Metric label="Цель" value={dataManifest.targetCountryCount} />
               </div>
               <p className="mt-5 text-sm leading-6 text-background/70">
-                Рабочие данные читаются из Supabase. Локальные файлы остаются
-                резервом и сидом для обновления базы.
+                Маршруты обновляются по проверенным источникам. Дата проверки
+                указана в карточке каждого маршрута.
               </p>
             </section>
 
@@ -106,7 +106,7 @@ export default async function Home() {
                 <h2 className="font-heading text-lg font-semibold">
                   Популярные направления
                 </h2>
-                <Badge variant="secondary">тестовый топ</Badge>
+                <Badge variant="secondary">часто смотрят</Badge>
               </div>
               <div className="grid gap-2">
                 {popularRoutes.map((route, index) => (
@@ -147,7 +147,7 @@ export default async function Home() {
           <ProcessItem
             icon={<Map />}
             title="Маршруты"
-            text="Система сравнивает связку пользователь, цель, страна и маршрут."
+            text="Сервис сравнивает вашу цель, страну, срок, документы и ограничения."
           />
           <ProcessItem
             icon={<ShieldCheck />}

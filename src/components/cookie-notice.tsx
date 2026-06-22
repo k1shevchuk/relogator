@@ -40,7 +40,7 @@ export function CookieNotice() {
         <p className="max-w-3xl text-sm leading-6 text-muted-foreground">
           Relogator использует технические cookies и локальное хранение для
           входа, сохранения анкеты, настроек и защиты сессии. Рекламная
-          аналитика в MVP не подключена. Подробнее:{" "}
+          аналитика не подключена. Подробнее:{" "}
           <Link
             className="text-foreground underline-offset-4 hover:underline"
             href="/legal/cookies"

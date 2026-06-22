@@ -12,7 +12,7 @@ export async function GET(request: Request) {
   if (!isSupabaseConfigured()) {
     return NextResponse.redirect(
       new URL(
-        `/auth/login?error=${encodeURIComponent("Supabase не настроен")}`,
+        `/auth/login?error=${encodeURIComponent("Вход временно недоступен")}`,
         requestUrl.origin
       )
     )

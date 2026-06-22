@@ -25,7 +25,17 @@ import {
   finalizeQuestionnaireDraft,
   validateQuestionnaireStep,
 } from "@/domain/questionnaire"
-import type { Companion, QuestionnaireDraft } from "@/domain/types"
+import {
+  buildLiveQuestionnaireHints,
+  calculateProfileReadiness,
+  type ReadinessTone,
+} from "@/domain/questionnaire-readiness"
+import type {
+  Companion,
+  PreparedDocument,
+  QuestionnaireDraft,
+  VisaIssue,
+} from "@/domain/types"
 import { summarizeProfile } from "@/features/questionnaire/profile-labels"
 import {
   companionOptions,
@@ -33,15 +43,20 @@ import {
   goalOptions,
   incomeOptions,
   passportOptions,
+  preparedDocumentOptions,
   profileStorageKey,
   questionnaireDraftSchema,
   questionnaireDraftStorageKey,
   savingsOptions,
+  schengenHistoryOptions,
   stayOptions,
   translationReadinessOptions,
   userProfileSchema,
+  visaHistoryOptions,
+  visaIssueOptions,
 } from "./profile-schema"
 import { saveQuestionnaireToServer } from "@/features/user-data/client"
+import { cn } from "@/lib/utils"
 
 const steps = [
   "Цель",
@@ -91,6 +106,11 @@ export function QuestionnaireFlow() {
   }, [values])
 
   const progress = useMemo(() => ((step + 1) / steps.length) * 100, [step])
+  const readiness = useMemo(() => calculateProfileReadiness(values), [values])
+  const readinessHints = useMemo(
+    () => buildLiveQuestionnaireHints(values).slice(0, 4),
+    [values]
+  )
 
   function nextStep() {
     const validation = validateQuestionnaireStep(step, values)
@@ -128,6 +148,32 @@ export function QuestionnaireFlow() {
       : [...current.filter((item) => item !== "alone"), value]
 
     setValue("companions", value === "alone" ? ["alone"] : next, {
+      shouldDirty: true,
+      shouldValidate: true,
+    })
+  }
+
+  function toggleVisaIssue(value: VisaIssue) {
+    const current = values.visaIssues ?? []
+    const next: VisaIssue[] = current.includes(value)
+      ? current.filter((item) => item !== value)
+      : value === "not_sure"
+        ? ["not_sure"]
+        : [...current.filter((item) => item !== "not_sure"), value]
+
+    setValue("visaIssues", next, {
+      shouldDirty: true,
+      shouldValidate: true,
+    })
+  }
+
+  function togglePreparedDocument(value: PreparedDocument) {
+    const current = values.preparedDocuments ?? []
+    const next = current.includes(value)
+      ? current.filter((item) => item !== value)
+      : [...current, value]
+
+    setValue("preparedDocuments", next, {
       shouldDirty: true,
       shouldValidate: true,
     })
@@ -171,6 +217,13 @@ export function QuestionnaireFlow() {
         </div>
         <Progress value={progress} aria-label="Прогресс анкеты" />
       </div>
+
+      <ReadinessPanel
+        score={readiness.score}
+        label={readiness.label}
+        description={readiness.description}
+        hints={readinessHints}
+      />
 
       <Card className="rounded-lg">
         <CardHeader>
@@ -332,6 +385,58 @@ export function QuestionnaireFlow() {
                 options={translationReadinessOptions}
                 setValue={setValue}
               />
+              <div className="grid gap-6 md:grid-cols-2">
+                <RadioField
+                  control={control}
+                  name="visaHistory"
+                  label="Какая визовая история у вас уже есть?"
+                  options={visaHistoryOptions}
+                  setValue={setValue}
+                />
+                <RadioField
+                  control={control}
+                  name="schengenHistory"
+                  label="Есть ли действующий или недавний шенген?"
+                  options={schengenHistoryOptions}
+                  setValue={setValue}
+                />
+              </div>
+              <fieldset className="flex flex-col gap-3">
+                <legend className="text-sm font-medium">
+                  Были ли сложные визовые ситуации?
+                </legend>
+                <p className="text-sm leading-6 text-muted-foreground">
+                  Это не закрывает маршрут автоматически, но помогает заранее
+                  отметить места, где нужна ручная проверка.
+                </p>
+                <div className="grid gap-3 md:grid-cols-2">
+                  {visaIssueOptions.map((option) => (
+                    <CheckboxChoice
+                      key={option.value}
+                      checked={(values.visaIssues ?? []).includes(option.value)}
+                      label={option.label}
+                      onToggle={() => toggleVisaIssue(option.value)}
+                    />
+                  ))}
+                </div>
+              </fieldset>
+              <fieldset className="flex flex-col gap-3">
+                <legend className="text-sm font-medium">
+                  Какие документы уже есть или легко подготовить?
+                </legend>
+                <div className="grid gap-3 md:grid-cols-2">
+                  {preparedDocumentOptions.map((option) => (
+                    <CheckboxChoice
+                      key={option.value}
+                      checked={(values.preparedDocuments ?? []).includes(
+                        option.value
+                      )}
+                      label={option.label}
+                      onToggle={() => togglePreparedDocument(option.value)}
+                    />
+                  ))}
+                </div>
+              </fieldset>
               <div className="grid gap-4 md:grid-cols-2">
                 <BooleanField
                   control={control}
@@ -374,7 +479,8 @@ export function QuestionnaireFlow() {
                 <AlertTitle>Анкета готова к расчету</AlertTitle>
                 <AlertDescription>
                   Расчет выполнится по структурированным правилам и официальным
-                  источникам, без обязательного использования ИИ.
+                  источникам. Визовая история и готовые документы помогут точнее
+                  показать ограничения маршрутов.
                 </AlertDescription>
               </Alert>
               <Summary draft={values} />
@@ -406,6 +512,66 @@ export function QuestionnaireFlow() {
       </div>
     </form>
   )
+}
+
+function ReadinessPanel({
+  description,
+  hints,
+  label,
+  score,
+}: {
+  description: string
+  hints: { tone: ReadinessTone; title: string; description: string }[]
+  label: string
+  score: number
+}) {
+  return (
+    <section className="rounded-lg border bg-card p-4 shadow-sm">
+      <div className="flex flex-col gap-3">
+        <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
+          <div className="flex flex-col gap-1">
+            <h2 className="font-heading text-lg font-semibold">
+              Готовность к подбору
+            </h2>
+            <p className="text-sm leading-6 text-muted-foreground">
+              {description}
+            </p>
+          </div>
+          <span className="w-fit rounded-md border bg-background px-2 py-1 text-sm font-medium">
+            {score}/100 · {label}
+          </span>
+        </div>
+        <Progress value={score} aria-label="Готовность анкеты к подбору" />
+        <p className="text-xs leading-5 text-muted-foreground">
+          Это не вероятность одобрения визы или ВНЖ. Показатель отражает,
+          хватает ли вводных для полезного подбора маршрутов.
+        </p>
+        <div className="grid gap-2 md:grid-cols-2">
+          {hints.map((hint) => (
+            <div
+              key={`${hint.tone}-${hint.title}`}
+              className={cn(
+                "rounded-md border p-3 text-sm",
+                readinessHintStyles[hint.tone]
+              )}
+            >
+              <p className="font-medium">{hint.title}</p>
+              <p className="mt-1 leading-5 text-muted-foreground">
+                {hint.description}
+              </p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  )
+}
+
+const readinessHintStyles: Record<ReadinessTone, string> = {
+  positive: "border-emerald-200 bg-emerald-50/70",
+  warning: "border-amber-200 bg-amber-50/70",
+  risk: "border-rose-200 bg-rose-50/70",
+  neutral: "border-border bg-background",
 }
 
 function safelyParseDraft(raw: string) {
@@ -453,11 +619,34 @@ function Choice({
   )
 }
 
+function CheckboxChoice({
+  checked,
+  label,
+  onToggle,
+}: {
+  checked: boolean
+  label: string
+  onToggle: () => void
+}) {
+  return (
+    <label className="flex cursor-pointer items-center gap-3 rounded-md border bg-background p-3 text-sm">
+      <Checkbox
+        checked={checked}
+        onCheckedChange={onToggle}
+        aria-label={label}
+      />
+      <span>{label}</span>
+    </label>
+  )
+}
+
 function RadioField<
   TName extends
     | "departureWindow"
     | "stayDuration"
     | "passportStatus"
+    | "visaHistory"
+    | "schengenHistory"
     | "monthlyIncomeLevel"
     | "savingsLevel"
     | "translationReadiness",
@@ -653,7 +842,7 @@ function getStepTitle(step: number): string {
     "Когда и на какой срок вы планируете уехать?",
     "Кто едет вместе с вами?",
     "Какие финансовые основания можно подтвердить?",
-    "Какие документы и бытовые требования уже понятны?",
+    "Что уже понятно по документам и визовой истории?",
     "Проверьте ответы перед расчетом",
   ][step]
 }

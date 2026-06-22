@@ -11,8 +11,8 @@ export default function SpecialistRequestsPage() {
             Заявки специалисту
           </h1>
           <p className="max-w-3xl text-base leading-7 text-muted-foreground">
-            Локальный список обращений, отправленных из форм Relogator в этом
-            браузере.
+            Список обращений, которые вы отправили из форм Relogator на этом
+            устройстве.
           </p>
         </div>
         <SpecialistRequestsClient />

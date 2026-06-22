@@ -6,7 +6,7 @@ import { routes } from "./routes"
 import { sources } from "./sources"
 
 describe("country and source catalogue", () => {
-  it("contains the MVP country set and keeps room for the 34-country expansion", () => {
+  it("contains the base country set and keeps room for the 34-country expansion", () => {
     const codes = countries.map((country) => country.code)
 
     expect(countries.length).toBeGreaterThanOrEqual(20)

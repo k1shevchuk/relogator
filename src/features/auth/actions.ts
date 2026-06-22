@@ -170,7 +170,7 @@ async function requestPasswordReset(
 
   return {
     message:
-      "Если email зарегистрирован, Supabase отправит письмо для восстановления пароля.",
+      "Если email зарегистрирован, мы отправим письмо для восстановления пароля.",
     status: "success",
   }
 }
@@ -229,9 +229,7 @@ async function getRequestOrigin() {
 }
 
 function authUnavailableState(): AuthActionState {
-  return authErrorState(
-    "Supabase не настроен: добавьте публичный URL и publishable/anon key."
-  )
+  return authErrorState("Вход временно недоступен. Попробуйте позже.")
 }
 
 function authErrorState(message: string): AuthActionState {

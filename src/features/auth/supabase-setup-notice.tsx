@@ -3,10 +3,10 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 export function SupabaseSetupNotice() {
   return (
     <Alert>
-      <AlertTitle>Supabase пока не настроен</AlertTitle>
+      <AlertTitle>Вход временно недоступен</AlertTitle>
       <AlertDescription>
-        Добавьте переменные окружения из `.env.example`, затем включите Auth в
-        Supabase Dashboard.
+        Мы уже знаем о проблеме. Попробуйте войти позже или продолжите подбор
+        без сохранения в аккаунт.
       </AlertDescription>
     </Alert>
   )

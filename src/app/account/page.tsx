@@ -52,7 +52,7 @@ export default async function AccountPage({
               <CardTitle>Войдите в аккаунт</CardTitle>
               <CardDescription>
                 После входа Relogator сможет сохранять анкеты, маршруты и заявки
-                на сервере.
+                в вашем аккаунте.
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -66,32 +66,25 @@ export default async function AccountPage({
     )
   }
 
-  const [profileResult, questionnairesResult, plansResult, requestsResult] =
-    await Promise.all([
-      supabase
-        .from("profiles")
-        .select("role, created_at")
-        .eq("id", user.id)
-        .maybeSingle(),
-      supabase
-        .from("user_questionnaires")
-        .select("id, created_at, updated_at")
-        .order("created_at", { ascending: false })
-        .limit(10),
-      supabase
-        .from("saved_route_plans")
-        .select("id, route_id, notes, created_at")
-        .order("created_at", { ascending: false })
-        .limit(10),
-      supabase
-        .from("specialist_requests")
-        .select("id, route_title, country_name, status, created_at")
-        .order("created_at", { ascending: false })
-        .limit(10),
-    ])
+  const [profileResult, plansResult, requestsResult] = await Promise.all([
+    supabase
+      .from("profiles")
+      .select("role, created_at")
+      .eq("id", user.id)
+      .maybeSingle(),
+    supabase
+      .from("saved_route_plans")
+      .select("id, route_id, notes, created_at")
+      .order("created_at", { ascending: false })
+      .limit(10),
+    supabase
+      .from("specialist_requests")
+      .select("id, route_title, country_name, status, created_at")
+      .order("created_at", { ascending: false })
+      .limit(10),
+  ])
 
   const role = profileResult.data?.role ?? "user"
-  const questionnaires = questionnairesResult.data ?? []
   const plans = plansResult.data ?? []
   const requests = requestsResult.data ?? []
 
@@ -109,14 +102,16 @@ export default async function AccountPage({
                 </h1>
                 <div className="flex flex-wrap gap-2 text-sm text-muted-foreground">
                   <span>{user.email}</span>
-                  <Badge variant="outline">role: {role}</Badge>
+                  {role === "admin" && (
+                    <Badge variant="outline">Администратор</Badge>
+                  )}
                 </div>
               </div>
             </div>
             <div className="flex flex-wrap gap-2">
               {role === "admin" && (
                 <Button asChild variant="outline">
-                  <Link href="/admin">Админ-раздел</Link>
+                  <Link href="/admin">Управление сервисом</Link>
                 </Button>
               )}
               <form action={signOutAction}>
@@ -128,13 +123,7 @@ export default async function AccountPage({
             </div>
           </section>
 
-          <div className="grid gap-4 md:grid-cols-3">
-            <SummaryCard
-              icon={<FileText />}
-              title="Анкеты"
-              value={questionnaires.length}
-              description="Последние сохраненные серверные анкеты."
-            />
+          <div className="grid gap-4 md:grid-cols-2">
             <SummaryCard
               icon={<Route />}
               title="Маршруты"
@@ -151,17 +140,19 @@ export default async function AccountPage({
 
           <section className="grid gap-4 lg:grid-cols-2">
             <RecordList
-              title="Последние анкеты"
-              empty="Серверных анкет пока нет."
-              rows={questionnaires.map((item) => ({
+              title="Сохраненные маршруты"
+              empty="Сохраненных маршрутов пока нет."
+              rows={plans.map((item) => ({
                 id: item.id,
-                title: `Анкета от ${formatDate(item.created_at)}`,
-                description: `Обновлена: ${formatDate(item.updated_at)}`,
+                title: item.route_id,
+                description: item.notes
+                  ? `${item.notes}, ${formatDate(item.created_at)}`
+                  : `Сохранен: ${formatDate(item.created_at)}`,
               }))}
             />
             <RecordList
               title="Заявки специалистам"
-              empty="Серверных заявок пока нет."
+              empty="Заявок пока нет."
               rows={requests.map((item) => ({
                 id: item.id,
                 title: `${item.country_name}: ${item.route_title}`,

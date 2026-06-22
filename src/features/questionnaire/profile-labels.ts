@@ -4,9 +4,13 @@ import {
   goalOptions,
   incomeOptions,
   passportOptions,
+  preparedDocumentOptions,
   savingsOptions,
+  schengenHistoryOptions,
   stayOptions,
   translationReadinessOptions,
+  visaHistoryOptions,
+  visaIssueOptions,
 } from "@/features/questionnaire/profile-schema"
 import type { UserProfile } from "@/domain/types"
 
@@ -34,6 +38,14 @@ export function summarizeProfile(profile: UserProfile): ProfileSummaryRow[] {
       value: findLabel(passportOptions, profile.passportStatus),
     },
     {
+      label: "Визы",
+      value: findLabel(visaHistoryOptions, profile.visaHistory),
+    },
+    {
+      label: "Шенген",
+      value: findLabel(schengenHistoryOptions, profile.schengenHistory),
+    },
+    {
       label: "Доход",
       value: `${profile.hasProvableIncome ? "можно подтвердить" : "не подтверждается"}; ${findLabel(
         incomeOptions,
@@ -56,6 +68,23 @@ export function summarizeProfile(profile: UserProfile): ProfileSummaryRow[] {
         translationReadinessOptions,
         profile.translationReadiness
       ),
+    },
+    {
+      label: "Готовые документы",
+      value: profile.preparedDocuments.length
+        ? profile.preparedDocuments
+            .slice(0, 3)
+            .map((value) => findLabel(preparedDocumentOptions, value))
+            .join(", ")
+        : "не отмечены",
+    },
+    {
+      label: "Сложные визовые ситуации",
+      value: profile.visaIssues.length
+        ? profile.visaIssues
+            .map((value) => findLabel(visaIssueOptions, value))
+            .join(", ")
+        : "не отмечены",
     },
   ]
 }

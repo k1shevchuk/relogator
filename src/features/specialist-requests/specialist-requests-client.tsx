@@ -38,11 +38,10 @@ export function SpecialistRequestsClient() {
     <div className="flex flex-col gap-5">
       <Alert>
         <FileText data-icon="inline-start" />
-        <AlertTitle>Локальный реестр заявок</AlertTitle>
+        <AlertTitle>Ваши заявки специалистам</AlertTitle>
         <AlertDescription>
-          Этот экран показывает копии заявок из текущего браузера.
-          Авторизованные заявки дополнительно сохраняются в Supabase и доступны
-          администратору через защищенный раздел.
+          Этот экран показывает заявки из текущего браузера. После входа новые
+          заявки также сохраняются в аккаунте.
         </AlertDescription>
       </Alert>
 
@@ -52,7 +51,7 @@ export function SpecialistRequestsClient() {
             Заявки специалисту
           </h2>
           <p className="text-sm text-muted-foreground">
-            Найдено локально: {requests.length}
+            Найдено: {requests.length}
           </p>
         </div>
         <div className="flex flex-col gap-2 sm:flex-row">
@@ -121,8 +120,8 @@ export function SpecialistRequestsClient() {
           <CardHeader>
             <CardTitle>Заявок пока нет</CardTitle>
             <CardDescription>
-              Отправьте тестовую заявку со страницы маршрута, чтобы проверить
-              локальный список и экспорт.
+              Откройте подходящий маршрут и задайте вопрос специалисту, если
+              хотите проверить документы, сроки или основание.
             </CardDescription>
           </CardHeader>
           <CardContent>

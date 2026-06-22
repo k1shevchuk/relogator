@@ -94,8 +94,8 @@ export function SpecialistRequestForm({
         <AlertTitle>Заявка сохранена</AlertTitle>
         <AlertDescription>
           Это заявка на консультацию, не гарантия результата. Для гостя она
-          сохранена локально; для вошедшего пользователя дополнительно
-          отправлена в Supabase.
+          сохранена в текущем браузере; после входа она также сохраняется в
+          аккаунте.
         </AlertDescription>
         <div className="mt-3">
           <Button asChild size="sm" variant="outline">

@@ -1,7 +1,10 @@
 import { expect, test, type Page } from "@playwright/test"
 
 test.beforeEach(async ({ page }) => {
-  await page.addInitScript(() => window.localStorage.clear())
+  await page.addInitScript(() => {
+    window.localStorage.clear()
+    window.localStorage.setItem("relogator_cookie_notice_accepted", "yes")
+  })
 })
 
 test("first questionnaire step has no preselected answer", async ({ page }) => {
@@ -39,7 +42,9 @@ test("user can complete questionnaire, request help and see protected route plan
   await page.goto("/")
 
   await expect(
-    page.getByRole("heading", { name: /Relogator подбирает/i })
+    page.getByRole("heading", {
+      name: /Спокойный план переезда вместо десятков вкладок и слухов/i,
+    })
   ).toBeVisible()
   await page.getByRole("link", { name: "Начать подбор" }).first().click()
 
@@ -59,16 +64,16 @@ test("user can complete questionnaire, request help and see protected route plan
 
   await expect(page).toHaveURL(/\/results/)
   await expect(
-    page.getByRole("heading", { name: "Подходящие маршруты" })
+    page.getByRole("heading", { name: "Подходящие маршруты", exact: true })
   ).toBeVisible()
   await expect(
-    page.getByText("Что может открыть больше вариантов")
+    page.locator("h2").filter({ hasText: "Что улучшит подбор" })
   ).toBeVisible()
   await expect(
-    page.getByRole("heading", { name: "Можно начинать сейчас" }).first()
+    page.getByRole("heading", { name: "Наиболее подходящие маршруты" }).first()
   ).toBeVisible()
   await expect(
-    page.getByRole("heading", { name: "Подходит, потому что" }).first()
+    page.getByRole("heading", { name: "Почему подходит" }).first()
   ).toBeVisible()
 
   await page
@@ -85,7 +90,7 @@ test("user can complete questionnaire, request help and see protected route plan
   await expect(page.getByText("Заявка сохранена")).toBeVisible()
   await page.getByRole("link", { name: "Открыть список заявок" }).click()
   await expect(page).toHaveURL(/\/specialist-requests/)
-  await expect(page.getByText("Локальный реестр заявок")).toBeVisible()
+  await expect(page.getByText("Ваши заявки специалистам")).toBeVisible()
   await expect(page.getByText("Анна")).toBeVisible()
   await expect(page.getByRole("button", { name: "Скачать JSON" })).toBeEnabled()
 })
@@ -167,7 +172,7 @@ test("quick exit scenario shows routes that can start now", async ({
   })
 
   await expect(
-    page.getByRole("heading", { name: "Можно начинать сейчас" })
+    page.getByRole("heading", { name: "Наиболее подходящие маршруты" })
   ).toBeVisible()
 })
 
@@ -190,7 +195,7 @@ test("residence, family and pet scenarios keep conditional explanations", async 
   })
 
   await expect(
-    page.getByRole("heading", { name: "Можно после подготовки" })
+    page.getByRole("heading", { name: "Менее подходящие" })
   ).toBeVisible()
   await expect(
     page.getByText("Можно планировать переезд с животным").first()
@@ -217,7 +222,7 @@ test("no passport and no income scenario shows blocked and unlock explanations",
   })
 
   await expect(
-    page.getByRole("heading", { name: "Не подходит по текущим ответам" })
+    page.getByRole("heading", { name: "Не подходят сейчас" })
   ).toBeVisible()
   await expect(
     page.getByText("Оформить или заменить загранпаспорт").first()
@@ -267,5 +272,9 @@ async function fillQuestionnaire(page: Page, scenario: QuestionnaireScenario) {
   }
   await page.getByRole("button", { name: /Дальше/ }).click()
 
-  await page.getByRole("button", { name: "Показать маршруты" }).click()
+  const submitButton = page.getByRole("button", { name: "Показать маршруты" })
+  await expect(submitButton).toBeVisible()
+  await expect(submitButton).toBeEnabled()
+  await submitButton.click()
+  await page.waitForURL(/\/results/, { timeout: 10_000 })
 }

@@ -43,7 +43,7 @@ export default async function RegisterPage({
               <h1 className="text-xl font-semibold">Регистрация</h1>
             </CardTitle>
             <CardDescription>
-              Создайте аккаунт по email и паролю. Supabase отправит письмо для
+              Создайте аккаунт по email и паролю. Мы отправим письмо для
               подтверждения адреса.
             </CardDescription>
           </CardHeader>

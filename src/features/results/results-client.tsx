@@ -166,12 +166,11 @@ export function ResultsClient({ catalogue }: ResultsClientProps) {
             <ListChecks className="mt-0.5 size-4 text-primary" />
             <div className="flex flex-col gap-1">
               <h2 className="font-heading text-lg font-semibold">
-                Что может открыть больше вариантов
+                Что улучшит подбор
               </h2>
               <p className="text-sm leading-6 text-muted-foreground">
                 Ниже показано, какие ответы меняют статус или сложность
-                маршрутов. Это справочная симуляция по тем же правилам, что и
-                основной расчет.
+                маршрутов по тем же правилам, что и основной расчет.
               </p>
             </div>
           </div>
@@ -359,12 +358,31 @@ function ImpactCard({ impact }: { impact: AnswerImpact }) {
       <ul className="flex flex-col gap-1 text-xs leading-5 text-muted-foreground">
         {impact.changedRoutes.slice(0, 3).map((route) => (
           <li key={route.routeId}>
-            {route.countryName}: {route.afterStatus}
+            {route.countryName}: {impactChangeLabels[route.change]},{" "}
+            {impactStatusLabels[route.afterStatus]}
           </li>
         ))}
       </ul>
     </article>
   )
+}
+
+const impactStatusLabels: Record<RouteAssessment["status"], string> = {
+  available: "маршрут подходит",
+  conditional: "нужно выполнить условия",
+  blocked: "пока не подходит",
+  unknown: "нужна ручная проверка",
+}
+
+const impactChangeLabels: Record<
+  AnswerImpact["changedRoutes"][number]["change"],
+  string
+> = {
+  opened: "становится доступнее",
+  easier: "становится проще",
+  harder: "становится сложнее",
+  blocked: "может закрыться",
+  changed: "меняется оценка",
 }
 
 function subscribeProfileStorage(onStoreChange: () => void) {

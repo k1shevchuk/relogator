@@ -41,8 +41,8 @@ export default async function ResetPasswordPage({
               <h1 className="text-xl font-semibold">Сброс пароля</h1>
             </CardTitle>
             <CardDescription>
-              Укажите email аккаунта. Supabase отправит письмо со ссылкой на
-              установку нового пароля.
+              Укажите email аккаунта. Мы отправим письмо со ссылкой на установку
+              нового пароля.
             </CardDescription>
           </CardHeader>
           <CardContent className="flex flex-col gap-4">

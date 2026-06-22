@@ -1,9 +1,16 @@
 import Link from "next/link"
-import { Compass, Route } from "lucide-react"
+import { Compass, LogOut, Route } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
+import { signOutAction } from "@/features/auth/actions"
+import {
+  createSupabaseServerClient,
+  isSupabaseConfigured,
+} from "@/lib/supabase/server"
 
-export function SiteHeader() {
+export async function SiteHeader() {
+  const isSignedIn = await getIsSignedIn()
+
   return (
     <header className="sticky top-0 z-40 border-b bg-background/85 backdrop-blur-xl">
       <div className="mx-auto flex w-full max-w-7xl items-center justify-between gap-4 px-4 py-3 sm:px-6">
@@ -28,9 +35,23 @@ export function SiteHeader() {
           <Button asChild variant="ghost" size="sm" className="px-2">
             <Link href="/account">Кабинет</Link>
           </Button>
-          <Button asChild variant="outline" size="sm" className="px-2">
-            <Link href="/auth">Войти</Link>
-          </Button>
+          {isSignedIn ? (
+            <form action={signOutAction}>
+              <Button
+                type="submit"
+                variant="outline"
+                size="sm"
+                className="px-2"
+              >
+                <LogOut data-icon="inline-start" />
+                Выйти
+              </Button>
+            </form>
+          ) : (
+            <Button asChild variant="outline" size="sm" className="px-2">
+              <Link href="/auth">Войти</Link>
+            </Button>
+          )}
           <Button asChild size="sm" className="px-2 sm:px-3">
             <Link href="/questionnaire">
               <Route data-icon="inline-start" />
@@ -41,4 +62,21 @@ export function SiteHeader() {
       </div>
     </header>
   )
+}
+
+async function getIsSignedIn() {
+  if (!isSupabaseConfigured()) {
+    return false
+  }
+
+  try {
+    const supabase = await createSupabaseServerClient()
+    const {
+      data: { user },
+    } = await supabase.auth.getUser()
+
+    return Boolean(user)
+  } catch {
+    return false
+  }
 }

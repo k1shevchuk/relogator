@@ -131,7 +131,7 @@ export function RouteCard({ assessment, tone = "best" }: RouteCardProps) {
               items={assessment.blockers.slice(0, 3)}
             />
             <RouteList
-              title="Что может открыть"
+              title="Что улучшит подбор"
               items={(assessment.unlocks.length
                 ? assessment.unlocks
                 : ["Подтвердить вводные и сверить источник перед действием."]

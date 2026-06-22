@@ -66,7 +66,6 @@ export function RouteDetailClient({
   const whyFits = assessment?.whyFits ?? [
     "Это справочный маршрут из базы Relogator. Пройдите анкету, чтобы увидеть персональную оценку.",
   ]
-  const firstActions = route.steps.slice(0, 3).map((step) => step.title)
   const activeStep = route.steps[activeStepIndex] ?? route.steps[0]
   const activeStepSources = getSourcesFromCatalogue(
     catalogue,
@@ -193,7 +192,7 @@ export function RouteDetailClient({
                   ))}
                 </div>
               )}
-              <div className="grid gap-5 md:grid-cols-4">
+              <div className="grid gap-5 md:grid-cols-3">
                 <DetailList
                   title="Почему подходит"
                   items={whyFits.slice(0, 4)}
@@ -203,14 +202,13 @@ export function RouteDetailClient({
                   items={blockers.slice(0, 4)}
                 />
                 <DetailList
-                  title="Что может открыть"
+                  title="Что улучшит маршрут"
                   items={
                     assessment?.unlocks.length
                       ? assessment.unlocks.slice(0, 4)
                       : ["Сверить источник и уточнить вводные перед действием."]
                   }
                 />
-                <DetailList title="Первые действия" items={firstActions} />
               </div>
             </CardContent>
           </Card>
@@ -221,8 +219,8 @@ export function RouteDetailClient({
                 <h2>Пошаговый план</h2>
               </CardTitle>
               <CardDescription>
-                Один шаг на экран: что сделать, какие документы держать под
-                рукой, где сверить правило и на чем чаще ошибаются.
+                Проходите маршрут по шагам: проверка вводных, документы, выезд,
+                въезд и действия после прибытия.
               </CardDescription>
             </CardHeader>
             <CardContent className="grid gap-5 xl:grid-cols-[190px_minmax(0,1fr)]">

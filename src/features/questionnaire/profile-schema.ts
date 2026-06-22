@@ -5,11 +5,15 @@ import type {
   MoneyLevel,
   MonthlyIncomeLevel,
   PassportStatus,
+  PreparedDocument,
   QuestionnaireDraft,
   RelocationGoal,
+  SchengenHistory,
   StayDuration,
   TranslationReadiness,
   UserProfile,
+  VisaHistory,
+  VisaIssue,
 } from "@/domain/types"
 
 export const profileStorageKey = "relogator-profile"
@@ -46,6 +50,38 @@ const passportStatusSchema = z.enum([
   "less_than_6_months",
   "none",
 ])
+const visaHistorySchema = z.enum([
+  "none",
+  "short_stay_visas_last_3y",
+  "long_stay_or_residence_last_5y",
+  "not_sure",
+])
+const schengenHistorySchema = z.enum([
+  "valid_now",
+  "expired_last_3y",
+  "none",
+  "not_sure",
+])
+const visaIssueSchema = z.enum([
+  "schengen_refusal",
+  "other_visa_refusal",
+  "entry_refusal",
+  "overstay",
+  "ban_or_deportation",
+  "not_sure",
+])
+const preparedDocumentSchema = z.enum([
+  "income_proof",
+  "bank_statements",
+  "employment_contract",
+  "business_registration",
+  "criminal_record_certificate",
+  "marriage_certificate",
+  "birth_certificates",
+  "education_documents",
+  "pet_documents",
+  "translations_or_apostille",
+])
 const companionSchema = z.enum([
   "alone",
   "partner",
@@ -73,6 +109,10 @@ export const userProfileSchema = z.object({
   departureWindow: departureWindowSchema,
   stayDuration: stayDurationSchema,
   passportStatus: passportStatusSchema,
+  visaHistory: visaHistorySchema.default("not_sure"),
+  schengenHistory: schengenHistorySchema.default("not_sure"),
+  visaIssues: z.array(visaIssueSchema).default([]),
+  preparedDocuments: z.array(preparedDocumentSchema).default([]),
   companions: z.array(companionSchema).min(1),
   hasProvableIncome: z.boolean(),
   monthlyIncomeLevel: incomeSchema,
@@ -94,6 +134,10 @@ export const questionnaireDraftSchema = z.object({
   departureWindow: departureWindowSchema.optional(),
   stayDuration: stayDurationSchema.optional(),
   passportStatus: passportStatusSchema.optional(),
+  visaHistory: visaHistorySchema.optional(),
+  schengenHistory: schengenHistorySchema.optional(),
+  visaIssues: z.array(visaIssueSchema).optional(),
+  preparedDocuments: z.array(preparedDocumentSchema).optional(),
   companions: z.array(companionSchema).optional(),
   hasProvableIncome: z.boolean().optional(),
   monthlyIncomeLevel: incomeSchema.optional(),
@@ -179,6 +223,57 @@ export const passportOptions: { value: PassportStatus; label: string }[] = [
   { value: "six_to_18_months", label: "Да, срок 6-18 месяцев" },
   { value: "less_than_6_months", label: "Да, срок меньше 6 месяцев" },
   { value: "none", label: "Нет" },
+]
+
+export const visaHistoryOptions: { value: VisaHistory; label: string }[] = [
+  { value: "none", label: "Визовой истории почти нет" },
+  {
+    value: "short_stay_visas_last_3y",
+    label: "Были краткосрочные визы за последние 3 года",
+  },
+  {
+    value: "long_stay_or_residence_last_5y",
+    label: "Была долгосрочная виза, ВНЖ или похожий статус за 5 лет",
+  },
+  { value: "not_sure", label: "Не уверен, что это важно" },
+]
+
+export const schengenHistoryOptions: {
+  value: SchengenHistory
+  label: string
+}[] = [
+  { value: "valid_now", label: "Есть действующий шенген" },
+  { value: "expired_last_3y", label: "Был шенген за последние 3 года" },
+  { value: "none", label: "Шенгена не было" },
+  { value: "not_sure", label: "Не уверен или нужно проверить даты" },
+]
+
+export const visaIssueOptions: { value: VisaIssue; label: string }[] = [
+  { value: "schengen_refusal", label: "Был отказ по шенгенской визе" },
+  { value: "other_visa_refusal", label: "Был отказ по другой визе" },
+  { value: "entry_refusal", label: "Был отказ во въезде на границе" },
+  { value: "overstay", label: "Была просрочка разрешенного срока" },
+  { value: "ban_or_deportation", label: "Был запрет на въезд или депортация" },
+  { value: "not_sure", label: "Не уверен, нужно проверить историю" },
+]
+
+export const preparedDocumentOptions: {
+  value: PreparedDocument
+  label: string
+}[] = [
+  { value: "income_proof", label: "Подтверждение дохода" },
+  { value: "bank_statements", label: "Банковские выписки" },
+  { value: "employment_contract", label: "Трудовой договор" },
+  { value: "business_registration", label: "Документы ИП или компании" },
+  { value: "criminal_record_certificate", label: "Справка о несудимости" },
+  { value: "marriage_certificate", label: "Свидетельство о браке" },
+  { value: "birth_certificates", label: "Свидетельства о рождении детей" },
+  { value: "education_documents", label: "Дипломы и документы об образовании" },
+  { value: "pet_documents", label: "Документы на животное" },
+  {
+    value: "translations_or_apostille",
+    label: "Переводы, нотариальные копии или апостиль",
+  },
 ]
 
 export const companionOptions: { value: Companion; label: string }[] = [
