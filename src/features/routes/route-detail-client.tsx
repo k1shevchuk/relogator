@@ -489,7 +489,7 @@ function DetailList({ items, title }: { items: string[]; title: string }) {
 
 function filterDisplayedCommonMistakes(items: string[]) {
   return items.filter(
-    (item) => !/справочн\w*\s+страниц\w*\s+гарантией/i.test(item)
+    (item) => !/справочн[а-яё]*\s+страниц[а-яё]*\s+гарантией/iu.test(item)
   )
 }
 
