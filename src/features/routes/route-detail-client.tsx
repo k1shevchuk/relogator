@@ -91,9 +91,9 @@ export function RouteDetailClient({
         </Link>
       </Button>
 
-      <section className="grid gap-6 lg:grid-cols-[1fr_340px]">
+      <section className="grid gap-6 lg:grid-cols-[1fr_360px]">
         <div className="flex flex-col gap-5">
-          <div className="flex flex-col gap-3">
+          <div className="flex flex-col gap-3 rounded-lg border bg-card p-5 shadow-sm sm:p-6">
             <div className="flex flex-wrap gap-2">
               <Badge variant="secondary">{country.name}</Badge>
               <Badge variant="outline">
@@ -107,7 +107,7 @@ export function RouteDetailClient({
                 <Badge variant="outline">{assessment.statusLabel}</Badge>
               )}
             </div>
-            <h1 className="font-heading text-3xl font-semibold leading-tight">
+            <h1 className="max-w-3xl font-heading text-4xl font-semibold leading-tight">
               {route.title}
             </h1>
             <p className="max-w-3xl text-base leading-7 text-muted-foreground">
@@ -153,7 +153,7 @@ export function RouteDetailClient({
             </Card>
           )}
 
-          <Card className="rounded-lg">
+          <Card className="rounded-lg shadow-sm">
             <CardHeader>
               <CardTitle>
                 <h2>Персональная оценка</h2>
@@ -206,7 +206,7 @@ export function RouteDetailClient({
             </CardContent>
           </Card>
 
-          <Card className="rounded-lg">
+          <Card className="overflow-hidden rounded-lg shadow-sm">
             <CardHeader>
               <CardTitle>
                 <h2>Пошаговый план</h2>
@@ -225,7 +225,7 @@ export function RouteDetailClient({
                       onClick={() => setActiveStepIndex(index)}
                       className={
                         index === activeStepIndex
-                          ? "flex w-full items-start gap-2 rounded-md border border-primary bg-primary/10 p-2 text-left text-sm"
+                          ? "flex w-full items-start gap-2 rounded-md border border-primary bg-secondary p-2 text-left text-sm shadow-sm"
                           : "flex w-full items-start gap-2 rounded-md border bg-background p-2 text-left text-sm hover:bg-muted"
                       }
                     >
@@ -238,7 +238,7 @@ export function RouteDetailClient({
                 ))}
               </ol>
 
-              <article className="flex min-w-0 flex-col gap-5 rounded-lg border bg-background p-4">
+              <article className="flex min-w-0 flex-col gap-5 rounded-lg border bg-background p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.65)]">
                 <div className="flex flex-col gap-2">
                   <div className="flex flex-wrap items-center gap-2 text-sm text-muted-foreground">
                     <span>
@@ -260,7 +260,7 @@ export function RouteDetailClient({
                     {activeStepActions.map((item) => (
                       <li
                         key={item}
-                        className="flex gap-2 rounded-md border bg-card p-3 text-sm leading-6"
+                        className="flex gap-2 rounded-md border bg-card p-3 text-sm leading-6 shadow-sm"
                       >
                         <CheckCircle2 className="mt-1 size-4 shrink-0 text-primary" />
                         <span>{item}</span>
@@ -350,7 +350,7 @@ export function RouteDetailClient({
 
         <aside className="flex flex-col gap-4">
           {profile && (
-            <Card className="rounded-lg">
+            <Card className="rounded-lg shadow-sm">
               <CardHeader>
                 <CardTitle>Ваши вводные</CardTitle>
               </CardHeader>
@@ -370,7 +370,7 @@ export function RouteDetailClient({
             </Card>
           )}
 
-          <Card className="rounded-lg">
+          <Card className="rounded-lg shadow-sm">
             <CardHeader>
               <CardTitle>Документы по маршруту</CardTitle>
             </CardHeader>
@@ -383,7 +383,7 @@ export function RouteDetailClient({
             </CardContent>
           </Card>
 
-          <Card className="rounded-lg">
+          <Card className="rounded-lg shadow-sm">
             <CardHeader>
               <CardTitle>Источники</CardTitle>
             </CardHeader>

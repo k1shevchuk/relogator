@@ -33,10 +33,14 @@ type RouteCardProps = {
 
 export function RouteCard({ assessment }: RouteCardProps) {
   return (
-    <Card className="rounded-lg">
-      <CardHeader>
-        <CardTitle>{assessment.country.name}</CardTitle>
-        <CardDescription>{assessment.route.title}</CardDescription>
+    <Card className="overflow-hidden rounded-lg border bg-card shadow-sm">
+      <CardHeader className="border-l-4 border-l-primary bg-secondary/35">
+        <div className="flex flex-col gap-1">
+          <CardTitle className="text-2xl">{assessment.country.name}</CardTitle>
+          <CardDescription className="text-sm">
+            {assessment.route.title}
+          </CardDescription>
+        </div>
         <CardAction>
           <div className="flex flex-wrap justify-end gap-2">
             <Badge variant="outline">
@@ -55,83 +59,70 @@ export function RouteCard({ assessment }: RouteCardProps) {
           </div>
         </CardAction>
       </CardHeader>
-      <CardContent className="flex flex-col gap-4">
-        <p className="text-sm leading-6 text-muted-foreground">
-          {assessment.route.shortDescription}
-        </p>
-        <div className="grid gap-3 sm:grid-cols-3">
-          <InfoLine
-            icon={<CalendarDays />}
-            label="Сроки"
-            value={assessment.timeline}
-          />
-          <InfoLine
-            icon={<WalletCards />}
-            label="Расходы"
-            value={assessment.cost}
-          />
-          <InfoLine
-            icon={<FileText />}
-            label="Документы"
-            value={`${assessment.documents.length} ключевых пунктов`}
-          />
+      <CardContent className="flex flex-col gap-5 pt-5">
+        <div className="grid gap-4 lg:grid-cols-[1fr_360px]">
+          <div className="flex flex-col gap-4">
+            <p className="text-sm leading-6 text-muted-foreground">
+              {assessment.route.shortDescription}
+            </p>
+            <div className="grid gap-3 sm:grid-cols-3">
+              <InfoLine
+                icon={<CalendarDays />}
+                label="Сроки"
+                value={assessment.timeline}
+              />
+              <InfoLine
+                icon={<WalletCards />}
+                label="Расходы"
+                value={assessment.cost}
+              />
+              <InfoLine
+                icon={<FileText />}
+                label="Документы"
+                value={`${assessment.documents.length} ключевых пунктов`}
+              />
+            </div>
+          </div>
+          <div className="rounded-lg border bg-background p-3">
+            <div className="mb-3 flex items-center justify-between gap-2">
+              <span className="text-sm font-medium">Оценка маршрута</span>
+              <span className="rounded-md bg-primary px-2 py-1 text-xs font-medium text-primary-foreground">
+                {assessment.difficulty.level}/5
+              </span>
+            </div>
+            <div className="grid gap-2">
+              {scaleOrder.map((key) => (
+                <ScaleLine
+                  key={key}
+                  label={scaleLabels[key]}
+                  level={assessment.scales[key].level}
+                />
+              ))}
+            </div>
+          </div>
         </div>
-        <div className="grid gap-2 md:grid-cols-5">
-          {scaleOrder.map((key) => (
-            <ScaleLine
-              key={key}
-              label={scaleLabels[key]}
-              level={assessment.scales[key].level}
-            />
-          ))}
+        <div className="grid gap-4 lg:grid-cols-4">
+          <RouteList
+            title="Почему подходит"
+            items={assessment.whyFits.slice(0, 3)}
+          />
+          <RouteList
+            title="Подготовить первым"
+            items={assessment.documents.slice(0, 3)}
+          />
+          <RouteList
+            title="Что может помешать"
+            items={assessment.blockers.slice(0, 3)}
+          />
+          <RouteList
+            title="Что может открыть"
+            items={(assessment.unlocks.length
+              ? assessment.unlocks
+              : ["Подтвердить вводные и сверить источник перед действием."]
+            ).slice(0, 3)}
+          />
         </div>
         <Separator />
-        <div className="grid gap-4 lg:grid-cols-5">
-          <div className="flex flex-col gap-2">
-            <h3 className="text-sm font-medium">Подходит, потому что...</h3>
-            <ul className="flex flex-col gap-1 text-sm leading-6 text-muted-foreground">
-              {assessment.whyFits.slice(0, 3).map((reason) => (
-                <li key={reason}>{reason}</li>
-              ))}
-            </ul>
-          </div>
-          <div className="flex flex-col gap-2">
-            <h3 className="text-sm font-medium">Подготовить первым</h3>
-            <ul className="flex flex-col gap-1 text-sm leading-6 text-muted-foreground">
-              {assessment.documents.slice(0, 3).map((document) => (
-                <li key={document}>{document}</li>
-              ))}
-            </ul>
-          </div>
-          <div className="flex flex-col gap-2">
-            <h3 className="text-sm font-medium">Что может помешать</h3>
-            <ul className="flex flex-col gap-1 text-sm leading-6 text-muted-foreground">
-              {assessment.blockers.slice(0, 3).map((blocker) => (
-                <li key={blocker}>{blocker}</li>
-              ))}
-            </ul>
-          </div>
-          <div className="flex flex-col gap-2">
-            <h3 className="text-sm font-medium">Что может открыть</h3>
-            <ul className="flex flex-col gap-1 text-sm leading-6 text-muted-foreground">
-              {(assessment.unlocks.length
-                ? assessment.unlocks
-                : ["Подтвердить вводные и сверить источник перед действием."]
-              )
-                .slice(0, 3)
-                .map((unlock) => (
-                  <li key={unlock}>{unlock}</li>
-                ))}
-            </ul>
-          </div>
-          <div className="flex flex-col gap-2">
-            <h3 className="text-sm font-medium">Когда нужен специалист</h3>
-            <p className="text-sm leading-6 text-muted-foreground">
-              {assessment.route.steps.at(-1)?.specialistHelp ??
-                "Если основание, документы или сроки вызывают сомнения."}
-            </p>
-          </div>
-        </div>
         <div className="flex flex-col gap-2 text-xs text-muted-foreground">
           <span>
             Проверено: {assessment.lastReviewedAt}. Статус страны:{" "}
@@ -153,7 +144,7 @@ export function RouteCard({ assessment }: RouteCardProps) {
           </div>
         </div>
       </CardContent>
-      <CardFooter className="flex flex-col items-stretch gap-3 sm:flex-row sm:items-start sm:justify-between">
+      <CardFooter className="flex flex-col items-stretch gap-3 bg-muted/35 sm:flex-row sm:items-start sm:justify-between">
         <Button asChild>
           <Link href={`/routes/${assessment.route.id}`}>
             Открыть пошаговый план
@@ -182,7 +173,7 @@ function InfoLine({
   value: string
 }) {
   return (
-    <div className="flex gap-2 rounded-md border bg-background p-3">
+    <div className="flex gap-2 rounded-md border bg-background p-3 shadow-[inset_0_1px_0_rgba(255,255,255,0.55)]">
       <span className="mt-0.5 text-primary [&_svg]:size-4">{icon}</span>
       <span className="flex min-w-0 flex-col gap-1">
         <span className="text-xs font-medium text-muted-foreground">
@@ -212,7 +203,7 @@ const scaleLabels: Record<AssessmentScaleKey, string> = {
 
 function ScaleLine({ label, level }: { label: string; level: number }) {
   return (
-    <div className="flex flex-col gap-2 rounded-md border bg-background p-3">
+    <div className="grid grid-cols-[88px_1fr_32px] items-center gap-2">
       <span className="flex items-center gap-1 text-xs font-medium text-muted-foreground">
         {label === "Риск" && <ShieldAlert className="size-3.5" />}
         {label}
@@ -233,6 +224,19 @@ function ScaleLine({ label, level }: { label: string; level: number }) {
         ))}
       </div>
       <span className="text-xs text-muted-foreground">{level}/5</span>
+    </div>
+  )
+}
+
+function RouteList({ items, title }: { items: string[]; title: string }) {
+  return (
+    <div className="flex flex-col gap-2 rounded-md border bg-background p-3">
+      <h3 className="text-sm font-medium">{title}</h3>
+      <ul className="flex flex-col gap-1 text-sm leading-6 text-muted-foreground">
+        {items.map((item) => (
+          <li key={item}>{item}</li>
+        ))}
+      </ul>
     </div>
   )
 }

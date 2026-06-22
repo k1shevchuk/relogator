@@ -49,38 +49,38 @@
 }
 
 :root {
-  --background: #f8fafc;
-  --foreground: #0f172a;
+  --background: #f6f7f2;
+  --foreground: #151713;
   --card: #ffffff;
-  --card-foreground: #0f172a;
+  --card-foreground: #151713;
   --popover: #ffffff;
-  --popover-foreground: #0f172a;
-  --primary: #2563eb;
+  --popover-foreground: #151713;
+  --primary: #0f766e;
   --primary-foreground: #ffffff;
-  --secondary: #e0f2fe;
-  --secondary-foreground: #0f172a;
-  --muted: #f1f5f9;
-  --muted-foreground: #475569;
-  --accent: #ecfdf5;
-  --accent-foreground: #0f172a;
+  --secondary: #e9f5f1;
+  --secondary-foreground: #143832;
+  --muted: #edf0e8;
+  --muted-foreground: #5a6258;
+  --accent: #fff3d8;
+  --accent-foreground: #3e2a08;
   --destructive: #b91c1c;
-  --border: #e2e8f0;
-  --input: #cbd5e1;
-  --ring: #2563eb;
-  --chart-1: #2563eb;
-  --chart-2: #15803d;
-  --chart-3: #b45309;
-  --chart-4: #475569;
-  --chart-5: #0f172a;
-  --radius: 0.5rem;
+  --border: #d9ddd2;
+  --input: #c9d0c4;
+  --ring: #0f766e;
+  --chart-1: #0f766e;
+  --chart-2: #b45309;
+  --chart-3: #7c3aed;
+  --chart-4: #be123c;
+  --chart-5: #334155;
+  --radius: 0.625rem;
   --sidebar: #ffffff;
-  --sidebar-foreground: #0f172a;
-  --sidebar-primary: #2563eb;
+  --sidebar-foreground: #151713;
+  --sidebar-primary: #0f766e;
   --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: #f1f5f9;
-  --sidebar-accent-foreground: #0f172a;
-  --sidebar-border: #e2e8f0;
-  --sidebar-ring: #2563eb;
+  --sidebar-accent: #edf0e8;
+  --sidebar-accent-foreground: #151713;
+  --sidebar-border: #d9ddd2;
+  --sidebar-ring: #0f766e;
 }
 
 .dark {
@@ -125,6 +125,14 @@
     @apply bg-background text-foreground;
     font-family: var(--font-inter), "Segoe UI", Arial, sans-serif;
     font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+    background-image:
+      linear-gradient(180deg, rgba(15, 118, 110, 0.06), transparent 320px),
+      linear-gradient(90deg, rgba(21, 23, 19, 0.035) 1px, transparent 1px),
+      linear-gradient(180deg, rgba(21, 23, 19, 0.035) 1px, transparent 1px);
+    background-size:
+      auto,
+      36px 36px,
+      36px 36px;
   }
   a,
   button:not(:disabled),

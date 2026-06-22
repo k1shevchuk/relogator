@@ -2,7 +2,13 @@
 
 import { useMemo, useState, useSyncExternalStore } from "react"
 import Link from "next/link"
-import { ClipboardList, Filter, ListChecks, RotateCcw } from "lucide-react"
+import {
+  ClipboardList,
+  Filter,
+  ListChecks,
+  MapPinned,
+  RotateCcw,
+} from "lucide-react"
 
 import { LegalNotice } from "@/components/legal-notice"
 import { RouteCard } from "@/components/route-card"
@@ -87,53 +93,64 @@ export function ResultsClient({ catalogue }: ResultsClientProps) {
     <div className="flex flex-col gap-6">
       <LegalNotice />
 
-      <section className="flex flex-col gap-3 rounded-lg border bg-card p-3 sm:p-4">
-        <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
-          <div className="flex flex-col gap-1">
-            <h2 className="font-heading text-xl font-semibold">
-              Подходящие маршруты
-            </h2>
-            <p className="max-w-2xl text-sm leading-6 text-muted-foreground">
-              Подбор основан на ответах анкеты, структурированных правилах и
-              официальных источниках. Страна не была первым фильтром.
+      <section className="grid gap-4 rounded-lg border bg-card p-4 shadow-sm lg:grid-cols-[260px_1fr]">
+        <div className="flex flex-col justify-between gap-4 rounded-lg bg-foreground p-4 text-background">
+          <div className="flex items-center justify-between gap-3">
+            <MapPinned className="size-6 text-background/70" />
+            <span className="rounded-md bg-background/10 px-2 py-1 text-xs text-background/75">
+              расчет
+            </span>
+          </div>
+          <div>
+            <div className="text-5xl font-semibold leading-none">
+              {results.length}
+            </div>
+            <p className="mt-2 text-sm leading-6 text-background/70">
+              маршрутов проверяются по вашей анкете и ограничениям
             </p>
           </div>
-          <Button asChild variant="outline" size="sm">
-            <Link href="/questionnaire">
-              <RotateCcw data-icon="inline-start" />
-              Изменить анкету
-            </Link>
-          </Button>
         </div>
-        <div className="flex flex-col gap-2 rounded-md border bg-background p-2">
-          <div className="flex flex-wrap items-center justify-between gap-2">
-            <h3 className="text-sm font-medium">Ваши вводные</h3>
-            <span className="text-xs text-muted-foreground">
-              {results.length} маршрутов в расчете
-            </span>
+
+        <div className="flex min-w-0 flex-col gap-4">
+          <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
+            <div className="flex flex-col gap-1">
+              <h2 className="font-heading text-2xl font-semibold">
+                Подходящие маршруты
+              </h2>
+              <p className="max-w-2xl text-sm leading-6 text-muted-foreground">
+                Страна не была первым фильтром. Сначала система смотрит цель,
+                сроки, паспорт, доход, семью и готовность документов.
+              </p>
+            </div>
+            <Button asChild variant="outline" size="sm">
+              <Link href="/questionnaire">
+                <RotateCcw data-icon="inline-start" />
+                Изменить анкету
+              </Link>
+            </Button>
           </div>
           <dl className="grid gap-2 text-sm sm:grid-cols-2 lg:grid-cols-4">
             {summarizeProfile(profile).map((item) => (
               <div
                 key={item.label}
-                className="flex min-w-0 items-center gap-1 rounded-md bg-muted px-2 py-1"
+                className="flex min-w-0 flex-col gap-1 rounded-md border bg-background px-3 py-2"
               >
-                <dt className="shrink-0 text-muted-foreground">
-                  {item.label}:
-                </dt>
-                <dd className="min-w-0 truncate">{item.value}</dd>
+                <dt className="text-xs text-muted-foreground">{item.label}</dt>
+                <dd className="min-w-0 truncate font-medium">{item.value}</dd>
               </div>
             ))}
           </dl>
-        </div>
-        <div>
           <Tabs
             value={filter}
             onValueChange={(value) => setFilter(value as FilterValue)}
           >
-            <TabsList className="flex h-auto w-full flex-wrap justify-start">
+            <TabsList className="flex h-auto w-full flex-wrap justify-start gap-1 bg-muted/70 p-1">
               {filters.map((item) => (
-                <TabsTrigger key={item.value} value={item.value}>
+                <TabsTrigger
+                  key={item.value}
+                  value={item.value}
+                  className="rounded-md"
+                >
                   {item.label}
                 </TabsTrigger>
               ))}
@@ -143,7 +160,7 @@ export function ResultsClient({ catalogue }: ResultsClientProps) {
       </section>
 
       {answerImpacts.length > 0 && (
-        <section className="flex flex-col gap-3 rounded-lg border bg-card p-3 sm:p-4">
+        <section className="flex flex-col gap-3 rounded-lg border bg-accent/55 p-4 shadow-sm">
           <div className="flex items-start gap-2">
             <ListChecks className="mt-0.5 size-4 text-primary" />
             <div className="flex flex-col gap-1">
@@ -328,7 +345,7 @@ function buildAnswerImpacts(
 
 function ImpactCard({ impact }: { impact: AnswerImpact }) {
   return (
-    <article className="flex flex-col gap-2 rounded-md border bg-background p-3">
+    <article className="flex flex-col gap-2 rounded-md border bg-card p-3 shadow-sm">
       <p className="text-sm leading-6">{impact.summary}</p>
       <ul className="flex flex-col gap-1 text-xs leading-5 text-muted-foreground">
         {impact.changedRoutes.slice(0, 3).map((route) => (
