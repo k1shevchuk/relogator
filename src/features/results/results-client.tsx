@@ -17,17 +17,18 @@ import { Button } from "@/components/ui/button"
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { assessRoutes, simulateAnswerImpact } from "@/domain/assessment"
 import type { ContentCatalogue } from "@/domain/content-catalogue"
-import type {
-  AnswerImpact,
-  RouteAssessment,
-  RouteAvailabilityStatus,
-  UserProfile,
-} from "@/domain/types"
+import type { AnswerImpact, RouteAssessment, UserProfile } from "@/domain/types"
 import { summarizeProfile } from "@/features/questionnaire/profile-labels"
 import {
   profileStorageKey,
   userProfileSchema,
 } from "@/features/questionnaire/profile-schema"
+import {
+  groupResultsByFit,
+  resultFitSections,
+  type ResultFitBucket,
+} from "@/features/results/result-fit"
+import { cn } from "@/lib/utils"
 
 const filters = [
   { value: "all", label: "Все" },
@@ -63,7 +64,7 @@ export function ResultsClient({ catalogue }: ResultsClientProps) {
     [filter, results]
   )
   const groupedResults = useMemo(
-    () => groupResults(filteredResults),
+    () => groupResultsByFit(filteredResults),
     [filteredResults]
   )
   const answerImpacts = useMemo(
@@ -187,25 +188,49 @@ export function ResultsClient({ catalogue }: ResultsClientProps) {
 
       {filteredResults.length > 0 ? (
         <div className="flex flex-col gap-6">
-          {resultSections.map((section) => {
-            const items = groupedResults[section.status]
+          {resultFitSections.map((section) => {
+            const items = groupedResults[section.bucket]
+            const tone = fitSectionStyles[section.bucket]
 
             if (items.length === 0) {
               return null
             }
 
             return (
-              <section key={section.status} className="flex flex-col gap-4">
-                <div className="flex flex-wrap items-end justify-between gap-2">
+              <section key={section.bucket} className="flex flex-col gap-4">
+                <div
+                  className={cn(
+                    "flex flex-wrap items-end justify-between gap-3 border-l-4 px-4 py-3",
+                    tone.header
+                  )}
+                >
                   <div className="flex flex-col gap-1">
-                    <h2 className="font-heading text-xl font-semibold">
+                    <div className="flex flex-wrap items-center gap-2">
+                      <span
+                        className={cn(
+                          "rounded-md px-2 py-1 text-xs font-medium",
+                          tone.badge
+                        )}
+                      >
+                        {section.badge}
+                      </span>
+                      <span className="text-xs font-medium uppercase text-muted-foreground">
+                        {items.length} из {filteredResults.length}
+                      </span>
+                    </div>
+                    <h2 className="font-heading text-xl font-semibold leading-snug">
                       {section.title}
                     </h2>
                     <p className="text-sm text-muted-foreground">
                       {section.description}
                     </p>
                   </div>
-                  <span className="rounded-md border bg-background px-2 py-1 text-xs text-muted-foreground">
+                  <span
+                    className={cn(
+                      "rounded-md border px-2 py-1 text-xs font-medium",
+                      tone.count
+                    )}
+                  >
                     {items.length}
                   </span>
                 </div>
@@ -213,6 +238,7 @@ export function ResultsClient({ catalogue }: ResultsClientProps) {
                   <RouteCard
                     key={assessment.route.id}
                     assessment={assessment}
+                    tone={section.bucket}
                   />
                 ))}
               </section>
@@ -243,51 +269,34 @@ export function ResultsClient({ catalogue }: ResultsClientProps) {
   )
 }
 
-const resultSections: {
-  status: RouteAvailabilityStatus
-  title: string
-  description: string
-}[] = [
+const fitSectionStyles: Record<
+  ResultFitBucket,
   {
-    status: "available",
-    title: "Можно начинать сейчас",
-    description: "Нет явных блокирующих условий по текущим ответам.",
+    header: string
+    badge: string
+    count: string
+  }
+> = {
+  best: {
+    header: "border-emerald-600 bg-emerald-50/80",
+    badge: "bg-emerald-700 text-white",
+    count: "border-emerald-200 bg-white text-emerald-950",
   },
-  {
-    status: "conditional",
-    title: "Можно после подготовки",
-    description:
-      "Маршрут остается реалистичным, если закрыть указанные документы, доход или сроки.",
+  medium: {
+    header: "border-amber-500 bg-amber-50/85",
+    badge: "bg-amber-600 text-white",
+    count: "border-amber-200 bg-white text-amber-950",
   },
-  {
-    status: "unknown",
-    title: "Сложно, но возможно",
-    description:
-      "Данные требуют перепроверки или маршрут чувствителен к решению компетентного органа.",
+  weak: {
+    header: "border-rose-500 bg-rose-50/85",
+    badge: "bg-rose-700 text-white",
+    count: "border-rose-200 bg-white text-rose-950",
   },
-  {
-    status: "blocked",
-    title: "Не подходит по текущим ответам",
-    description:
-      "Показано для прозрачности: карточка объясняет, что именно мешает.",
+  blocked: {
+    header: "border-zinc-950 bg-zinc-100/85",
+    badge: "bg-zinc-950 text-white",
+    count: "border-zinc-300 bg-white text-zinc-950",
   },
-]
-
-function groupResults(results: RouteAssessment[]) {
-  return resultSections.reduce(
-    (groups, section) => ({
-      ...groups,
-      [section.status]: results.filter(
-        (item) => item.status === section.status
-      ),
-    }),
-    {
-      available: [],
-      conditional: [],
-      unknown: [],
-      blocked: [],
-    } as Record<RouteAvailabilityStatus, RouteAssessment[]>
-  )
 }
 
 function buildAnswerImpacts(

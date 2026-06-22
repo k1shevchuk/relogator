@@ -26,17 +26,29 @@ import { Separator } from "@/components/ui/separator"
 import { buildRouteMetricSummaries } from "@/domain/assessment-display"
 import { countryStatusLabels } from "@/domain/countries"
 import type { RouteAssessment } from "@/domain/types"
+import { cn } from "@/lib/utils"
+
+export type RouteCardTone = "best" | "medium" | "weak" | "blocked"
 
 type RouteCardProps = {
   assessment: RouteAssessment
+  tone?: RouteCardTone
 }
 
-export function RouteCard({ assessment }: RouteCardProps) {
+export function RouteCard({ assessment, tone = "best" }: RouteCardProps) {
   const metricSummaries = buildRouteMetricSummaries(assessment)
+  const toneStyle = routeCardToneStyles[tone]
 
   return (
-    <Card className="overflow-hidden rounded-lg border bg-card shadow-sm">
-      <CardHeader className="border-l-4 border-l-primary bg-secondary/35">
+    <Card
+      className={cn(
+        "overflow-hidden rounded-lg border bg-card shadow-sm",
+        toneStyle.card
+      )}
+    >
+      <CardHeader
+        className={cn("border-l-4 bg-secondary/35", toneStyle.header)}
+      >
         <div className="flex flex-col gap-1">
           <CardTitle className="text-2xl">{assessment.country.name}</CardTitle>
           <CardDescription className="text-sm">
@@ -55,6 +67,7 @@ export function RouteCard({ assessment }: RouteCardProps) {
               variant={
                 assessment.difficulty.level <= 2 ? "secondary" : "outline"
               }
+              className={toneStyle.subtleBadge}
             >
               {assessment.difficulty.label}
             </Badge>
@@ -88,7 +101,12 @@ export function RouteCard({ assessment }: RouteCardProps) {
           <div className="rounded-lg border bg-background p-3">
             <div className="mb-3 flex items-center justify-between gap-2">
               <span className="text-sm font-medium">Краткая оценка</span>
-              <span className="rounded-md bg-primary px-2 py-1 text-xs font-medium text-primary-foreground">
+              <span
+                className={cn(
+                  "rounded-md px-2 py-1 text-xs font-medium",
+                  toneStyle.scoreBadge
+                )}
+              >
                 сложность {assessment.difficulty.level}/5
               </span>
             </div>
@@ -159,6 +177,41 @@ export function RouteCard({ assessment }: RouteCardProps) {
       </CardFooter>
     </Card>
   )
+}
+
+const routeCardToneStyles: Record<
+  RouteCardTone,
+  {
+    card: string
+    header: string
+    scoreBadge: string
+    subtleBadge: string
+  }
+> = {
+  best: {
+    card: "border-emerald-200/80",
+    header: "border-l-emerald-600 bg-emerald-50/80",
+    scoreBadge: "bg-emerald-700 text-white",
+    subtleBadge: "border-emerald-200 bg-emerald-50 text-emerald-950",
+  },
+  medium: {
+    card: "border-amber-200/90",
+    header: "border-l-amber-500 bg-amber-50/80",
+    scoreBadge: "bg-amber-600 text-white",
+    subtleBadge: "border-amber-200 bg-amber-50 text-amber-950",
+  },
+  weak: {
+    card: "border-rose-200/90",
+    header: "border-l-rose-500 bg-rose-50/80",
+    scoreBadge: "bg-rose-700 text-white",
+    subtleBadge: "border-rose-200 bg-rose-50 text-rose-950",
+  },
+  blocked: {
+    card: "border-zinc-300/90 opacity-90",
+    header: "border-l-zinc-950 bg-zinc-100/80",
+    scoreBadge: "bg-zinc-950 text-white",
+    subtleBadge: "border-zinc-300 bg-zinc-100 text-zinc-950",
+  },
 }
 
 function InfoLine({
