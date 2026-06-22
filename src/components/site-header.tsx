@@ -1,4 +1,5 @@
 import Link from "next/link"
+import { connection } from "next/server"
 import { Compass, LogOut, Route } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
@@ -9,6 +10,8 @@ import {
 } from "@/lib/supabase/server"
 
 export async function SiteHeader() {
+  await connection()
+
   const isSignedIn = await getIsSignedIn()
 
   return (
