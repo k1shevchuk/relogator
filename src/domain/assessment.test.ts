@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest"
 
 import { assessRoutes, simulateAnswerImpact } from "./assessment"
+import { buildRouteMetricSummaries } from "./assessment-display"
 import { routes } from "./routes"
 import type { UserProfile } from "./types"
 
@@ -45,6 +46,25 @@ describe("assessRoutes", () => {
     expect(results[0].scales.approvalRisk.label).toContain(
       "риск отказа или дополнительного запроса"
     )
+  })
+
+  it("builds user-facing route metrics without ambiguous risk or adaptation scales", () => {
+    const [assessment] = assessRoutes(baseProfile)
+    const metrics = buildRouteMetricSummaries(assessment)
+    const metricText = metrics
+      .map((metric) => `${metric.label} ${metric.value} ${metric.description}`)
+      .join(" ")
+
+    expect(metrics.map((metric) => metric.label)).toEqual([
+      "Сложность переезда",
+      "Документы",
+      "Срок подготовки",
+      "Расходы на старт переезда",
+    ])
+    expect(metricText).toContain("Количество ключевых пунктов")
+    expect(metricText).toContain("не индекс стоимости жизни")
+    expect(metricText).not.toContain("Адаптация")
+    expect(metricText).not.toContain("Риск отказа")
   })
 
   it("keeps visa-free short-stay routes simple for a short move without residence needs", () => {

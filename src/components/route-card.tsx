@@ -7,7 +7,6 @@ import {
   CalendarDays,
   FileText,
   Link2,
-  ShieldAlert,
   WalletCards,
 } from "lucide-react"
 
@@ -24,14 +23,17 @@ import {
   CardTitle,
 } from "@/components/ui/card"
 import { Separator } from "@/components/ui/separator"
+import { buildRouteMetricSummaries } from "@/domain/assessment-display"
 import { countryStatusLabels } from "@/domain/countries"
-import type { AssessmentScaleKey, RouteAssessment } from "@/domain/types"
+import type { RouteAssessment } from "@/domain/types"
 
 type RouteCardProps = {
   assessment: RouteAssessment
 }
 
 export function RouteCard({ assessment }: RouteCardProps) {
+  const metricSummaries = buildRouteMetricSummaries(assessment)
+
   return (
     <Card className="overflow-hidden rounded-lg border bg-card shadow-sm">
       <CardHeader className="border-l-4 border-l-primary bg-secondary/35">
@@ -68,12 +70,12 @@ export function RouteCard({ assessment }: RouteCardProps) {
             <div className="grid gap-3 sm:grid-cols-3">
               <InfoLine
                 icon={<CalendarDays />}
-                label="Сроки"
+                label="Срок подготовки"
                 value={assessment.timeline}
               />
               <InfoLine
                 icon={<WalletCards />}
-                label="Расходы"
+                label="Расходы на старт"
                 value={assessment.cost}
               />
               <InfoLine
@@ -85,18 +87,14 @@ export function RouteCard({ assessment }: RouteCardProps) {
           </div>
           <div className="rounded-lg border bg-background p-3">
             <div className="mb-3 flex items-center justify-between gap-2">
-              <span className="text-sm font-medium">Оценка маршрута</span>
+              <span className="text-sm font-medium">Краткая оценка</span>
               <span className="rounded-md bg-primary px-2 py-1 text-xs font-medium text-primary-foreground">
-                {assessment.difficulty.level}/5
+                сложность {assessment.difficulty.level}/5
               </span>
             </div>
             <div className="grid gap-2">
-              {scaleOrder.map((key) => (
-                <ScaleLine
-                  key={key}
-                  label={scaleLabels[key]}
-                  level={assessment.scales[key].level}
-                />
+              {metricSummaries.map((metric) => (
+                <MetricLine key={metric.label} metric={metric} />
               ))}
             </div>
           </div>
@@ -185,45 +183,22 @@ function InfoLine({
   )
 }
 
-const scaleOrder: AssessmentScaleKey[] = [
-  "documents",
-  "cost",
-  "speed",
-  "approvalRisk",
-  "adaptation",
-]
-
-const scaleLabels: Record<AssessmentScaleKey, string> = {
-  documents: "Документы",
-  cost: "Расходы",
-  speed: "Срок",
-  approvalRisk: "Риск",
-  adaptation: "Адаптация",
-}
-
-function ScaleLine({ label, level }: { label: string; level: number }) {
+function MetricLine({
+  metric,
+}: {
+  metric: ReturnType<typeof buildRouteMetricSummaries>[number]
+}) {
   return (
-    <div className="grid grid-cols-[88px_1fr_32px] items-center gap-2">
-      <span className="flex items-center gap-1 text-xs font-medium text-muted-foreground">
-        {label === "Риск" && <ShieldAlert className="size-3.5" />}
-        {label}
-      </span>
-      <div
-        className="grid grid-cols-5 gap-1"
-        aria-label={`${label}: ${level} из 5`}
-      >
-        {Array.from({ length: 5 }, (_, index) => (
-          <span
-            key={index}
-            className={
-              index < level
-                ? "h-1.5 rounded-full bg-primary"
-                : "h-1.5 rounded-full bg-muted"
-            }
-          />
-        ))}
+    <div className="rounded-md border bg-card px-3 py-2">
+      <div className="flex items-start justify-between gap-3">
+        <span className="text-xs font-medium text-muted-foreground">
+          {metric.label}
+        </span>
+        <span className="text-right text-sm font-medium">{metric.value}</span>
       </div>
-      <span className="text-xs text-muted-foreground">{level}/5</span>
+      <p className="mt-1 text-xs leading-5 text-muted-foreground">
+        {metric.description}
+      </p>
     </div>
   )
 }

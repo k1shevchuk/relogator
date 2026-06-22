@@ -21,11 +21,12 @@ import {
   getSourcesFromCatalogue,
   type ContentCatalogue,
 } from "@/domain/content-catalogue"
+import { buildRouteMetricSummaries } from "@/domain/assessment-display"
 import { countryStatusLabels } from "@/domain/countries"
 import type {
-  AssessmentScaleKey,
   RouteAssessment,
   RouteDefinition,
+  RouteSource,
 } from "@/domain/types"
 import { summarizeProfile } from "@/features/questionnaire/profile-labels"
 import {
@@ -81,6 +82,14 @@ export function RouteDetailClient({
     activeStepIndex,
     assessment
   )
+  const activeStepOfficialActions = buildStepOfficialActions(
+    route,
+    activeStepIndex,
+    activeStepSources
+  )
+  const metricSummaries = assessment
+    ? buildRouteMetricSummaries(assessment)
+    : null
 
   return (
     <>
@@ -91,7 +100,7 @@ export function RouteDetailClient({
         </Link>
       </Button>
 
-      <section className="grid gap-6 lg:grid-cols-[1fr_360px]">
+      <section className="grid gap-6 xl:grid-cols-[minmax(0,1fr)_320px]">
         <div className="flex flex-col gap-5">
           <div className="flex flex-col gap-3 rounded-lg border bg-card p-5 shadow-sm sm:p-6">
             <div className="flex flex-wrap gap-2">
@@ -123,8 +132,8 @@ export function RouteDetailClient({
                 <CardTitle>Справочный режим</CardTitle>
                 <CardDescription className="text-amber-950">
                   Сейчас показан общий маршрут без персональной оценки. Пройдите
-                  анкету, чтобы увидеть сложность, документы и риски по вашим
-                  вводным.
+                  анкету, чтобы увидеть сложность, документы и ограничения по
+                  вашим вводным.
                 </CardDescription>
               </CardHeader>
               <CardContent>
@@ -165,20 +174,20 @@ export function RouteDetailClient({
             </CardHeader>
             <CardContent className="flex flex-col gap-5">
               {assessment && (
-                <div className="grid gap-2 md:grid-cols-5">
-                  {scaleOrder.map((key) => (
+                <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-4">
+                  {metricSummaries?.map((metric) => (
                     <div
-                      key={key}
+                      key={metric.label}
                       className="flex flex-col gap-1 rounded-md border bg-background p-3"
                     >
                       <span className="text-xs font-medium text-muted-foreground">
-                        {scaleLabels[key]}
+                        {metric.label}
                       </span>
                       <span className="text-sm font-medium">
-                        {assessment.scales[key].level}/5
+                        {metric.value}
                       </span>
                       <span className="text-xs leading-5 text-muted-foreground">
-                        {assessment.scales[key].label}
+                        {metric.description}
                       </span>
                     </div>
                   ))}
@@ -216,7 +225,7 @@ export function RouteDetailClient({
                 рукой, где сверить правило и на чем чаще ошибаются.
               </CardDescription>
             </CardHeader>
-            <CardContent className="grid gap-5 lg:grid-cols-[220px_1fr]">
+            <CardContent className="grid gap-5 xl:grid-cols-[190px_minmax(0,1fr)]">
               <ol className="flex gap-2 overflow-x-auto pb-1 lg:flex-col lg:overflow-visible lg:pb-0">
                 {route.steps.map((step, index) => (
                   <li key={step.title} className="min-w-44 lg:min-w-0">
@@ -267,6 +276,40 @@ export function RouteDetailClient({
                       </li>
                     ))}
                   </ol>
+                </section>
+
+                <section className="flex flex-col gap-3 rounded-lg border border-primary/20 bg-secondary/45 p-4">
+                  <div className="flex flex-col gap-1">
+                    <h3 className="text-sm font-medium">
+                      Конкретное действие и ссылка
+                    </h3>
+                    <p className="text-sm leading-6 text-muted-foreground">
+                      Не просто общий совет: что именно открыть или проверить на
+                      этом шаге.
+                    </p>
+                  </div>
+                  <ul className="grid gap-2">
+                    {activeStepOfficialActions.map((item) => (
+                      <li key={item} className="text-sm leading-6">
+                        {item}
+                      </li>
+                    ))}
+                  </ul>
+                  <div className="flex flex-wrap gap-2">
+                    {activeStepSources.map((source) => (
+                      <Button
+                        key={source.id}
+                        asChild
+                        variant="outline"
+                        size="sm"
+                      >
+                        <a href={source.url} target="_blank" rel="noreferrer">
+                          Открыть официальный источник
+                          <ExternalLink data-icon="inline-end" />
+                        </a>
+                      </Button>
+                    ))}
+                  </div>
                 </section>
 
                 <div className="grid gap-4 md:grid-cols-2">
@@ -419,22 +462,6 @@ export function RouteDetailClient({
   )
 }
 
-const scaleOrder: AssessmentScaleKey[] = [
-  "documents",
-  "cost",
-  "speed",
-  "approvalRisk",
-  "adaptation",
-]
-
-const scaleLabels: Record<AssessmentScaleKey, string> = {
-  documents: "Документы",
-  cost: "Расходы",
-  speed: "Срок",
-  approvalRisk: "Риск отказа или дополнительного запроса",
-  adaptation: "Адаптация",
-}
-
 function DetailList({ items, title }: { items: string[]; title: string }) {
   return (
     <div className="flex flex-col gap-2">
@@ -466,7 +493,7 @@ function buildStepActionItems(
     [
       `Сформулируйте цель маршрута: ${routeBasis}. Сверьте ее со сроком пребывания и бюджетом из анкеты.`,
       passportText,
-      `Проверьте главный риск маршрута: ${route.risks[0] ?? "правила могут измениться до подачи документов."}`,
+      `Проверьте главное ограничение маршрута: ${route.risks[0] ?? "правила могут измениться до подачи документов."}`,
       sourceText,
     ],
     [
@@ -530,12 +557,94 @@ function buildStepActionItems(
     [
       "Обращайтесь к специалисту до просрочки, отказа или покупки дорогих невозвратных услуг.",
       "Перед консультацией подготовьте ответы анкеты, текущий комплект документов, сроки, бюджет и конкретные вопросы.",
-      "Попросите специалиста отдельно отметить: что подтверждено официальным источником, что является практикой, а что остается риском.",
+      "Попросите специалиста отдельно отметить: что подтверждено официальным источником, что является практикой, а что остается неопределенным.",
       "Не принимайте обещание гарантированного результата: итоговое решение принимает компетентный орган страны.",
     ],
   ]
 
   return actionItemsByStep[stepIndex] ?? actionItemsByStep[0]
+}
+
+function buildStepOfficialActions(
+  route: RouteDefinition,
+  stepIndex: number,
+  sources: RouteSource[]
+) {
+  const primarySource = sources[0]
+  const sourceTitle = primarySource?.title ?? "официальный источник"
+
+  if (route.id === "vietnam-evisa-90-reference") {
+    return buildVietnamEvisaActions(stepIndex, sourceTitle)
+  }
+
+  if (route.entryType === "visa_free") {
+    return [
+      `Откройте ${sourceTitle} и проверьте лимит дней для граждан РФ, требования к паспорту и условия въезда на ваши даты.`,
+      "Запишите крайний день законного пребывания и отдельный срок, когда нужно решить вопрос с выездом, продлением или новым основанием.",
+      "Если планируете жить дольше первичного срока, сразу откройте правила продления или перехода на ВНЖ, а не ждите последних дней.",
+    ]
+  }
+
+  if (route.entryType === "residence_permit") {
+    return [
+      `Откройте ${sourceTitle} и найдите раздел подачи на ВНЖ или долгосрочный статус по вашему основанию.`,
+      "Сверьте официальный список документов с вашим комплектом: паспорт, основание, адрес, финансы, страховка, справки и переводы.",
+      "Перед оплатой пошлин или записи сохраните страницу с требованиями и дату проверки, чтобы видеть, по какой версии правил вы готовились.",
+    ]
+  }
+
+  return [
+    `Откройте ${sourceTitle} и найдите раздел временного проживания, визы или регистрации по вашему основанию.`,
+    "Сверьте, где подается заявление: онлайн, через консульство, миграционный орган или местную администрацию.",
+    "Сохраните подтверждение записи, оплаты или подачи, если действие уже доступно на этом шаге.",
+  ]
+}
+
+function buildVietnamEvisaActions(stepIndex: number, sourceTitle: string) {
+  const actionsByStep = [
+    [
+      `Откройте ${sourceTitle} и проверьте, что подача e-visa доступна для граждан РФ на выбранные даты и пункт въезда.`,
+      "Проверьте срок паспорта, планируемую дату въезда, срок пребывания до 90 дней и пункт въезда/выезда.",
+      "Не покупайте невозвратные билеты, пока не понимаете, какую визу и на какие даты будете оформлять.",
+    ],
+    [
+      `На ${sourceTitle} начните подготовку e-visa: паспортные данные, фото, скан страницы паспорта, даты, пункт въезда/выезда и адрес во Вьетнаме.`,
+      "Заранее подготовьте карту для оплаты визового сбора и проверьте, что имя и номер паспорта совпадают с загранпаспортом.",
+      "После отправки заявления сохраните номер заявки, скрин подтверждения и дату, когда нужно проверить статус.",
+    ],
+    [
+      `Перед выездом откройте ${sourceTitle} и проверьте статус e-visa; если виза одобрена, сохраните PDF и распечатайте копию.`,
+      "Сверьте даты действия e-visa с билетами, страховкой и адресом проживания на первое время.",
+      "Держите PDF e-visa, паспорт, страховку и адрес жилья в телефоне и отдельно в распечатке.",
+    ],
+    [
+      "На границе покажите паспорт и e-visa; после въезда проверьте штамп или электронную отметку и фактическую дату въезда.",
+      "Сразу запишите дату окончания разрешенного срока, чтобы не считать ее по памяти.",
+      "Если данные в отметке отличаются от e-visa, решайте это сразу, а не перед выездом.",
+    ],
+    [
+      "В первые дни подтвердите адрес проживания, связь, страховку и доступ к деньгам.",
+      "Если жилье меняется, уточните у арендодателя, есть ли местные требования к регистрации или уведомлению.",
+      "Если едете не один, отдельно проверьте документы каждого члена семьи: e-visa, паспорт, страховка, адрес.",
+    ],
+    [
+      "Если хотите остаться дольше срока e-visa, заранее ищите другой законный маршрут: новая виза, выезд и новая подача, работа, учеба или другое основание.",
+      "Не считайте e-visa основанием для работы или долгого проживания: это отдельный краткосрочный въездной документ.",
+      "Соберите подтверждения проживания, расходов и выезда, если они понадобятся при следующей подаче.",
+    ],
+    [
+      "За 30-45 дней до окончания e-visa проверьте остаток дней и выберите: выезд, новый въездной сценарий или консультация по долгому основанию.",
+      "Не оставляйте продление или новую подачу на последние дни: ошибка в датах может привести к просрочке.",
+      "Сохраните билеты или другой план законного выезда, если долгий статус не оформлен.",
+    ],
+    [
+      "Обратитесь к специалисту, если была ошибка в e-visa, отказ, просрочка, нестандартный состав семьи или цель дольше туристического пребывания.",
+      "Перед консультацией подготовьте PDF e-visa, паспорт, даты въезда/выезда, адрес и вопрос, который нужно решить.",
+      "Просите отделить официальное правило от практического совета: e-visa не равна ВНЖ.",
+    ],
+  ]
+
+  return actionsByStep[stepIndex] ?? actionsByStep[0]
 }
 
 function buildStepImportantNotes(

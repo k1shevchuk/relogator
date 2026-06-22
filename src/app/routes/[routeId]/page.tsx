@@ -42,7 +42,7 @@ export default async function RoutePage({
   return (
     <>
       <SiteHeader />
-      <main className="mx-auto flex w-full max-w-7xl flex-1 flex-col gap-6 px-4 py-8 sm:px-6">
+      <main className="mx-auto flex w-full max-w-[1500px] flex-1 flex-col gap-6 px-4 py-8 sm:px-6">
         <RouteDetailClient catalogue={catalogue} route={route} />
       </main>
     </>
