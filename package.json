@@ -12,6 +12,7 @@
     "e2e": "playwright test",
     "format": "prettier --write .",
     "generate:data-manifest": "node scripts/generate-data-files.mjs",
+    "sync:content-db": "node scripts/import-content-catalog.mjs",
     "validate:data": "npm run generate:data-manifest && vitest run src/domain/data-validation.test.ts",
     "validate:graphs": "node scripts/validate-production-graphs.mjs",
     "report:graphs": "node scripts/report-production-graphs.mjs"

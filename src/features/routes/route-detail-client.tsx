@@ -16,9 +16,12 @@ import {
   CardTitle,
 } from "@/components/ui/card"
 import { assessRoutes } from "@/domain/assessment"
-import { countryStatusLabels, getCountry } from "@/domain/countries"
-import { getRoute } from "@/domain/routes"
-import { getSources } from "@/domain/sources"
+import {
+  getCountryFromCatalogue,
+  getSourcesFromCatalogue,
+  type ContentCatalogue,
+} from "@/domain/content-catalogue"
+import { countryStatusLabels } from "@/domain/countries"
 import type {
   AssessmentScaleKey,
   RouteAssessment,
@@ -32,11 +35,14 @@ import {
 } from "@/features/questionnaire/profile-storage"
 
 type RouteDetailClientProps = {
-  routeId: string
+  catalogue: ContentCatalogue
+  route: RouteDefinition
 }
 
-export function RouteDetailClient({ routeId }: RouteDetailClientProps) {
-  const route = getRoute(routeId)
+export function RouteDetailClient({
+  catalogue,
+  route,
+}: RouteDetailClientProps) {
   const [activeStepIndex, setActiveStepIndex] = useState(0)
   const rawProfile = useSyncExternalStore(
     subscribeStoredProfile,
@@ -45,19 +51,15 @@ export function RouteDetailClient({ routeId }: RouteDetailClientProps) {
   )
   const profile = useMemo(() => parseStoredProfile(rawProfile), [rawProfile])
   const assessment = useMemo<RouteAssessment | null>(() => {
-    if (!profile || !route) {
+    if (!profile) {
       return null
     }
 
-    return assessRoutes(profile, [route])[0] ?? null
-  }, [profile, route])
+    return assessRoutes(profile, { ...catalogue, routes: [route] })[0] ?? null
+  }, [catalogue, profile, route])
 
-  if (!route) {
-    return null
-  }
-
-  const country = getCountry(route.countryCode)
-  const sources = getSources(route.sourceIds)
+  const country = getCountryFromCatalogue(catalogue, route.countryCode)
+  const sources = getSourcesFromCatalogue(catalogue, route.sourceIds)
   const documents = assessment?.documents ?? route.documents
   const blockers = assessment?.blockers ?? route.risks
   const whyFits = assessment?.whyFits ?? [
@@ -65,7 +67,10 @@ export function RouteDetailClient({ routeId }: RouteDetailClientProps) {
   ]
   const firstActions = route.steps.slice(0, 3).map((step) => step.title)
   const activeStep = route.steps[activeStepIndex] ?? route.steps[0]
-  const activeStepSources = getSources(activeStep.sourceIds)
+  const activeStepSources = getSourcesFromCatalogue(
+    catalogue,
+    activeStep.sourceIds
+  )
   const activeStepActions = buildStepActionItems(
     route,
     activeStepIndex,
@@ -265,7 +270,10 @@ export function RouteDetailClient({ routeId }: RouteDetailClientProps) {
                 </section>
 
                 <div className="grid gap-4 md:grid-cols-2">
-                  <DetailList title="Документы на этом шаге" items={activeStep.documents} />
+                  <DetailList
+                    title="Документы на этом шаге"
+                    items={activeStep.documents}
+                  />
                   <DetailList title="Важно не забыть" items={activeStepNotes} />
                 </div>
 

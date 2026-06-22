@@ -30,6 +30,176 @@ export type Database = {
         }
         Relationships: []
       }
+      content_countries: {
+        Row: {
+          code: string
+          name: string
+          slug: string
+          status: string
+          summary: string
+          source_ids: string[]
+          last_reviewed_at: string
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          code: string
+          name: string
+          slug: string
+          status: string
+          summary: string
+          source_ids?: string[]
+          last_reviewed_at: string
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          code?: string
+          name?: string
+          slug?: string
+          status?: string
+          summary?: string
+          source_ids?: string[]
+          last_reviewed_at?: string
+          created_at?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      content_sources: {
+        Row: {
+          id: string
+          title: string
+          url: string
+          source_type: string
+          country_code: string
+          language: string
+          last_reviewed_at: string
+          description: string
+          confidence: string
+          applies_to_citizenship: string[]
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id: string
+          title: string
+          url: string
+          source_type: string
+          country_code: string
+          language: string
+          last_reviewed_at: string
+          description: string
+          confidence: string
+          applies_to_citizenship?: string[]
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          title?: string
+          url?: string
+          source_type?: string
+          country_code?: string
+          language?: string
+          last_reviewed_at?: string
+          description?: string
+          confidence?: string
+          applies_to_citizenship?: string[]
+          created_at?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "content_sources_country_code_fkey"
+            columns: ["country_code"]
+            referencedRelation: "content_countries"
+            referencedColumns: ["code"]
+          },
+        ]
+      }
+      content_routes: {
+        Row: {
+          id: string
+          country_code: string
+          title: string
+          short_description: string
+          entry_type: string
+          goals: string[]
+          stay_durations: string[]
+          publication_status: string
+          confidence: string
+          last_reviewed_at: string
+          base_difficulty: number
+          requirements: Json
+          supports: Json
+          timeline: Json
+          cost: Json
+          documents: string[]
+          source_ids: string[]
+          steps: Json
+          risks: string[]
+          decision_graph: Json
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id: string
+          country_code: string
+          title: string
+          short_description: string
+          entry_type: string
+          goals: string[]
+          stay_durations: string[]
+          publication_status: string
+          confidence: string
+          last_reviewed_at: string
+          base_difficulty: number
+          requirements?: Json
+          supports?: Json
+          timeline?: Json
+          cost?: Json
+          documents?: string[]
+          source_ids?: string[]
+          steps?: Json
+          risks?: string[]
+          decision_graph?: Json
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          country_code?: string
+          title?: string
+          short_description?: string
+          entry_type?: string
+          goals?: string[]
+          stay_durations?: string[]
+          publication_status?: string
+          confidence?: string
+          last_reviewed_at?: string
+          base_difficulty?: number
+          requirements?: Json
+          supports?: Json
+          timeline?: Json
+          cost?: Json
+          documents?: string[]
+          source_ids?: string[]
+          steps?: Json
+          risks?: string[]
+          decision_graph?: Json
+          created_at?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "content_routes_country_code_fkey"
+            columns: ["country_code"]
+            referencedRelation: "content_countries"
+            referencedColumns: ["code"]
+          },
+        ]
+      }
       user_questionnaires: {
         Row: {
           id: string

@@ -10,6 +10,7 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { Button } from "@/components/ui/button"
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { assessRoutes, simulateAnswerImpact } from "@/domain/assessment"
+import type { ContentCatalogue } from "@/domain/content-catalogue"
 import type {
   AnswerImpact,
   RouteAssessment,
@@ -34,7 +35,11 @@ const filters = [
 
 type FilterValue = (typeof filters)[number]["value"]
 
-export function ResultsClient() {
+type ResultsClientProps = {
+  catalogue: ContentCatalogue
+}
+
+export function ResultsClient({ catalogue }: ResultsClientProps) {
   const [filter, setFilter] = useState<FilterValue>("all")
   const rawProfile = useSyncExternalStore(
     subscribeProfileStorage,
@@ -44,8 +49,8 @@ export function ResultsClient() {
   const profile = useMemo(() => parseProfile(rawProfile), [rawProfile])
 
   const results = useMemo(
-    () => (profile ? assessRoutes(profile) : []),
-    [profile]
+    () => (profile ? assessRoutes(profile, catalogue) : []),
+    [catalogue, profile]
   )
   const filteredResults = useMemo(
     () => filterResults(results, filter),
@@ -56,8 +61,8 @@ export function ResultsClient() {
     [filteredResults]
   )
   const answerImpacts = useMemo(
-    () => (profile ? buildAnswerImpacts(profile) : []),
-    [profile]
+    () => (profile ? buildAnswerImpacts(profile, catalogue) : []),
+    [catalogue, profile]
   )
 
   if (!profile) {
@@ -268,7 +273,10 @@ function groupResults(results: RouteAssessment[]) {
   )
 }
 
-function buildAnswerImpacts(profile: UserProfile): AnswerImpact[] {
+function buildAnswerImpacts(
+  profile: UserProfile,
+  catalogue: ContentCatalogue
+): AnswerImpact[] {
   const impacts: AnswerImpact[] = []
 
   if (!profile.hasCriminalRecordCertificate) {
@@ -276,7 +284,8 @@ function buildAnswerImpacts(profile: UserProfile): AnswerImpact[] {
       simulateAnswerImpact(
         profile,
         "hasCriminalRecordCertificate",
-        true
+        true,
+        catalogue
       ) as AnswerImpact
     )
   }
@@ -286,14 +295,20 @@ function buildAnswerImpacts(profile: UserProfile): AnswerImpact[] {
       simulateAnswerImpact(
         profile,
         "departureWindow",
-        "three_months"
+        "three_months",
+        catalogue
       ) as AnswerImpact
     )
   }
 
   if (!profile.hasProvableIncome) {
     impacts.push(
-      simulateAnswerImpact(profile, "hasProvableIncome", true) as AnswerImpact
+      simulateAnswerImpact(
+        profile,
+        "hasProvableIncome",
+        true,
+        catalogue
+      ) as AnswerImpact
     )
   }
 
@@ -302,7 +317,8 @@ function buildAnswerImpacts(profile: UserProfile): AnswerImpact[] {
       simulateAnswerImpact(
         profile,
         "translationReadiness",
-        "ready_with_list"
+        "ready_with_list",
+        catalogue
       ) as AnswerImpact
     )
   }

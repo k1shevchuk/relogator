@@ -1,6 +1,9 @@
-import { getCountry } from "./countries"
-import { getSources } from "./sources"
-import { routes as defaultRoutes } from "./routes"
+import {
+  getCountryFromCatalogue,
+  getSourcesFromCatalogue,
+  localContentCatalogue,
+  type ContentCatalogue,
+} from "./content-catalogue"
 import type {
   AnswerImpact,
   AssessmentScale,
@@ -13,6 +16,8 @@ import type {
   RouteDefinition,
   UserProfile,
 } from "./types"
+
+type AssessmentCatalogueInput = ContentCatalogue | RouteDefinition[]
 
 const difficultyLabels: Record<DifficultyLevel, string> = {
   1: "очень простой",
@@ -59,10 +64,12 @@ const incomeRank: Record<MonthlyIncomeLevel, number> = {
 
 export function assessRoutes(
   profile: UserProfile,
-  catalogue: RouteDefinition[] = defaultRoutes
+  catalogue: AssessmentCatalogueInput = localContentCatalogue
 ): RouteAssessment[] {
-  return catalogue
-    .map((route) => assessRoute(profile, route))
+  const assessmentCatalogue = normalizeAssessmentCatalogue(catalogue)
+
+  return assessmentCatalogue.routes
+    .map((route) => assessRoute(profile, route, assessmentCatalogue))
     .filter((assessment): assessment is RouteAssessment => Boolean(assessment))
     .sort(compareAssessments)
 }
@@ -71,11 +78,12 @@ export function simulateAnswerImpact<TField extends keyof UserProfile>(
   profile: UserProfile,
   field: TField,
   value: UserProfile[TField],
-  catalogue: RouteDefinition[] = defaultRoutes
+  catalogue: AssessmentCatalogueInput = localContentCatalogue
 ): AnswerImpact<TField> {
-  const before = assessRoutes(profile, catalogue)
+  const assessmentCatalogue = normalizeAssessmentCatalogue(catalogue)
+  const before = assessRoutes(profile, assessmentCatalogue)
   const afterProfile = { ...profile, [field]: value }
-  const after = assessRoutes(afterProfile, catalogue)
+  const after = assessRoutes(afterProfile, assessmentCatalogue)
   const beforeById = new Map(
     before.map((assessment) => [assessment.route.id, assessment])
   )
@@ -125,7 +133,8 @@ export function simulateAnswerImpact<TField extends keyof UserProfile>(
 
 function assessRoute(
   profile: UserProfile,
-  route: RouteDefinition
+  route: RouteDefinition,
+  catalogue: ContentCatalogue = localContentCatalogue
 ): RouteAssessment | null {
   if (
     route.publicationStatus === "archived" ||
@@ -134,13 +143,13 @@ function assessRoute(
     return null
   }
 
-  const sourceList = getSources(route.sourceIds)
+  const sourceList = getSourcesFromCatalogue(catalogue, route.sourceIds)
 
   if (sourceList.length === 0) {
     return null
   }
 
-  const country = getCountry(route.countryCode)
+  const country = getCountryFromCatalogue(catalogue, route.countryCode)
   const whyFits = buildWhyFits(profile, route)
   const documents = new Set(route.documents)
   const blockers = [...route.risks]
@@ -574,6 +583,19 @@ function costRank(level: RouteDefinition["cost"]["level"]): number {
   }
 
   return 3
+}
+
+function normalizeAssessmentCatalogue(
+  catalogue: AssessmentCatalogueInput
+): ContentCatalogue {
+  if (Array.isArray(catalogue)) {
+    return {
+      ...localContentCatalogue,
+      routes: catalogue,
+    }
+  }
+
+  return catalogue
 }
 
 function classifyChange(

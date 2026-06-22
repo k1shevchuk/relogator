@@ -20,20 +20,24 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
-import { countries } from "@/domain/countries"
 import { dataManifest } from "@/domain/data-catalog"
-import { routes } from "@/domain/routes"
+import { getContentCatalogue } from "@/domain/content-repository"
 
-export default function Home() {
+export const revalidate = 300
+
+export default async function Home() {
+  const catalogue = await getContentCatalogue()
   const popularRoutes = [
     "georgia-visa-free-one-year",
     "serbia-temporary-residence-business-work",
     "armenia-visa-free-180",
   ]
-    .map((routeId) => routes.find((route) => route.id === routeId))
-    .filter((route): route is (typeof routes)[number] => Boolean(route))
-  const countryCount = countries.length
-  const routeCount = routes.length
+    .map((routeId) => catalogue.routes.find((route) => route.id === routeId))
+    .filter((route): route is (typeof catalogue.routes)[number] =>
+      Boolean(route)
+    )
+  const countryCount = catalogue.countries.length
+  const routeCount = catalogue.routes.length
 
   return (
     <>
@@ -72,13 +76,13 @@ export default function Home() {
                 База MVP: {countryCount} стран и {routeCount} маршрут
               </CardTitle>
               <CardDescription>
-                Данные хранятся как структурированные файлы с источниками, датой
-                проверки и статусом глубины. Следующая рамка расширения -{" "}
-                {dataManifest.targetCountryCount} страны.
+                Данные читаются из Supabase; локальные структурированные файлы
+                остаются резервом и источником загрузки. Следующая рамка
+                расширения - {dataManifest.targetCountryCount} страны.
               </CardDescription>
             </CardHeader>
             <CardContent className="flex flex-wrap gap-2">
-              {countries.map((country) => (
+              {catalogue.countries.map((country) => (
                 <Badge key={country.code} variant="outline">
                   {country.name}
                 </Badge>
@@ -111,9 +115,9 @@ export default function Home() {
               Топ-3 популярных направления
             </h2>
             <p className="text-sm leading-6 text-muted-foreground">
-              Стартовый список MVP для быстрых сценариев из РФ. После
-              накопления анкет этот блок нужно заменить реальной статистикой
-              выбора пользователей. Пошаговый план открывается после входа.
+              Стартовый список MVP для быстрых сценариев из РФ. После накопления
+              анкет этот блок нужно заменить реальной статистикой выбора
+              пользователей. Пошаговый план открывается после входа.
             </p>
           </div>
           <div className="grid gap-4 md:grid-cols-3">
@@ -127,7 +131,7 @@ export default function Home() {
                   <CardHeader>
                     <CardTitle>
                       {
-                        countries.find(
+                        catalogue.countries.find(
                           (country) => country.code === route.countryCode
                         )?.name
                       }

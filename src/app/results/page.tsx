@@ -1,7 +1,12 @@
 import { SiteHeader } from "@/components/site-header"
+import { getContentCatalogue } from "@/domain/content-repository"
 import { ResultsClient } from "@/features/results/results-client"
 
-export default function ResultsPage() {
+export const revalidate = 300
+
+export default async function ResultsPage() {
+  const catalogue = await getContentCatalogue()
+
   return (
     <>
       <SiteHeader />
@@ -15,7 +20,7 @@ export default function ResultsPage() {
             сложности, документами, сроками и источниками.
           </p>
         </div>
-        <ResultsClient />
+        <ResultsClient catalogue={catalogue} />
       </main>
     </>
   )

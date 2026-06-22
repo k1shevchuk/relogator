@@ -1,14 +1,18 @@
 import { notFound, redirect } from "next/navigation"
 
 import { SiteHeader } from "@/components/site-header"
-import { getRoute, routes } from "@/domain/routes"
+import {
+  getRouteFromCatalogue,
+  localContentCatalogue,
+} from "@/domain/content-catalogue"
+import { getContentCatalogue } from "@/domain/content-repository"
 import { RouteDetailClient } from "@/features/routes/route-detail-client"
 import { getCurrentSupabaseUser } from "@/lib/supabase/server"
 
 export const dynamic = "force-dynamic"
 
 export function generateStaticParams() {
-  return routes.map((route) => ({ routeId: route.id }))
+  return localContentCatalogue.routes.map((route) => ({ routeId: route.id }))
 }
 
 export default async function RoutePage({
@@ -17,8 +21,10 @@ export default async function RoutePage({
   params: Promise<{ routeId: string }>
 }) {
   const { routeId } = await params
+  const catalogue = await getContentCatalogue()
+  const route = getRouteFromCatalogue(catalogue, routeId)
 
-  if (!getRoute(routeId)) {
+  if (!route) {
     notFound()
   }
 
@@ -37,7 +43,7 @@ export default async function RoutePage({
     <>
       <SiteHeader />
       <main className="mx-auto flex w-full max-w-6xl flex-1 flex-col gap-6 px-4 py-8 sm:px-6">
-        <RouteDetailClient routeId={routeId} />
+        <RouteDetailClient catalogue={catalogue} route={route} />
       </main>
     </>
   )
