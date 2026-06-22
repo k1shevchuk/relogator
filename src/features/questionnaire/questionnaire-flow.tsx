@@ -599,7 +599,7 @@ function Choice({
 }) {
   return (
     <div
-      onPointerDown={() => onSelect?.()}
+      onClick={() => onSelect?.()}
       className="flex cursor-pointer items-start gap-3 rounded-md border bg-background p-3 data-[checked=true]:border-primary data-[checked=true]:bg-primary/5"
       data-checked={checked}
     >

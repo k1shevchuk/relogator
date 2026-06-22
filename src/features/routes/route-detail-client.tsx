@@ -22,7 +22,7 @@ import {
   type ContentCatalogue,
 } from "@/domain/content-catalogue"
 import { buildRouteMetricSummaries } from "@/domain/assessment-display"
-import { countryStatusLabels } from "@/domain/countries"
+import { countryStatusLabels, getReviewFreshness } from "@/domain/countries"
 import type {
   RouteAssessment,
   RouteDefinition,
@@ -67,6 +67,9 @@ export function RouteDetailClient({
     "Это справочный маршрут из базы Relogator. Пройдите анкету, чтобы увидеть персональную оценку.",
   ]
   const activeStep = route.steps[activeStepIndex] ?? route.steps[0]
+  const activeCommonMistakes = filterDisplayedCommonMistakes(
+    activeStep.commonMistakes
+  )
   const activeStepSources = getSourcesFromCatalogue(
     catalogue,
     activeStep.sourceIds
@@ -89,6 +92,7 @@ export function RouteDetailClient({
   const metricSummaries = assessment
     ? buildRouteMetricSummaries(assessment)
     : null
+  const routeReviewFreshness = getReviewFreshness(route.lastReviewedAt)
 
   return (
     <>
@@ -108,6 +112,18 @@ export function RouteDetailClient({
                 {countryStatusLabels[country.status]}
               </Badge>
               <Badge variant="outline">Проверено: {route.lastReviewedAt}</Badge>
+              {routeReviewFreshness && (
+                <Badge
+                  variant="outline"
+                  className={
+                    routeReviewFreshness.tone === "risk"
+                      ? "border-rose-200 bg-rose-50 text-rose-950"
+                      : "border-amber-200 bg-amber-50 text-amber-950"
+                  }
+                >
+                  {routeReviewFreshness.label}
+                </Badge>
+              )}
               <Badge variant={assessment ? "secondary" : "outline"}>
                 {assessment ? assessment.difficulty.label : "справочник"}
               </Badge>
@@ -279,12 +295,8 @@ export function RouteDetailClient({
                 <section className="flex flex-col gap-3 rounded-lg border border-primary/20 bg-secondary/45 p-4">
                   <div className="flex flex-col gap-1">
                     <h3 className="text-sm font-medium">
-                      Конкретное действие и ссылка
+                      Что открыть и проверить
                     </h3>
-                    <p className="text-sm leading-6 text-muted-foreground">
-                      Не просто общий совет: что именно открыть или проверить на
-                      этом шаге.
-                    </p>
                   </div>
                   <ul className="grid gap-2">
                     {activeStepOfficialActions.map((item) => (
@@ -319,10 +331,12 @@ export function RouteDetailClient({
                 </div>
 
                 <div className="grid gap-4 md:grid-cols-2">
-                  <DetailList
-                    title="Частые ошибки"
-                    items={activeStep.commonMistakes}
-                  />
+                  {activeCommonMistakes.length > 0 && (
+                    <DetailList
+                      title="Частые ошибки"
+                      items={activeCommonMistakes}
+                    />
+                  )}
                   <div className="flex flex-col gap-2">
                     <h3 className="text-sm font-medium">
                       Когда нужен специалист
@@ -470,6 +484,12 @@ function DetailList({ items, title }: { items: string[]; title: string }) {
         ))}
       </ul>
     </div>
+  )
+}
+
+function filterDisplayedCommonMistakes(items: string[]) {
+  return items.filter(
+    (item) => !/справочн\w*\s+страниц\w*\s+гарантией/i.test(item)
   )
 }
 

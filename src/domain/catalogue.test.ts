@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest"
 
-import { countries } from "./countries"
+import { countries, getReviewFreshness } from "./countries"
 import { dataManifest } from "./data-catalog"
 import { routes } from "./routes"
 import { sources } from "./sources"
@@ -124,5 +124,15 @@ describe("country and source catalogue", () => {
         expect(sourceIds.has(sourceId)).toBe(true)
       }
     }
+  })
+
+  it("marks checked data as stale only after the configured age window", () => {
+    expect(getReviewFreshness("2026-06-18", new Date("2026-06-23"))).toBeNull()
+    expect(
+      getReviewFreshness("2026-06-18", new Date("2026-08-20"))?.tone
+    ).toBe("warning")
+    expect(
+      getReviewFreshness("2026-06-18", new Date("2026-09-18"))?.tone
+    ).toBe("risk")
   })
 })

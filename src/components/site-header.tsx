@@ -16,12 +16,12 @@ export async function SiteHeader() {
 
   return (
     <header className="sticky top-0 z-40 border-b bg-background/85 backdrop-blur-xl">
-      <div className="mx-auto flex w-full max-w-7xl items-center justify-between gap-4 px-4 py-3 sm:px-6">
+      <div className="mx-auto flex w-full max-w-7xl flex-wrap items-center justify-between gap-3 px-4 py-3 sm:flex-nowrap sm:gap-4 sm:px-6">
         <Link
           href="/"
-          className="flex min-w-0 items-center gap-3 font-heading text-lg font-semibold"
+          className="flex shrink-0 items-center gap-3 font-heading text-lg font-semibold"
         >
-          <span className="flex size-9 items-center justify-center rounded-md bg-foreground text-background shadow-sm">
+          <span className="flex size-9 shrink-0 items-center justify-center rounded-md bg-foreground text-background shadow-sm">
             <Compass className="size-5" />
           </span>
           <span className="flex flex-col leading-tight">
@@ -31,7 +31,7 @@ export async function SiteHeader() {
             </span>
           </span>
         </Link>
-        <nav className="flex flex-wrap items-center justify-end gap-1 sm:gap-2">
+        <nav className="flex w-full flex-wrap items-center justify-start gap-1 sm:w-auto sm:justify-end sm:gap-2">
           <Button asChild variant="ghost" size="sm" className="px-2">
             <Link href="/results">Результаты</Link>
           </Button>

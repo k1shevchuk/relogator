@@ -145,12 +145,12 @@ export function ResultsClient({ catalogue }: ResultsClientProps) {
             value={filter}
             onValueChange={(value) => setFilter(value as FilterValue)}
           >
-            <TabsList className="flex h-auto w-full flex-wrap justify-start gap-1 bg-muted/70 p-1">
+            <TabsList className="grid h-auto w-full grid-cols-2 items-stretch justify-stretch gap-1 bg-muted/70 p-1 sm:flex sm:flex-wrap sm:justify-start">
               {filters.map((item) => (
                 <TabsTrigger
                   key={item.value}
                   value={item.value}
-                  className="rounded-md"
+                  className="min-h-9 flex-none whitespace-normal rounded-md px-2 py-1 text-center text-xs leading-5 sm:text-sm"
                 >
                   {item.label}
                 </TabsTrigger>

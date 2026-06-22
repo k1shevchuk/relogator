@@ -24,7 +24,7 @@ import {
 } from "@/components/ui/card"
 import { Separator } from "@/components/ui/separator"
 import { buildRouteMetricSummaries } from "@/domain/assessment-display"
-import { countryStatusLabels } from "@/domain/countries"
+import { countryStatusLabels, getReviewFreshness } from "@/domain/countries"
 import type { RouteAssessment } from "@/domain/types"
 import { cn } from "@/lib/utils"
 
@@ -39,16 +39,20 @@ export function RouteCard({ assessment, tone = "best" }: RouteCardProps) {
   const metricSummaries = buildRouteMetricSummaries(assessment)
   const toneStyle = routeCardToneStyles[tone]
   const difficultyStyle = getDifficultyBadgeStyle(assessment.difficulty.level)
+  const reviewFreshness = getReviewFreshness(assessment.lastReviewedAt)
 
   return (
     <Card
       className={cn(
-        "overflow-hidden rounded-lg border bg-card shadow-sm",
+        "overflow-hidden rounded-lg border bg-card py-0 shadow-sm",
         toneStyle.card
       )}
     >
       <CardHeader
-        className={cn("border-l-4 bg-secondary/35", toneStyle.header)}
+        className={cn(
+          "rounded-t-lg border-l-4 bg-secondary/35 py-4 sm:py-5",
+          toneStyle.header
+        )}
       >
         <div className="flex flex-col gap-1">
           <CardTitle className="text-2xl">{assessment.country.name}</CardTitle>
@@ -145,6 +149,18 @@ export function RouteCard({ assessment, tone = "best" }: RouteCardProps) {
                 Проверено: {assessment.lastReviewedAt}. Статус страны:{" "}
                 {countryStatusLabels[assessment.country.status]}.
               </span>
+              {reviewFreshness && (
+                <span
+                  className={cn(
+                    "rounded-md border px-2 py-1",
+                    reviewFreshness.tone === "risk"
+                      ? "border-rose-200 bg-rose-50 text-rose-950"
+                      : "border-amber-200 bg-amber-50 text-amber-950"
+                  )}
+                >
+                  {reviewFreshness.label}
+                </span>
+              )}
               <div className="flex flex-wrap gap-2">
                 {assessment.sources.map((source) => (
                   <a
