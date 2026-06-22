@@ -74,9 +74,9 @@ export function RouteCard({ assessment, tone = "best" }: RouteCardProps) {
           </div>
         </CardAction>
       </CardHeader>
-      <CardContent className="flex flex-col gap-5 pt-5">
-        <div className="grid gap-4 lg:grid-cols-[1fr_360px]">
-          <div className="flex flex-col gap-4">
+      <CardContent className="pt-5">
+        <div className="grid gap-5 xl:grid-cols-[minmax(0,1fr)_320px] xl:items-start">
+          <div className="flex min-w-0 flex-col gap-4 xl:col-start-1 xl:row-start-1">
             <p className="text-sm leading-6 text-muted-foreground">
               {assessment.route.shortDescription}
             </p>
@@ -98,7 +98,7 @@ export function RouteCard({ assessment, tone = "best" }: RouteCardProps) {
               />
             </div>
           </div>
-          <div className="rounded-lg border bg-background p-3">
+          <aside className="rounded-lg border bg-background p-3 xl:sticky xl:top-20 xl:col-start-2 xl:row-span-3 xl:row-start-1">
             <div className="mb-3 flex items-center justify-between gap-2">
               <span className="text-sm font-medium">Краткая оценка</span>
               <span
@@ -115,48 +115,50 @@ export function RouteCard({ assessment, tone = "best" }: RouteCardProps) {
                 <MetricLine key={metric.label} metric={metric} />
               ))}
             </div>
+          </aside>
+          <div className="grid gap-4 md:grid-cols-2 xl:col-start-1 xl:row-start-2 xl:grid-cols-4">
+            <RouteList
+              title="Почему подходит"
+              items={assessment.whyFits.slice(0, 3)}
+            />
+            <RouteList
+              title="Подготовить первым"
+              items={assessment.documents.slice(0, 3)}
+            />
+            <RouteList
+              title="Что может помешать"
+              items={assessment.blockers.slice(0, 3)}
+            />
+            <RouteList
+              title="Что может открыть"
+              items={(assessment.unlocks.length
+                ? assessment.unlocks
+                : ["Подтвердить вводные и сверить источник перед действием."]
+              ).slice(0, 3)}
+            />
           </div>
-        </div>
-        <div className="grid gap-4 lg:grid-cols-4">
-          <RouteList
-            title="Почему подходит"
-            items={assessment.whyFits.slice(0, 3)}
-          />
-          <RouteList
-            title="Подготовить первым"
-            items={assessment.documents.slice(0, 3)}
-          />
-          <RouteList
-            title="Что может помешать"
-            items={assessment.blockers.slice(0, 3)}
-          />
-          <RouteList
-            title="Что может открыть"
-            items={(assessment.unlocks.length
-              ? assessment.unlocks
-              : ["Подтвердить вводные и сверить источник перед действием."]
-            ).slice(0, 3)}
-          />
-        </div>
-        <Separator />
-        <div className="flex flex-col gap-2 text-xs text-muted-foreground">
-          <span>
-            Проверено: {assessment.lastReviewedAt}. Статус страны:{" "}
-            {countryStatusLabels[assessment.country.status]}.
-          </span>
-          <div className="flex flex-wrap gap-2">
-            {assessment.sources.map((source) => (
-              <a
-                key={source.id}
-                href={source.url}
-                target="_blank"
-                rel="noreferrer"
-                className="inline-flex items-center gap-1 rounded-md border px-2 py-1 hover:bg-muted"
-              >
-                <Link2 />
-                {source.description}
-              </a>
-            ))}
+          <div className="flex flex-col gap-4 xl:col-start-1 xl:row-start-3">
+            <Separator />
+            <div className="flex flex-col gap-2 text-xs text-muted-foreground">
+              <span>
+                Проверено: {assessment.lastReviewedAt}. Статус страны:{" "}
+                {countryStatusLabels[assessment.country.status]}.
+              </span>
+              <div className="flex flex-wrap gap-2">
+                {assessment.sources.map((source) => (
+                  <a
+                    key={source.id}
+                    href={source.url}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="inline-flex items-center gap-1 rounded-md border px-2 py-1 hover:bg-muted"
+                  >
+                    <Link2 />
+                    {source.description}
+                  </a>
+                ))}
+              </div>
+            </div>
           </div>
         </div>
       </CardContent>
