@@ -63,4 +63,26 @@ describe("Supabase public config", () => {
       "https://relogator.example/auth/callback?next=%2Faccount"
     )
   })
+
+  test("uses the current request origin when the configured site url is local", () => {
+    const callbackUrl = getAuthCallbackUrl("/auth/login", {
+      env: { NEXT_PUBLIC_SITE_URL: "http://localhost:3000" },
+      requestOrigin: "http://127.0.0.1:3100",
+    })
+
+    expect(callbackUrl).toBe(
+      "http://127.0.0.1:3100/auth/callback?next=%2Fauth%2Flogin"
+    )
+  })
+
+  test("keeps the configured production site url over the request origin", () => {
+    const callbackUrl = getAuthCallbackUrl("/auth/login", {
+      env: { NEXT_PUBLIC_SITE_URL: "https://relogator.ru" },
+      requestOrigin: "http://127.0.0.1:3100",
+    })
+
+    expect(callbackUrl).toBe(
+      "https://relogator.ru/auth/callback?next=%2Fauth%2Flogin"
+    )
+  })
 })

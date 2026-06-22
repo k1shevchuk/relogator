@@ -119,15 +119,40 @@ export function sanitizeNextPath(path: string | null | undefined) {
 }
 
 function getSiteUrl(env: PublicEnv, requestOrigin?: string | null) {
-  const rawSiteUrl =
-    readEnv(env, "NEXT_PUBLIC_SITE_URL") ||
-    requestOrigin?.trim() ||
-    "http://localhost:3000"
-  const siteUrl = rawSiteUrl.startsWith("http")
-    ? rawSiteUrl
-    : `https://${rawSiteUrl}`
+  const envSiteUrl = normalizeSiteUrl(readEnv(env, "NEXT_PUBLIC_SITE_URL"))
+  const requestOriginUrl = normalizeSiteUrl(requestOrigin)
+
+  if (requestOriginUrl && (!envSiteUrl || isLocalSiteUrl(envSiteUrl))) {
+    return requestOriginUrl
+  }
+
+  return envSiteUrl || requestOriginUrl || "http://localhost:3000/"
+}
+
+function normalizeSiteUrl(value: string | null | undefined) {
+  const trimmed = value?.trim()
+
+  if (!trimmed) {
+    return ""
+  }
+
+  const siteUrl = trimmed.startsWith("http") ? trimmed : `https://${trimmed}`
 
   return siteUrl.endsWith("/") ? siteUrl : `${siteUrl}/`
+}
+
+function isLocalSiteUrl(value: string) {
+  try {
+    const url = new URL(value)
+
+    return (
+      url.hostname === "localhost" ||
+      url.hostname === "127.0.0.1" ||
+      url.hostname === "[::1]"
+    )
+  } catch {
+    return false
+  }
 }
 
 function readEnv(env: PublicEnv, key: string) {
