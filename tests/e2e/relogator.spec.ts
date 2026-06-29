@@ -24,6 +24,28 @@ test("first questionnaire step has no preselected answer", async ({ page }) => {
     "aria-checked",
     "false"
   )
+
+  await page.getByText("Пока сравниваю варианты", { exact: true }).click()
+
+  await expect(page.locator("#goal-quick_exit")).toHaveAttribute(
+    "aria-checked",
+    "false"
+  )
+  await expect(page.locator("#goal-compare")).toHaveAttribute(
+    "aria-checked",
+    "true"
+  )
+
+  await page.getByText("Уехать быстро", { exact: true }).click()
+
+  await expect(page.locator("#goal-quick_exit")).toHaveAttribute(
+    "aria-checked",
+    "true"
+  )
+  await expect(page.locator("#goal-compare")).toHaveAttribute(
+    "aria-checked",
+    "false"
+  )
 })
 
 test("empty questionnaire step cannot be skipped", async ({ page }) => {

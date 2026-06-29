@@ -253,12 +253,6 @@ export function QuestionnaireFlow() {
                   }
                 >
                   {goalOptions.map((option) => {
-                    const selectOption = () =>
-                      setValue("goal", option.value, {
-                        shouldDirty: true,
-                        shouldValidate: true,
-                      })
-
                     return (
                       <Choice
                         key={option.value}
@@ -266,11 +260,11 @@ export function QuestionnaireFlow() {
                         checked={field.value === option.value}
                         label={option.label}
                         hint={option.hint}
-                        onSelect={selectOption}
                       >
                         <RadioGroupItem
                           id={`goal-${option.value}`}
                           value={option.value}
+                          aria-labelledby={`goal-${option.value}-label`}
                         />
                       </Choice>
                     )
@@ -588,34 +582,29 @@ function Choice({
   hint,
   id,
   label,
-  onSelect,
 }: {
   children: ReactNode
   checked: boolean
   hint?: string
   id: string
   label: string
-  onSelect?: () => void
 }) {
   return (
-    <div
-      onClick={() => onSelect?.()}
+    <label
+      htmlFor={id}
       className="flex cursor-pointer items-start gap-3 rounded-md border bg-background p-3 data-[checked=true]:border-primary data-[checked=true]:bg-primary/5"
       data-checked={checked}
     >
       <span className="mt-1">{children}</span>
-      <label
-        htmlFor={id}
-        className="flex min-w-0 flex-1 cursor-pointer flex-col gap-1"
-      >
+      <span className="flex min-w-0 flex-1 flex-col gap-1" id={`${id}-label`}>
         <span className="text-sm font-medium">{label}</span>
         {hint && (
           <span className="text-sm leading-5 text-muted-foreground">
             {hint}
           </span>
         )}
-      </label>
-    </div>
+      </span>
+    </label>
   )
 }
 
@@ -680,27 +669,17 @@ function RadioField<
             }
           >
             {options.map((option) => {
-              const selectOption = () =>
-                setValue(
-                  name,
-                  option.value as PathValue<QuestionnaireDraft, TName>,
-                  {
-                    shouldDirty: true,
-                    shouldValidate: true,
-                  }
-                )
-
               return (
                 <Choice
                   key={String(option.value)}
                   id={`${name}-${option.value}`}
                   checked={field.value === option.value}
                   label={option.label}
-                  onSelect={selectOption}
                 >
                   <RadioGroupItem
                     id={`${name}-${option.value}`}
                     value={String(option.value)}
+                    aria-labelledby={`${name}-${option.value}-label`}
                   />
                 </Choice>
               )
@@ -747,27 +726,17 @@ function BooleanRadioField<TName extends "hasProvableIncome">({
               { value: true, label: "Да, могу подтвердить" },
               { value: false, label: "Нет или пока не уверен" },
             ].map((option) => {
-              const selectOption = () =>
-                setValue(
-                  name,
-                  option.value as PathValue<QuestionnaireDraft, TName>,
-                  {
-                    shouldDirty: true,
-                    shouldValidate: true,
-                  }
-                )
-
               return (
                 <Choice
                   key={String(option.value)}
                   id={`${name}-${option.value}`}
                   checked={field.value === option.value}
                   label={option.label}
-                  onSelect={selectOption}
                 >
                   <RadioGroupItem
                     id={`${name}-${option.value}`}
                     value={String(option.value)}
+                    aria-labelledby={`${name}-${option.value}-label`}
                   />
                 </Choice>
               )
