@@ -108,6 +108,13 @@ export function getAuthCallbackUrl(
   return callbackUrl.toString()
 }
 
+export function getPublicSiteUrl(
+  env: PublicEnv = process.env,
+  requestOrigin?: string | null
+) {
+  return getSiteUrl(env, requestOrigin)
+}
+
 export function sanitizeNextPath(path: string | null | undefined) {
   if (!path || !path.startsWith("/") || path.startsWith("//")) {
     return DEFAULT_NEXT_PATH

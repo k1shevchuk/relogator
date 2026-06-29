@@ -1,7 +1,11 @@
 import { NextResponse } from "next/server"
 import type { EmailOtpType } from "@supabase/supabase-js"
 
-import { isSupabaseConfigured, sanitizeNextPath } from "@/lib/supabase/config"
+import {
+  getPublicSiteUrl,
+  isSupabaseConfigured,
+  sanitizeNextPath,
+} from "@/lib/supabase/config"
 import { createSupabaseServerClient } from "@/lib/supabase/server"
 
 const supportedOtpTypes = new Set<EmailOtpType>([
@@ -19,24 +23,15 @@ export async function GET(request: Request) {
   const tokenHash = requestUrl.searchParams.get("token_hash")
   const otpType = parseOtpType(requestUrl.searchParams.get("type"))
   const nextPath = sanitizeNextPath(requestUrl.searchParams.get("next"))
-  const redirectUrl = new URL(nextPath, requestUrl.origin)
+  const publicSiteUrl = getPublicSiteUrl(process.env, requestUrl.origin)
+  const redirectUrl = new URL(nextPath, publicSiteUrl)
 
   if (!isSupabaseConfigured()) {
-    return NextResponse.redirect(
-      new URL(
-        `/auth/login?error=${encodeURIComponent("Вход временно недоступен")}`,
-        requestUrl.origin
-      )
-    )
+    return redirectToLogin("Вход временно недоступен", publicSiteUrl)
   }
 
   if (!code && (!tokenHash || !otpType)) {
-    return NextResponse.redirect(
-      new URL(
-        `/auth/login?error=${encodeURIComponent("Ссылка входа недействительна")}`,
-        requestUrl.origin
-      )
-    )
+    return redirectToLogin("Ссылка входа недействительна", publicSiteUrl)
   }
 
   const supabase = await createSupabaseServerClient()
@@ -49,12 +44,7 @@ export async function GET(request: Request) {
       : await supabase.auth.exchangeCodeForSession(code!)
 
   if (error) {
-    return NextResponse.redirect(
-      new URL(
-        `/auth/login?error=${encodeURIComponent(error.message)}`,
-        requestUrl.origin
-      )
-    )
+    return redirectToLogin(error.message, publicSiteUrl)
   }
 
   return NextResponse.redirect(redirectUrl)
@@ -66,4 +56,11 @@ function parseOtpType(value: string | null): EmailOtpType | null {
   }
 
   return value as EmailOtpType
+}
+
+function redirectToLogin(message: string, publicSiteUrl: string) {
+  const loginUrl = new URL("/auth/login", publicSiteUrl)
+  loginUrl.searchParams.set("error", message)
+
+  return NextResponse.redirect(loginUrl)
 }

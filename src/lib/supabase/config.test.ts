@@ -1,6 +1,7 @@
 import { describe, expect, test } from "vitest"
 import {
   getAuthCallbackUrl,
+  getPublicSiteUrl,
   getSupabasePublicConfigFromEnv,
   isBrowserUnsafeSupabaseKey,
 } from "./config"
@@ -84,5 +85,14 @@ describe("Supabase public config", () => {
     expect(callbackUrl).toBe(
       "https://relogator.ru/auth/callback?next=%2Fauth%2Flogin"
     )
+  })
+
+  test("uses configured production site url for server redirects behind proxy", () => {
+    const siteUrl = getPublicSiteUrl(
+      { NEXT_PUBLIC_SITE_URL: "https://relogator.ru" },
+      "https://localhost:3000"
+    )
+
+    expect(siteUrl).toBe("https://relogator.ru/")
   })
 })
