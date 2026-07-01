@@ -2,6 +2,7 @@ import { describe, expect, test } from "vitest"
 import {
   getAuthCallbackUrl,
   getPublicSiteUrl,
+  getRequestOriginFromHeaders,
   getSupabasePublicConfigFromEnv,
   isBrowserUnsafeSupabaseKey,
 } from "./config"
@@ -94,5 +95,15 @@ describe("Supabase public config", () => {
     )
 
     expect(siteUrl).toBe("https://relogator.ru/")
+  })
+
+  test("builds request origin from forwarded proxy headers", () => {
+    const headers = new Headers({
+      host: "127.0.0.1:3000",
+      "x-forwarded-host": "relogator.ru",
+      "x-forwarded-proto": "https",
+    })
+
+    expect(getRequestOriginFromHeaders(headers)).toBe("https://relogator.ru/")
   })
 })

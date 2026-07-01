@@ -115,6 +115,34 @@ export function getPublicSiteUrl(
   return getSiteUrl(env, requestOrigin)
 }
 
+export function getRequestOriginFromHeaders(
+  headers: Pick<Headers, "get">
+): string | null {
+  const originUrl = normalizeSiteUrl(headers.get("origin"))
+
+  if (originUrl && !isLocalSiteUrl(originUrl)) {
+    return originUrl
+  }
+
+  const forwardedHost = readFirstForwardedValue(headers.get("x-forwarded-host"))
+  const forwardedProto =
+    readFirstForwardedValue(headers.get("x-forwarded-proto")) ?? "https"
+
+  if (forwardedHost) {
+    return normalizeSiteUrl(`${forwardedProto}://${forwardedHost}`)
+  }
+
+  const host = readFirstForwardedValue(headers.get("host"))
+
+  if (host) {
+    const protocol = readFirstForwardedValue(headers.get("x-forwarded-proto"))
+
+    return normalizeSiteUrl(`${protocol ?? "http"}://${host}`)
+  }
+
+  return originUrl || null
+}
+
 export function sanitizeNextPath(path: string | null | undefined) {
   if (!path || !path.startsWith("/") || path.startsWith("//")) {
     return DEFAULT_NEXT_PATH
@@ -164,6 +192,10 @@ function isLocalSiteUrl(value: string) {
 
 function readEnv(env: PublicEnv, key: string) {
   return env[key]?.trim() ?? ""
+}
+
+function readFirstForwardedValue(value: string | null | undefined) {
+  return value?.split(",")[0]?.trim() || null
 }
 
 function isValidHttpUrl(value: string) {

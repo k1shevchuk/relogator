@@ -248,6 +248,7 @@ export function QuestionnaireFlow() {
                       <Choice
                         key={option.value}
                         id={`goal-${option.value}`}
+                        name="goal"
                         checked={field.value === option.value}
                         label={option.label}
                         hint={option.hint}
@@ -568,24 +569,30 @@ function Choice({
   hint,
   id,
   label,
+  name,
   onSelect,
 }: {
   checked: boolean
   hint?: string
   id: string
   label: string
+  name: string
   onSelect: () => void
 }) {
   return (
-    <button
-      id={id}
-      type="button"
-      role="radio"
-      aria-checked={checked}
-      onClick={onSelect}
-      className="flex w-full cursor-pointer items-start gap-3 rounded-md border bg-background p-3 text-left data-[checked=true]:border-primary data-[checked=true]:bg-primary/5"
+    <label
+      htmlFor={id}
+      className="flex w-full cursor-pointer items-start gap-3 rounded-md border bg-background p-3 text-left focus-within:border-ring focus-within:ring-3 focus-within:ring-ring/50 data-[checked=true]:border-primary data-[checked=true]:bg-primary/5"
       data-checked={checked}
     >
+      <input
+        id={id}
+        type="radio"
+        name={name}
+        checked={checked}
+        onChange={onSelect}
+        className="sr-only"
+      />
       <span
         aria-hidden="true"
         className={cn(
@@ -603,7 +610,7 @@ function Choice({
           </span>
         )}
       </span>
-    </button>
+    </label>
   )
 }
 
@@ -664,6 +671,7 @@ function RadioField<
                 <Choice
                   key={String(option.value)}
                   id={`${name}-${option.value}`}
+                  name={name}
                   checked={field.value === option.value}
                   label={option.label}
                   onSelect={() =>
@@ -713,6 +721,7 @@ function BooleanRadioField<TName extends "hasProvableIncome">({
                 <Choice
                   key={String(option.value)}
                   id={`${name}-${option.value}`}
+                  name={name}
                   checked={field.value === option.value}
                   label={option.label}
                   onSelect={() =>

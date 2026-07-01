@@ -5,6 +5,7 @@ import { redirect } from "next/navigation"
 
 import {
   getAuthCallbackUrl,
+  getRequestOriginFromHeaders,
   isSupabaseConfigured,
   sanitizeNextPath,
 } from "@/lib/supabase/config"
@@ -227,13 +228,8 @@ function getSignUpConfirmationNextPath(formData: FormData) {
 
 async function getRequestOrigin() {
   const headerStore = await headers()
-  const forwardedProto = headerStore.get("x-forwarded-proto")
-  const host = headerStore.get("host")
 
-  return (
-    headerStore.get("origin") ??
-    (host ? `${forwardedProto ?? "http"}://${host}` : null)
-  )
+  return getRequestOriginFromHeaders(headerStore)
 }
 
 function authUnavailableState(): AuthActionState {

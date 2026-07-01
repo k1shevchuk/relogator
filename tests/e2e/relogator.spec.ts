@@ -10,42 +10,60 @@ test.beforeEach(async ({ page }) => {
 test("first questionnaire step has no preselected answer", async ({ page }) => {
   await page.goto("/questionnaire")
 
-  await expect(page.locator('[role="radio"][aria-checked="true"]')).toHaveCount(
-    0
-  )
+  await expect(page.locator('input[type="radio"]:checked')).toHaveCount(0)
 
   await page.getByText("Уехать быстро", { exact: true }).click()
 
-  await expect(page.locator("#goal-quick_exit")).toHaveAttribute(
-    "aria-checked",
-    "true"
-  )
-  await expect(page.locator("#goal-compare")).toHaveAttribute(
-    "aria-checked",
-    "false"
-  )
+  await expect(page.locator('input#goal-quick_exit')).toBeChecked()
+  await expect(page.locator('input#goal-compare')).not.toBeChecked()
 
   await page.getByText("Пока сравниваю варианты", { exact: true }).click()
 
-  await expect(page.locator("#goal-quick_exit")).toHaveAttribute(
-    "aria-checked",
-    "false"
-  )
-  await expect(page.locator("#goal-compare")).toHaveAttribute(
-    "aria-checked",
-    "true"
-  )
+  await expect(page.locator('input#goal-quick_exit')).not.toBeChecked()
+  await expect(page.locator('input#goal-compare')).toBeChecked()
 
   await page.getByText("Уехать быстро", { exact: true }).click()
 
-  await expect(page.locator("#goal-quick_exit")).toHaveAttribute(
-    "aria-checked",
-    "true"
-  )
-  await expect(page.locator("#goal-compare")).toHaveAttribute(
-    "aria-checked",
-    "false"
-  )
+  await expect(page.locator('input#goal-quick_exit')).toBeChecked()
+  await expect(page.locator('input#goal-compare')).not.toBeChecked()
+})
+
+test("questionnaire radio answers can be changed after selection", async ({
+  page,
+}) => {
+  await page.goto("/questionnaire")
+
+  await page.getByText("Уехать быстро", { exact: true }).click()
+  await page.getByRole("button", { name: /Дальше/ }).click()
+
+  await page.getByText("В течение 2 недель", { exact: true }).click()
+  await expect(page.locator('input#departureWindow-two_weeks')).toBeChecked()
+
+  await page.getByText("Пока без срока", { exact: true }).click()
+  await expect(
+    page.locator('input#departureWindow-two_weeks')
+  ).not.toBeChecked()
+  await expect(page.locator('input#departureWindow-no_deadline')).toBeChecked()
+
+  await page.getByText("До 1 месяца", { exact: true }).click()
+  await expect(page.locator('input#stayDuration-up_to_one_month')).toBeChecked()
+
+  await page.getByText("Больше года", { exact: true }).click()
+  await expect(
+    page.locator('input#stayDuration-up_to_one_month')
+  ).not.toBeChecked()
+  await expect(page.locator('input#stayDuration-more_than_year')).toBeChecked()
+
+  await page.getByText("Да, срок меньше 6 месяцев", { exact: true }).click()
+  await expect(
+    page.locator('input#passportStatus-less_than_6_months')
+  ).toBeChecked()
+
+  await page.getByText("Нет", { exact: true }).click()
+  await expect(
+    page.locator('input#passportStatus-less_than_6_months')
+  ).not.toBeChecked()
+  await expect(page.locator('input#passportStatus-none')).toBeChecked()
 })
 
 test("empty questionnaire step cannot be skipped", async ({ page }) => {
