@@ -1,6 +1,7 @@
 import { describe, expect, test } from "vitest"
 import {
   getAuthCallbackUrl,
+  getAuthConfirmUrl,
   getPublicSiteUrl,
   getRequestOriginFromHeaders,
   getSupabasePublicConfigFromEnv,
@@ -63,6 +64,16 @@ describe("Supabase public config", () => {
     )
     expect(unsafeUrl).toBe(
       "https://relogator.example/auth/callback?next=%2Faccount"
+    )
+  })
+
+  test("builds auth confirmation urls with local next paths only", () => {
+    const confirmUrl = getAuthConfirmUrl("/account?confirmed=1", {
+      env: { NEXT_PUBLIC_SITE_URL: "https://relogator.example" },
+    })
+
+    expect(confirmUrl).toBe(
+      "https://relogator.example/auth/confirm?next=%2Faccount%3Fconfirmed%3D1"
     )
   })
 

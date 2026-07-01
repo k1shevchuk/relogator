@@ -580,14 +580,21 @@ function Choice({
   name: string
   onSelect: () => void
 }) {
-  const clickGuard = useClickGuardAfterDrag()
+  const { onClick, ...dragGuard } = useClickGuardAfterDrag()
 
   return (
     <label
       htmlFor={id}
       className="flex w-full cursor-pointer items-start gap-3 rounded-md border bg-background p-3 text-left focus-within:border-ring focus-within:ring-3 focus-within:ring-ring/50 data-[checked=true]:border-primary data-[checked=true]:bg-primary/5"
       data-checked={checked}
-      {...clickGuard}
+      onClick={(event) => {
+        onClick(event)
+
+        if (!event.defaultPrevented) {
+          onSelect()
+        }
+      }}
+      {...dragGuard}
     >
       <input
         id={id}
@@ -596,8 +603,17 @@ function Choice({
         checked={checked}
         onChange={onSelect}
         aria-describedby={hint ? `${id}-hint` : undefined}
-        className="mt-1 size-4 shrink-0 accent-primary"
+        className="sr-only"
       />
+      <span
+        aria-hidden="true"
+        className={cn(
+          "mt-1 flex size-4 shrink-0 items-center justify-center rounded-full border",
+          checked ? "border-primary" : "border-input"
+        )}
+      >
+        {checked && <span className="size-2 rounded-full bg-primary" />}
+      </span>
       <span className="flex min-w-0 flex-1 flex-col gap-1">
         <span className="text-sm font-medium">{label}</span>
         {hint && (

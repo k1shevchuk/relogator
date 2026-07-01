@@ -5,6 +5,7 @@ import { redirect } from "next/navigation"
 
 import {
   getAuthCallbackUrl,
+  getAuthConfirmUrl,
   getRequestOriginFromHeaders,
   isSupabaseConfigured,
   sanitizeNextPath,
@@ -123,7 +124,7 @@ async function signUpWithEmail(formData: FormData): Promise<AuthActionState> {
     email,
     password,
     options: {
-      emailRedirectTo: getAuthCallbackUrl(confirmationNextPath, {
+      emailRedirectTo: getAuthConfirmUrl(confirmationNextPath, {
         requestOrigin: await getRequestOrigin(),
       }),
     },

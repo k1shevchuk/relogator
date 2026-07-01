@@ -66,6 +66,19 @@ test("questionnaire radio answers can be changed after selection", async ({
   await expect(page.locator("input#passportStatus-none")).toBeChecked()
 })
 
+test("questionnaire radio cards can be changed by clicking the card", async ({
+  page,
+}) => {
+  await page.goto("/questionnaire")
+
+  await page.locator('label[for="goal-quick_exit"]').click()
+  await expect(page.locator("input#goal-quick_exit")).toBeChecked()
+
+  await page.locator('label[for="goal-compare"]').click()
+  await expect(page.locator("input#goal-quick_exit")).not.toBeChecked()
+  await expect(page.locator("input#goal-compare")).toBeChecked()
+})
+
 test("empty questionnaire step cannot be skipped", async ({ page }) => {
   await page.goto("/questionnaire")
   await page.getByRole("button", { name: /Дальше/ }).click()

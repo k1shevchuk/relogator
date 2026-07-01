@@ -101,8 +101,29 @@ export function getAuthCallbackUrl(
     requestOrigin?: string | null
   } = {}
 ) {
+  return getAuthRouteUrl("/auth/callback", nextPath, options)
+}
+
+export function getAuthConfirmUrl(
+  nextPath: string | null | undefined,
+  options: {
+    env?: PublicEnv
+    requestOrigin?: string | null
+  } = {}
+) {
+  return getAuthRouteUrl("/auth/confirm", nextPath, options)
+}
+
+function getAuthRouteUrl(
+  routePath: "/auth/callback" | "/auth/confirm",
+  nextPath: string | null | undefined,
+  options: {
+    env?: PublicEnv
+    requestOrigin?: string | null
+  }
+) {
   const siteUrl = getSiteUrl(options.env ?? process.env, options.requestOrigin)
-  const callbackUrl = new URL("/auth/callback", siteUrl)
+  const callbackUrl = new URL(routePath, siteUrl)
   callbackUrl.searchParams.set("next", sanitizeNextPath(nextPath))
 
   return callbackUrl.toString()
