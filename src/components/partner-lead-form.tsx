@@ -22,6 +22,10 @@ type PartnerLeadFormState = {
   websiteUrl: string
 }
 
+type PartnerLeadFormErrors = Partial<
+  Record<keyof PartnerLeadFormState, string>
+>
+
 const initialForm: PartnerLeadFormState = {
   organizationName: "",
   contactName: "",
@@ -34,31 +38,48 @@ const initialForm: PartnerLeadFormState = {
   websiteUrl: "",
 }
 
+const fieldIds: Record<keyof PartnerLeadFormState, string> = {
+  organizationName: "partner-organization",
+  contactName: "partner-contact-name",
+  contact: "partner-contact",
+  website: "partner-website",
+  countries: "partner-countries",
+  services: "partner-services",
+  message: "partner-message",
+  consent: "partner-consent",
+  websiteUrl: "partner-website-url",
+}
+
+const validationFocusOrder: (keyof PartnerLeadFormState)[] = [
+  "organizationName",
+  "contactName",
+  "contact",
+  "countries",
+  "services",
+  "message",
+  "consent",
+  "websiteUrl",
+]
+
 export function PartnerLeadForm() {
   const [form, setForm] = useState(initialForm)
   const [submitting, setSubmitting] = useState(false)
   const [submitted, setSubmitted] = useState(false)
+  const [hasTriedSubmit, setHasTriedSubmit] = useState(false)
   const [error, setError] = useState("")
 
-  const canSubmit = useMemo(
-    () =>
-      form.organizationName.trim().length >= 2 &&
-      form.contactName.trim().length >= 2 &&
-      form.contact.trim().length >= 4 &&
-      form.countries.trim().length >= 2 &&
-      form.services.trim().length >= 2 &&
-      form.message.trim().length >= 10 &&
-      form.consent &&
-      form.websiteUrl.trim().length === 0,
-    [form]
-  )
+  const errors = useMemo(() => validatePartnerLeadForm(form), [form])
+  const visibleErrors = hasTriedSubmit ? errors : {}
+  const canSubmit = Object.keys(errors).length === 0
 
   async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
+    setHasTriedSubmit(true)
     setError("")
 
     if (!canSubmit) {
       setError("Заполните обязательные поля и подтвердите согласие.")
+      focusFirstInvalidField(errors)
       return
     }
 
@@ -77,6 +98,7 @@ export function PartnerLeadForm() {
       }
 
       setSubmitted(true)
+      setHasTriedSubmit(false)
       setForm(initialForm)
     } catch {
       setError("Не удалось отправить заявку. Проверьте соединение.")
@@ -118,6 +140,16 @@ export function PartnerLeadForm() {
             onChange={(event) => update("organizationName", event.target.value)}
             placeholder="Название компании"
             autoComplete="organization"
+            aria-invalid={Boolean(visibleErrors.organizationName)}
+            aria-describedby={
+              visibleErrors.organizationName
+                ? "partner-organization-error"
+                : undefined
+            }
+          />
+          <FieldError
+            id="partner-organization-error"
+            message={visibleErrors.organizationName}
           />
         </Field>
         <Field label="Контактное лицо" htmlFor="partner-contact-name">
@@ -127,6 +159,16 @@ export function PartnerLeadForm() {
             onChange={(event) => update("contactName", event.target.value)}
             placeholder="Имя"
             autoComplete="name"
+            aria-invalid={Boolean(visibleErrors.contactName)}
+            aria-describedby={
+              visibleErrors.contactName
+                ? "partner-contact-name-error"
+                : undefined
+            }
+          />
+          <FieldError
+            id="partner-contact-name-error"
+            message={visibleErrors.contactName}
           />
         </Field>
       </div>
@@ -138,10 +180,22 @@ export function PartnerLeadForm() {
           onChange={(event) => update("contact", event.target.value)}
           placeholder="Email, Telegram, телефон или ссылка"
           autoComplete="email"
+          aria-invalid={Boolean(visibleErrors.contact)}
+          aria-describedby={
+            visibleErrors.contact ? "partner-contact-error" : undefined
+          }
+        />
+        <FieldError
+          id="partner-contact-error"
+          message={visibleErrors.contact}
         />
       </Field>
 
-      <Field label="Сайт или официальный канал" htmlFor="partner-website">
+      <Field
+        label="Сайт или официальный канал"
+        htmlFor="partner-website"
+        required={false}
+      >
         <Input
           id="partner-website"
           value={form.website}
@@ -159,6 +213,7 @@ export function PartnerLeadForm() {
           value={form.websiteUrl}
           onChange={(event) => update("websiteUrl", event.target.value)}
           autoComplete="off"
+          aria-hidden="true"
         />
       </div>
 
@@ -169,6 +224,14 @@ export function PartnerLeadForm() {
             value={form.countries}
             onChange={(event) => update("countries", event.target.value)}
             placeholder="Например: Сербия, Армения, Турция"
+            aria-invalid={Boolean(visibleErrors.countries)}
+            aria-describedby={
+              visibleErrors.countries ? "partner-countries-error" : undefined
+            }
+          />
+          <FieldError
+            id="partner-countries-error"
+            message={visibleErrors.countries}
           />
         </Field>
         <Field label="Чем помогаете" htmlFor="partner-services">
@@ -177,6 +240,14 @@ export function PartnerLeadForm() {
             value={form.services}
             onChange={(event) => update("services", event.target.value)}
             placeholder="Визы, ВНЖ, документы, налоги, адаптация"
+            aria-invalid={Boolean(visibleErrors.services)}
+            aria-describedby={
+              visibleErrors.services ? "partner-services-error" : undefined
+            }
+          />
+          <FieldError
+            id="partner-services-error"
+            message={visibleErrors.services}
           />
         </Field>
       </div>
@@ -187,6 +258,14 @@ export function PartnerLeadForm() {
           value={form.message}
           onChange={(event) => update("message", event.target.value)}
           placeholder="Какой формат сотрудничества вам интересен и по каким направлениям вы готовы принимать обращения."
+          aria-invalid={Boolean(visibleErrors.message)}
+          aria-describedby={
+            visibleErrors.message ? "partner-message-error" : undefined
+          }
+        />
+        <FieldError
+          id="partner-message-error"
+          message={visibleErrors.message}
         />
       </Field>
 
@@ -197,6 +276,10 @@ export function PartnerLeadForm() {
           checked={form.consent}
           onChange={(event) => update("consent", event.target.checked)}
           aria-label="Согласие на обработку заявки партнера"
+          aria-invalid={Boolean(visibleErrors.consent)}
+          aria-describedby={
+            visibleErrors.consent ? "partner-consent-error" : undefined
+          }
           className="mt-1 size-4 shrink-0 accent-primary focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-none"
         />
         <Label
@@ -215,11 +298,16 @@ export function PartnerLeadForm() {
           .
         </Label>
       </div>
+      <FieldError
+        id="partner-consent-error"
+        message={visibleErrors.consent}
+      />
 
       {error && (
-        <p className="text-sm text-destructive" aria-live="polite">
-          {error}
-        </p>
+        <Alert variant="destructive" aria-live="polite">
+          <AlertTitle>Заявку пока нельзя отправить</AlertTitle>
+          <AlertDescription>{error}</AlertDescription>
+        </Alert>
       )}
 
       <Button type="submit" disabled={submitting}>
@@ -233,6 +321,7 @@ export function PartnerLeadForm() {
     key: TKey,
     value: PartnerLeadFormState[TKey]
   ) {
+    setError("")
     setForm((current) => ({ ...current, [key]: value }))
   }
 }
@@ -241,15 +330,94 @@ function Field({
   children,
   htmlFor,
   label,
+  required = true,
 }: {
   children: ReactNode
   htmlFor: string
   label: string
+  required?: boolean
 }) {
   return (
     <div className="flex flex-col gap-2">
-      <Label htmlFor={htmlFor}>{label}</Label>
+      <Label htmlFor={htmlFor}>
+        {label}
+        {required && (
+          <span className="text-destructive" aria-hidden="true">
+            *
+          </span>
+        )}
+      </Label>
       {children}
     </div>
   )
+}
+
+function FieldError({
+  id,
+  message,
+}: {
+  id: string
+  message?: string
+}) {
+  if (!message) {
+    return null
+  }
+
+  return (
+    <p id={id} className="text-sm leading-5 text-destructive">
+      {message}
+    </p>
+  )
+}
+
+function validatePartnerLeadForm(
+  form: PartnerLeadFormState
+): PartnerLeadFormErrors {
+  const errors: PartnerLeadFormErrors = {}
+
+  if (form.organizationName.trim().length < 2) {
+    errors.organizationName = "Укажите компанию или имя специалиста."
+  }
+
+  if (form.contactName.trim().length < 2) {
+    errors.contactName = "Укажите контактное лицо."
+  }
+
+  if (form.contact.trim().length < 4) {
+    errors.contact = "Укажите email, Telegram, телефон или ссылку."
+  }
+
+  if (form.countries.trim().length < 2) {
+    errors.countries = "Укажите хотя бы одну страну."
+  }
+
+  if (form.services.trim().length < 2) {
+    errors.services = "Коротко опишите, с чем вы помогаете."
+  }
+
+  if (form.message.trim().length < 10) {
+    errors.message = "Добавьте комментарий от 10 символов."
+  }
+
+  if (!form.consent) {
+    errors.consent = "Подтвердите согласие на обработку заявки."
+  }
+
+  if (form.websiteUrl.trim().length > 0) {
+    errors.websiteUrl = "Не удалось отправить заявку. Попробуйте еще раз."
+  }
+
+  return errors
+}
+
+function focusFirstInvalidField(errors: PartnerLeadFormErrors) {
+  const firstInvalidField = validationFocusOrder.find((field) => errors[field])
+
+  if (!firstInvalidField) {
+    return
+  }
+
+  window.requestAnimationFrame(() => {
+    document.getElementById(fieldIds[firstInvalidField])?.focus()
+  })
 }

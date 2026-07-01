@@ -300,6 +300,10 @@ test("partners page lets agencies submit an interest form", async ({
   await expect(
     page.getByText("Заполните обязательные поля и подтвердите согласие.")
   ).toBeVisible()
+  await expect(
+    page.getByText("Укажите компанию или имя специалиста.")
+  ).toBeVisible()
+  await expect(page.getByLabel("Компания или специалист")).toBeFocused()
 
   await page.getByLabel("Компания или специалист").fill("Relocation Helper")
   await page.getByLabel("Контактное лицо").fill("Иван")

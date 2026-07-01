@@ -19,7 +19,7 @@ export default function PartnersPage() {
               Для специалистов и агентств
             </div>
             <div className="flex flex-col gap-4">
-              <h1 className="max-w-3xl font-heading text-3xl font-semibold leading-tight sm:text-4xl">
+              <h1 className="max-w-3xl font-heading text-2xl font-semibold leading-tight sm:text-4xl">
                 Принимайте обращения от людей, которым нужен проверенный
                 следующий шаг
               </h1>
@@ -28,6 +28,18 @@ export default function PartnersPage() {
                 документы, сроки и источники. К специалисту человек обращается
                 там, где нужна ручная проверка, подача или сопровождение.
               </p>
+            </div>
+
+            <div className="flex flex-col gap-3 sm:flex-row">
+              <Button asChild>
+                <Link href="#partner-form">
+                  Оставить заявку
+                  <ArrowRight data-icon="inline-end" />
+                </Link>
+              </Button>
+              <Button asChild variant="outline">
+                <Link href="/questionnaire">Посмотреть путь пользователя</Link>
+              </Button>
             </div>
 
             <div className="grid gap-3 md:grid-cols-3">
@@ -80,18 +92,6 @@ export default function PartnersPage() {
                 </div>
               </div>
             </section>
-
-            <div className="flex flex-col gap-3 sm:flex-row">
-              <Button asChild>
-                <Link href="#partner-form">
-                  Оставить заявку
-                  <ArrowRight data-icon="inline-end" />
-                </Link>
-              </Button>
-              <Button asChild variant="outline">
-                <Link href="/questionnaire">Посмотреть путь пользователя</Link>
-              </Button>
-            </div>
           </div>
 
           <section id="partner-form" className="scroll-mt-24">
@@ -113,7 +113,7 @@ function PartnerPoint({
   title: string
 }) {
   return (
-    <div className="flex min-h-40 flex-col justify-between gap-4 rounded-lg border bg-card p-4 shadow-sm">
+    <div className="flex flex-col justify-between gap-4 rounded-lg border bg-card p-4 shadow-sm">
       <span className="flex size-9 items-center justify-center rounded-md bg-accent text-accent-foreground [&_svg]:size-5">
         {icon}
       </span>
