@@ -177,58 +177,6 @@ export function RouteDetailClient({
             </Card>
           )}
 
-          <Card className="rounded-lg shadow-sm">
-            <CardHeader>
-              <CardTitle>
-                <h2>Персональная оценка</h2>
-              </CardTitle>
-              <CardDescription>
-                Что в этом маршруте связано с вашей анкетой и что стоит
-                проверить первым.
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="flex flex-col gap-5">
-              {assessment && (
-                <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-4">
-                  {metricSummaries?.map((metric) => (
-                    <div
-                      key={metric.label}
-                      className="flex flex-col gap-1 rounded-md border bg-background p-3"
-                    >
-                      <span className="text-xs font-medium text-muted-foreground">
-                        {metric.label}
-                      </span>
-                      <span className="text-sm font-medium">
-                        {metric.value}
-                      </span>
-                      <span className="text-xs leading-5 text-muted-foreground">
-                        {metric.description}
-                      </span>
-                    </div>
-                  ))}
-                </div>
-              )}
-              <div className="grid gap-5 md:grid-cols-3">
-                <DetailList
-                  title="Почему подходит"
-                  items={whyFits.slice(0, 4)}
-                />
-                <DetailList
-                  title="Что может помешать"
-                  items={blockers.slice(0, 4)}
-                />
-                <DetailList
-                  title="Что улучшит маршрут"
-                  items={
-                    assessment?.unlocks.length
-                      ? assessment.unlocks.slice(0, 4)
-                      : ["Сверить источник и уточнить вводные перед действием."]
-                  }
-                />
-              </div>
-            </CardContent>
-          </Card>
-
           <Card className="overflow-hidden rounded-lg shadow-sm">
             <CardHeader>
               <CardTitle>
@@ -295,7 +243,7 @@ export function RouteDetailClient({
                 <section className="flex flex-col gap-3 rounded-lg border border-primary/20 bg-secondary/45 p-4">
                   <div className="flex flex-col gap-1">
                     <h3 className="text-sm font-medium">
-                      Что открыть и проверить
+                      Официальная проверка
                     </h3>
                   </div>
                   <ul className="grid gap-2">
@@ -305,19 +253,26 @@ export function RouteDetailClient({
                       </li>
                     ))}
                   </ul>
-                  <div className="flex flex-wrap gap-2">
+                  <div className="grid gap-2">
                     {activeStepSources.map((source) => (
-                      <Button
+                      <a
                         key={source.id}
-                        asChild
-                        variant="outline"
-                        size="sm"
+                        href={source.url}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="flex items-start gap-2 rounded-md border bg-card p-3 text-sm hover:bg-muted"
                       >
-                        <a href={source.url} target="_blank" rel="noreferrer">
-                          Открыть официальный источник
-                          <ExternalLink data-icon="inline-end" />
-                        </a>
-                      </Button>
+                        <span className="min-w-0 flex-1">
+                          <span className="block font-medium">
+                            {source.title}
+                          </span>
+                          <span className="block text-muted-foreground">
+                            {source.description}. Проверено:{" "}
+                            {source.lastReviewedAt}
+                          </span>
+                        </span>
+                        <ExternalLink className="mt-0.5 size-4 shrink-0" />
+                      </a>
                     ))}
                   </div>
                 </section>
@@ -347,32 +302,6 @@ export function RouteDetailClient({
                   </div>
                 </div>
 
-                <section className="flex flex-col gap-2">
-                  <h3 className="text-sm font-medium">Где сверить правило</h3>
-                  <div className="grid gap-2">
-                    {activeStepSources.map((source) => (
-                      <a
-                        key={source.id}
-                        href={source.url}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="flex items-start gap-2 rounded-md border bg-card p-3 text-sm hover:bg-muted"
-                      >
-                        <span className="min-w-0 flex-1">
-                          <span className="block font-medium">
-                            {source.title}
-                          </span>
-                          <span className="block text-muted-foreground">
-                            {source.description}. Проверено:{" "}
-                            {source.lastReviewedAt}
-                          </span>
-                        </span>
-                        <ExternalLink className="mt-0.5 size-4 shrink-0" />
-                      </a>
-                    ))}
-                  </div>
-                </section>
-
                 <div className="flex flex-col gap-2 border-t pt-4 sm:flex-row sm:justify-between">
                   <Button
                     type="button"
@@ -399,6 +328,58 @@ export function RouteDetailClient({
                   </Button>
                 </div>
               </article>
+            </CardContent>
+          </Card>
+
+          <Card className="rounded-lg shadow-sm">
+            <CardHeader>
+              <CardTitle>
+                <h2>Персональная оценка</h2>
+              </CardTitle>
+              <CardDescription>
+                Что в этом маршруте связано с вашей анкетой и что стоит
+                проверить первым.
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="flex flex-col gap-5">
+              {assessment && (
+                <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-4">
+                  {metricSummaries?.map((metric) => (
+                    <div
+                      key={metric.label}
+                      className="flex flex-col gap-1 rounded-md border bg-background p-3"
+                    >
+                      <span className="text-xs font-medium text-muted-foreground">
+                        {metric.label}
+                      </span>
+                      <span className="text-sm font-medium">
+                        {metric.value}
+                      </span>
+                      <span className="text-xs leading-5 text-muted-foreground">
+                        {metric.description}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              )}
+              <div className="grid gap-5 md:grid-cols-3">
+                <DetailList
+                  title="Почему подходит"
+                  items={whyFits.slice(0, 4)}
+                />
+                <DetailList
+                  title="Что может помешать"
+                  items={blockers.slice(0, 4)}
+                />
+                <DetailList
+                  title="Что улучшит маршрут"
+                  items={
+                    assessment?.unlocks.length
+                      ? assessment.unlocks.slice(0, 4)
+                      : ["Сверить источник и уточнить вводные перед действием."]
+                  }
+                />
+              </div>
             </CardContent>
           </Card>
         </div>

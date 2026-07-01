@@ -580,52 +580,49 @@ function Choice({
   name: string
   onSelect: () => void
 }) {
+  const clickGuard = useClickGuardAfterDrag()
+
   return (
-    <div>
+    <label
+      htmlFor={id}
+      className="flex w-full cursor-pointer items-start gap-3 rounded-md border bg-background p-3 text-left focus-within:border-ring focus-within:ring-3 focus-within:ring-ring/50 data-[checked=true]:border-primary data-[checked=true]:bg-primary/5"
+      data-checked={checked}
+      {...clickGuard}
+    >
       <input
         id={id}
         type="radio"
         name={name}
         checked={checked}
-        readOnly
-        hidden
-      />
-      <button
-        type="button"
-        role="radio"
-        aria-checked={checked}
-        aria-labelledby={`${id}-label`}
+        onChange={onSelect}
         aria-describedby={hint ? `${id}-hint` : undefined}
-        className="flex w-full cursor-pointer items-start gap-3 rounded-md border bg-background p-3 text-left focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 data-[checked=true]:border-primary data-[checked=true]:bg-primary/5"
-        data-checked={checked}
-        {...usePressWithoutDrag(onSelect)}
+        className="sr-only"
+      />
+      <span
+        aria-hidden="true"
+        className={cn(
+          "mt-1 flex size-4 shrink-0 items-center justify-center rounded-full border",
+          checked ? "border-primary bg-primary" : "border-input bg-background"
+        )}
       >
-        <span
-          aria-hidden="true"
-          className={cn(
-            "mt-1 flex size-4 shrink-0 items-center justify-center rounded-full border",
-            checked ? "border-primary bg-primary" : "border-input bg-background"
-          )}
-        >
-          {checked && <span className="size-1.5 rounded-full bg-background" />}
-        </span>
-        <span className="flex min-w-0 flex-1 flex-col gap-1" id={`${id}-label`}>
-          <span className="text-sm font-medium">{label}</span>
-          {hint && (
-            <span
-              id={`${id}-hint`}
-              className="text-sm leading-5 text-muted-foreground"
-            >
-              {hint}
-            </span>
-          )}
-        </span>
-      </button>
-    </div>
+        {checked && <span className="size-1.5 rounded-full bg-background" />}
+      </span>
+      <span className="flex min-w-0 flex-1 flex-col gap-1">
+        <span className="text-sm font-medium">{label}</span>
+        {hint && (
+          <span
+            id={`${id}-hint`}
+            className="text-sm leading-5 text-muted-foreground"
+          >
+            {hint}
+          </span>
+        )}
+      </span>
+    </label>
   )
 }
 
-function usePressWithoutDrag(onPress: () => void) {
+function useClickGuardAfterDrag() {
   const pointerStartRef = useRef<{
     moved: boolean
     x: number
@@ -637,12 +634,9 @@ function usePressWithoutDrag(onPress: () => void) {
       if (pointerStartRef.current?.moved) {
         event.preventDefault()
         event.stopPropagation()
-        pointerStartRef.current = null
-        return
       }
 
       pointerStartRef.current = null
-      onPress()
     },
     onPointerCancel() {
       pointerStartRef.current = null
@@ -667,6 +661,21 @@ function usePressWithoutDrag(onPress: () => void) {
 
       if (moved) {
         start.moved = true
+      }
+    },
+  }
+}
+
+function usePressWithoutDrag(onPress: () => void) {
+  const clickGuard = useClickGuardAfterDrag()
+
+  return {
+    ...clickGuard,
+    onClick(event: MouseEvent<HTMLElement>) {
+      clickGuard.onClick(event)
+
+      if (!event.defaultPrevented) {
+        onPress()
       }
     },
   }

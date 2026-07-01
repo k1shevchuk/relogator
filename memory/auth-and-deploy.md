@@ -7,3 +7,4 @@ Updated: 2026-07-01
 - Supabase Auth `site_url` is `https://relogator.ru`.
 - Supabase Auth redirect allow list intentionally excludes `http://localhost:3000/**` and `http://127.0.0.1:3000/**` so production auth emails cannot redirect users to a local address.
 - Confirmation and recovery emails should send users to `https://relogator.ru/auth/callback?...` and then to the intended in-app page.
+- If a confirmation email opens `localhost`, the likely cause is Supabase Auth URL Configuration or a custom email template still using `{{ .SiteURL }}` with a local Site URL. For templates that use `emailRedirectTo`, prefer `{{ .ConfirmationURL }}` or a link based on `{{ .RedirectTo }}` according to current Supabase docs. The app also supports `/auth/confirm?token_hash=...&type=...` for token-hash templates.
