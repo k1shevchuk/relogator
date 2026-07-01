@@ -288,6 +288,15 @@ test("residence, family and pet scenarios keep conditional explanations", async 
   await expect(
     page.getByRole("heading", { name: "Менее подходящие" })
   ).toBeVisible()
+  const showMoreWeakRoutes = page.getByRole("button", {
+    name: "Показать все маршруты в разделе Менее подходящие",
+  })
+  if ((await showMoreWeakRoutes.count()) > 0) {
+    await showMoreWeakRoutes.click()
+    await expect(
+      page.getByRole("button", { name: "Свернуть раздел Менее подходящие" })
+    ).toBeVisible()
+  }
   await expect(
     page.getByText("Можно планировать переезд с животным").first()
   ).toBeVisible()
@@ -317,6 +326,14 @@ test("no passport and no income scenario shows blocked and unlock explanations",
   ).toBeVisible()
   await expect(
     page.getByText("Нет действующего загранпаспорта").first()
+  ).toBeVisible()
+  await page
+    .getByRole("button", {
+      name: "Показать все маршруты в разделе Не подходят сейчас",
+    })
+    .click()
+  await expect(
+    page.getByRole("button", { name: "Свернуть раздел Не подходят сейчас" })
   ).toBeVisible()
   await expect(
     page.getByText("Нужно подтвердить регулярный доход").first()

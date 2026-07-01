@@ -122,7 +122,7 @@ export function RouteCard({ assessment, tone = "best" }: RouteCardProps) {
           <div className="grid gap-3 md:grid-cols-3">
             <RouteList
               title="Почему подходит"
-              items={assessment.whyFits.slice(0, 2)}
+              items={assessment.whyFits.slice(0, 3)}
             />
             <RouteList
               title="Подготовить первым"

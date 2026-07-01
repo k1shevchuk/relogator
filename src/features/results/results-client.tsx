@@ -41,6 +41,9 @@ type ResultsClientProps = {
 
 export function ResultsClient({ catalogue }: ResultsClientProps) {
   const [filter, setFilter] = useState<FilterValue>("all")
+  const [expandedBuckets, setExpandedBuckets] = useState<
+    Partial<Record<ResultFitBucket, boolean>>
+  >({})
   const rawProfile = useSyncExternalStore(
     subscribeProfileStorage,
     readProfileStorage,
@@ -124,7 +127,10 @@ export function ResultsClient({ catalogue }: ResultsClientProps) {
                 key={item.value}
                 type="button"
                 aria-pressed={active}
-                onClick={() => setFilter(item.value)}
+                onClick={() => {
+                  setFilter(item.value)
+                  setExpandedBuckets({})
+                }}
                 className={cn(
                   "min-h-9 rounded-md px-2 py-1 text-center text-xs font-medium leading-5 transition-colors focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-none sm:text-sm",
                   active
@@ -178,6 +184,10 @@ export function ResultsClient({ catalogue }: ResultsClientProps) {
           {resultFitSections.map((section) => {
             const items = groupedResults[section.bucket]
             const tone = fitSectionStyles[section.bucket]
+            const visibleLimit = sectionVisibleLimits[section.bucket]
+            const expanded = expandedBuckets[section.bucket] ?? false
+            const visibleItems = expanded ? items : items.slice(0, visibleLimit)
+            const hiddenCount = Math.max(items.length - visibleItems.length, 0)
 
             if (items.length === 0) {
               return null
@@ -221,13 +231,37 @@ export function ResultsClient({ catalogue }: ResultsClientProps) {
                     {items.length}
                   </span>
                 </div>
-                {items.map((assessment) => (
+                {visibleItems.map((assessment) => (
                   <RouteCard
                     key={assessment.route.id}
                     assessment={assessment}
                     tone={section.bucket}
                   />
                 ))}
+                {items.length > visibleLimit && (
+                  <div className="flex justify-center">
+                    <Button
+                      type="button"
+                      variant="outline"
+                      aria-expanded={expanded}
+                      aria-label={
+                        expanded
+                          ? `Свернуть раздел ${section.title}`
+                          : `Показать все маршруты в разделе ${section.title}`
+                      }
+                      onClick={() =>
+                        setExpandedBuckets((current) => ({
+                          ...current,
+                          [section.bucket]: !expanded,
+                        }))
+                      }
+                    >
+                      {expanded
+                        ? `Свернуть до ${visibleLimit}`
+                        : `Показать еще ${hiddenCount}`}
+                    </Button>
+                  </div>
+                )}
               </section>
             )
           })}
@@ -284,6 +318,13 @@ const fitSectionStyles: Record<
     badge: "bg-zinc-950 text-white",
     count: "border-zinc-300 bg-white text-zinc-950",
   },
+}
+
+const sectionVisibleLimits: Record<ResultFitBucket, number> = {
+  best: 4,
+  medium: 4,
+  weak: 3,
+  blocked: 3,
 }
 
 function buildAnswerImpacts(
