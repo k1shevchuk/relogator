@@ -7,7 +7,6 @@ import { CheckCircle2, Send, X } from "lucide-react"
 
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { Button } from "@/components/ui/button"
-import { Checkbox } from "@/components/ui/checkbox"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
@@ -241,18 +240,24 @@ export function SpecialistRequestForm({
             />
           </Field>
 
-          <label className="flex cursor-pointer items-start gap-3 text-sm leading-6">
-            <Checkbox
+          <div className="flex items-start gap-3 text-sm leading-6">
+            <input
+              id={`${routeId}-request-consent`}
+              type="checkbox"
               checked={form.consent}
-              onCheckedChange={(checked) =>
+              onChange={(event) =>
                 setForm((current) => ({
                   ...current,
-                  consent: Boolean(checked),
+                  consent: event.target.checked,
                 }))
               }
               aria-label="Согласие на передачу данных специалисту"
+              className="mt-1 size-4 shrink-0 accent-primary focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-none"
             />
-            <span>
+            <Label
+              htmlFor={`${routeId}-request-consent`}
+              className="cursor-pointer items-start text-sm leading-6 font-normal"
+            >
               Я согласен передать ответы анкеты, выбранную страну, маршрут и
               вопрос специалисту для ответа по консультации. Передача данных
               выполняется с учетом{" "}
@@ -264,8 +269,8 @@ export function SpecialistRequestForm({
                 политики обработки персональных данных
               </Link>
               .
-            </span>
-          </label>
+            </Label>
+          </div>
 
           {error && (
             <p className="text-sm text-destructive" aria-live="polite">

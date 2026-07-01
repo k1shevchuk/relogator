@@ -3,7 +3,6 @@ import { UserPlus } from "lucide-react"
 
 import { SiteHeader } from "@/components/site-header"
 import { Button } from "@/components/ui/button"
-import { Checkbox } from "@/components/ui/checkbox"
 import {
   Card,
   CardContent,
@@ -73,13 +72,19 @@ export default async function RegisterPage({
                   required
                 />
               </div>
-              <label className="flex cursor-pointer items-start gap-3 text-sm leading-6">
-                <Checkbox
+              <div className="flex items-start gap-3 text-sm leading-6">
+                <input
+                  id="termsAccepted"
                   name="termsAccepted"
+                  type="checkbox"
                   required
                   aria-label="Согласие с пользовательским соглашением"
+                  className="mt-1 size-4 shrink-0 accent-primary focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-none"
                 />
-                <span>
+                <Label
+                  htmlFor="termsAccepted"
+                  className="cursor-pointer items-start text-sm leading-6 font-normal"
+                >
                   Я принимаю{" "}
                   <Link
                     className="underline-offset-4 hover:underline"
@@ -89,15 +94,21 @@ export default async function RegisterPage({
                     пользовательское соглашение
                   </Link>
                   .
-                </span>
-              </label>
-              <label className="flex cursor-pointer items-start gap-3 text-sm leading-6">
-                <Checkbox
+                </Label>
+              </div>
+              <div className="flex items-start gap-3 text-sm leading-6">
+                <input
+                  id="personalDataConsent"
                   name="personalDataConsent"
+                  type="checkbox"
                   required
                   aria-label="Согласие на обработку персональных данных"
+                  className="mt-1 size-4 shrink-0 accent-primary focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-none"
                 />
-                <span>
+                <Label
+                  htmlFor="personalDataConsent"
+                  className="cursor-pointer items-start text-sm leading-6 font-normal"
+                >
                   Я даю отдельное{" "}
                   <Link
                     className="underline-offset-4 hover:underline"
@@ -115,8 +126,8 @@ export default async function RegisterPage({
                     политикой обработки персональных данных
                   </Link>
                   .
-                </span>
-              </label>
+                </Label>
+              </div>
               <Button type="submit" disabled={!configured}>
                 <UserPlus data-icon="inline-start" />
                 Зарегистрироваться

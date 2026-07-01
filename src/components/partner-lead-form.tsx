@@ -6,7 +6,6 @@ import { CheckCircle2, Send } from "lucide-react"
 
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { Button } from "@/components/ui/button"
-import { Checkbox } from "@/components/ui/checkbox"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
@@ -105,9 +104,7 @@ export function PartnerLeadForm() {
       className="flex flex-col gap-4 rounded-lg border bg-card p-4 shadow-sm sm:p-5"
     >
       <div className="flex flex-col gap-1">
-        <h2 className="font-heading text-xl font-semibold">
-          Оставить заявку
-        </h2>
+        <h2 className="font-heading text-xl font-semibold">Оставить заявку</h2>
         <p className="text-sm leading-6 text-muted-foreground">
           Подойдет email, Telegram, телефон или официальный канал связи.
         </p>
@@ -118,9 +115,7 @@ export function PartnerLeadForm() {
           <Input
             id="partner-organization"
             value={form.organizationName}
-            onChange={(event) =>
-              update("organizationName", event.target.value)
-            }
+            onChange={(event) => update("organizationName", event.target.value)}
             placeholder="Название компании"
             autoComplete="organization"
           />
@@ -195,13 +190,19 @@ export function PartnerLeadForm() {
         />
       </Field>
 
-      <label className="flex cursor-pointer items-start gap-3 text-sm leading-6">
-        <Checkbox
+      <div className="flex items-start gap-3 text-sm leading-6">
+        <input
+          id="partner-consent"
+          type="checkbox"
           checked={form.consent}
-          onCheckedChange={(checked) => update("consent", Boolean(checked))}
+          onChange={(event) => update("consent", event.target.checked)}
           aria-label="Согласие на обработку заявки партнера"
+          className="mt-1 size-4 shrink-0 accent-primary focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-none"
         />
-        <span>
+        <Label
+          htmlFor="partner-consent"
+          className="cursor-pointer items-start text-sm leading-6 font-normal"
+        >
           Я согласен на обработку данных из этой формы для связи по
           сотрудничеству. Подробнее:{" "}
           <Link
@@ -212,8 +213,8 @@ export function PartnerLeadForm() {
             политика обработки персональных данных
           </Link>
           .
-        </span>
-      </label>
+        </Label>
+      </div>
 
       {error && (
         <p className="text-sm text-destructive" aria-live="polite">

@@ -171,6 +171,7 @@ test("auth pages render without sending real emails", async ({ page }) => {
   await expect(
     page.getByLabel("Согласие на обработку персональных данных")
   ).toBeVisible()
+  await expect(page.locator('form input[type="checkbox"]')).toHaveCount(2)
 
   await page.goto("/auth/login")
   await expect(
@@ -226,6 +227,12 @@ test("partners page lets agencies submit an interest form", async ({
   ).toBeVisible()
   await expect(
     page.getByRole("heading", { name: "Оставить заявку" })
+  ).toBeVisible()
+  await expect(page.locator('form input[type="checkbox"]')).toHaveCount(1)
+
+  await page.getByRole("button", { name: "Отправить" }).click()
+  await expect(
+    page.getByText("Заполните обязательные поля и подтвердите согласие.")
   ).toBeVisible()
 
   await page.getByLabel("Компания или специалист").fill("Relocation Helper")
