@@ -35,6 +35,14 @@ export async function SiteHeader() {
           <Button asChild variant="ghost" size="sm" className="px-2">
             <Link href="/results">Результаты</Link>
           </Button>
+          <Button
+            asChild
+            variant="ghost"
+            size="sm"
+            className="hidden px-2 md:inline-flex"
+          >
+            <Link href="/partners">Партнерам</Link>
+          </Button>
           <Button asChild variant="ghost" size="sm" className="px-2">
             <Link href="/account">Кабинет</Link>
           </Button>

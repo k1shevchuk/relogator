@@ -74,8 +74,13 @@ export default async function AdminPage() {
     )
   }
 
-  const [profilesResult, questionnairesResult, plansResult, requestsResult] =
-    await Promise.all([
+  const [
+    profilesResult,
+    questionnairesResult,
+    plansResult,
+    requestsResult,
+    partnerLeadsResult,
+  ] = await Promise.all([
       supabase
         .from("profiles")
         .select("id, role, created_at")
@@ -96,12 +101,20 @@ export default async function AdminPage() {
         .select("id, user_id, country_name, route_title, status, created_at")
         .order("created_at", { ascending: false })
         .limit(20),
+      supabase
+        .from("partner_leads")
+        .select(
+          "id, organization_name, contact_name, contact, countries, services, status, created_at"
+        )
+        .order("created_at", { ascending: false })
+        .limit(20),
     ])
 
   const profiles = profilesResult.data ?? []
   const questionnaires = questionnairesResult.data ?? []
   const plans = plansResult.data ?? []
   const requests = requestsResult.data ?? []
+  const partnerLeads = partnerLeadsResult.data ?? []
 
   return (
     <AdminShell
@@ -121,11 +134,12 @@ export default async function AdminPage() {
             </p>
           </section>
 
-          <div className="grid gap-4 md:grid-cols-4">
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
             <MetricCard title="Профили" value={profiles.length} />
             <MetricCard title="Анкеты" value={questionnaires.length} />
             <MetricCard title="Маршруты" value={plans.length} />
             <MetricCard title="Заявки" value={requests.length} />
+            <MetricCard title="Партнеры" value={partnerLeads.length} />
           </div>
 
           <section className="grid gap-4 xl:grid-cols-2">
@@ -147,6 +161,16 @@ export default async function AdminPage() {
                 title: `${item.country_name}: ${item.route_title}`,
                 description: `${requestStatusLabels[item.status] ?? item.status}, пользователь ${item.user_id}`,
                 badge: item.status,
+              }))}
+            />
+            <AdminList
+              title="Заявки партнеров"
+              empty="Партнерских заявок пока нет."
+              rows={partnerLeads.map((item) => ({
+                id: item.id,
+                title: item.organization_name,
+                description: `${item.contact_name}, ${item.contact}, страны: ${item.countries}, услуги: ${item.services}`,
+                badge: partnerLeadStatusLabels[item.status] ?? item.status,
               }))}
             />
             <AdminList
@@ -241,6 +265,14 @@ const requestStatusLabels: Record<string, string> = {
   in_progress: "В работе",
   closed: "Закрыта",
   rejected: "Отклонена",
+}
+
+const partnerLeadStatusLabels: Record<string, string> = {
+  new: "Новая",
+  contacted: "Связались",
+  qualified: "Подходит",
+  rejected: "Отклонена",
+  closed: "Закрыта",
 }
 
 function formatDate(value: string): string {

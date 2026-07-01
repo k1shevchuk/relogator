@@ -10,7 +10,14 @@ const authMigrationFile = migrationFiles.find((file) =>
 const lockDownMigrationFile = migrationFiles.find((file) =>
   file.endsWith("_lock_down_auth_helpers.sql")
 )
-const migrationPaths = [authMigrationFile, lockDownMigrationFile]
+const partnerLeadsMigrationFile = migrationFiles.find((file) =>
+  file.endsWith("_partner_leads.sql")
+)
+const migrationPaths = [
+  authMigrationFile,
+  lockDownMigrationFile,
+  partnerLeadsMigrationFile,
+]
   .filter((file): file is string => Boolean(file))
   .map((file) => join(migrationsDir, file))
 
@@ -25,6 +32,7 @@ describe("Supabase Auth schema migration", () => {
   test("exists in the project migrations folder", () => {
     expect(authMigrationFile).toBeDefined()
     expect(lockDownMigrationFile).toBeDefined()
+    expect(partnerLeadsMigrationFile).toBeDefined()
   })
 
   test("creates profiles and user-owned product tables", () => {
@@ -37,6 +45,7 @@ describe("Supabase Auth schema migration", () => {
     expect(migration).toContain("create table public.user_questionnaires")
     expect(migration).toContain("create table public.saved_route_plans")
     expect(migration).toContain("create table public.specialist_requests")
+    expect(migration).toContain("create table public.partner_leads")
   })
 
   test("enables row level security and includes owner/admin policies", () => {
@@ -47,6 +56,7 @@ describe("Supabase Auth schema migration", () => {
       "user_questionnaires",
       "saved_route_plans",
       "specialist_requests",
+      "partner_leads",
     ]) {
       expect(migration).toContain(
         `alter table public.${table} enable row level security`
@@ -60,6 +70,28 @@ describe("Supabase Auth schema migration", () => {
     expect(
       migration.match(/create policy/g)?.length ?? 0
     ).toBeGreaterThanOrEqual(10)
+  })
+
+  test("allows public partner lead inserts but only admin reads", () => {
+    const migration = readMigrations()
+
+    expect(migration).toContain(
+      "grant insert on table public.partner_leads to anon, authenticated"
+    )
+    expect(migration).toContain(
+      "grant select, update, delete on table public.partner_leads to authenticated"
+    )
+    expect(migration).toContain(
+      'create policy "partner_leads_insert_public"'
+    )
+    expect(migration).toContain("for insert")
+    expect(migration).toContain("to anon, authenticated")
+    expect(migration).toContain("with check (consent is true")
+    expect(migration).toContain('create policy "partner_leads_select_admin"')
+    expect(migration).toContain("using (private.is_admin())")
+    expect(migration).not.toContain(
+      "grant select on table public.partner_leads to anon"
+    )
   })
 
   test("automatically creates a user profile after auth signup", () => {

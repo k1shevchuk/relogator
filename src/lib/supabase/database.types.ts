@@ -200,6 +200,51 @@ export type Database = {
           },
         ]
       }
+      partner_leads: {
+        Row: {
+          id: string
+          organization_name: string
+          contact_name: string
+          contact: string
+          website: string
+          countries: string
+          services: string
+          message: string
+          consent: boolean
+          status: string
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          organization_name: string
+          contact_name: string
+          contact: string
+          website?: string
+          countries: string
+          services: string
+          message: string
+          consent: boolean
+          status?: string
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          organization_name?: string
+          contact_name?: string
+          contact?: string
+          website?: string
+          countries?: string
+          services?: string
+          message?: string
+          consent?: boolean
+          status?: string
+          created_at?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       user_questionnaires: {
         Row: {
           id: string

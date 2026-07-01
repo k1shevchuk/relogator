@@ -208,6 +208,44 @@ test("specialist requests page is user-facing and not a technical export screen"
   await expect(page.getByText(/JSON|CSV/)).toHaveCount(0)
 })
 
+test("partners page lets agencies submit an interest form", async ({ page }) => {
+  await page.route("**/api/partner-leads", async (route) => {
+    await route.fulfill({
+      status: 201,
+      contentType: "application/json",
+      body: JSON.stringify({ saved: true }),
+    })
+  })
+
+  await page.goto("/partners")
+
+  await expect(
+    page.getByRole("heading", {
+      name: /Принимайте обращения от людей/i,
+    })
+  ).toBeVisible()
+  await expect(
+    page.getByRole("heading", { name: "Оставить заявку" })
+  ).toBeVisible()
+
+  await page.getByLabel("Компания или специалист").fill("Relocation Helper")
+  await page.getByLabel("Контактное лицо").fill("Иван")
+  await page.getByLabel("Способ связи").fill("ivan@example.com")
+  await page
+    .getByLabel("Сайт или официальный канал")
+    .fill("https://example.com")
+  await page.getByLabel("Страны").fill("Сербия, Армения, Турция")
+  await page.getByLabel("Чем помогаете").fill("Визы, ВНЖ, документы")
+  await page
+    .getByLabel("Комментарий")
+    .fill("Хотим обсудить партнерство и обработку обращений клиентов.")
+  await page.getByLabel("Согласие на обработку заявки партнера").click()
+  await page.getByRole("button", { name: "Отправить" }).click()
+
+  await expect(page.getByText("Заявка отправлена")).toBeVisible()
+  await expect(page.getByText(/MVP/i)).toHaveCount(0)
+})
+
 test("quick exit scenario shows routes that can start now", async ({
   page,
 }) => {

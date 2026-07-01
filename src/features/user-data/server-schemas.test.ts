@@ -1,5 +1,6 @@
 import { describe, expect, test } from "vitest"
 import {
+  partnerLeadSubmissionSchema,
   questionnaireSubmissionSchema,
   specialistRequestSubmissionSchema,
 } from "./server-schemas"
@@ -68,5 +69,47 @@ describe("user data API schemas", () => {
     })
 
     expect(result.success).toBe(false)
+  })
+
+  test("validates public partner lead payload and removes honeypot field", () => {
+    const result = partnerLeadSubmissionSchema.parse({
+      organizationName: "Relocation Helper",
+      contactName: "Иван",
+      contact: "ivan@example.com",
+      website: "https://example.com",
+      countries: "Сербия, Армения, Турция",
+      services: "Визы, ВНЖ, документы",
+      message: "Хотим обсудить партнерство и обработку обращений клиентов.",
+      consent: true,
+      websiteUrl: "",
+    })
+
+    expect(result.organizationName).toBe("Relocation Helper")
+    expect(result).not.toHaveProperty("websiteUrl")
+  })
+
+  test("rejects partner lead without consent or with filled honeypot", () => {
+    const withoutConsent = partnerLeadSubmissionSchema.safeParse({
+      organizationName: "Agency",
+      contactName: "Иван",
+      contact: "ivan@example.com",
+      countries: "Сербия",
+      services: "ВНЖ",
+      message: "Хотим обсудить партнерство по обращениям пользователей.",
+      consent: false,
+    })
+    const botPayload = partnerLeadSubmissionSchema.safeParse({
+      organizationName: "Agency",
+      contactName: "Иван",
+      contact: "ivan@example.com",
+      countries: "Сербия",
+      services: "ВНЖ",
+      message: "Хотим обсудить партнерство по обращениям пользователей.",
+      consent: true,
+      websiteUrl: "spam",
+    })
+
+    expect(withoutConsent.success).toBe(false)
+    expect(botPayload.success).toBe(false)
   })
 })
