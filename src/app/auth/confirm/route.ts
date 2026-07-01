@@ -7,6 +7,7 @@ import {
   sanitizeNextPath,
 } from "@/lib/supabase/config"
 import { createSupabaseServerClient } from "@/lib/supabase/server"
+import { toPublicAuthLinkErrorMessage } from "@/features/auth/auth-errors"
 
 const supportedOtpTypes = new Set<EmailOtpType>([
   "email",
@@ -42,7 +43,10 @@ export async function GET(request: Request) {
   })
 
   if (error) {
-    return redirectToLogin(error.message, publicSiteUrl)
+    return redirectToLogin(
+      toPublicAuthLinkErrorMessage(error.message),
+      publicSiteUrl
+    )
   }
 
   return NextResponse.redirect(new URL(nextPath, publicSiteUrl))

@@ -85,7 +85,7 @@ export function RouteCard({ assessment, tone = "best" }: RouteCardProps) {
             <p className="text-sm leading-6 text-muted-foreground">
               {assessment.route.shortDescription}
             </p>
-            <div className="grid gap-2 sm:grid-cols-2 xl:grid-cols-4">
+            <div className="grid gap-3 border-y py-3 sm:grid-cols-2 xl:grid-cols-4">
               <InfoLine
                 icon={<CalendarDays />}
                 label="Срок"
@@ -109,7 +109,7 @@ export function RouteCard({ assessment, tone = "best" }: RouteCardProps) {
             </div>
           </div>
 
-          <div className="grid gap-3 md:grid-cols-3">
+          <div className="grid gap-4 md:grid-cols-3">
             <RouteList
               title="Почему подходит"
               items={assessment.whyFits.slice(0, 3)}
@@ -254,7 +254,7 @@ function InfoLine({
   value: string
 }) {
   return (
-    <div className="flex gap-2 rounded-md border bg-background p-3 shadow-[inset_0_1px_0_rgba(255,255,255,0.55)]">
+    <div className="flex gap-2">
       <span className="mt-0.5 text-primary [&_svg]:size-4">{icon}</span>
       <span className="flex min-w-0 flex-col gap-1">
         <span className="text-xs font-medium text-muted-foreground">
@@ -292,7 +292,7 @@ function MetricLine({
 
 function RouteList({ items, title }: { items: string[]; title: string }) {
   return (
-    <div className="flex flex-col gap-2 rounded-md border bg-background p-3">
+    <div className="flex flex-col gap-2">
       <h3 className="text-sm font-medium">{title}</h3>
       <ul className="flex flex-col gap-1 text-sm leading-6 text-muted-foreground">
         {items.map((item) => (

@@ -589,10 +589,6 @@ function Choice({
       data-checked={checked}
       onClick={(event) => {
         onClick(event)
-
-        if (!event.defaultPrevented) {
-          onSelect()
-        }
       }}
       {...dragGuard}
     >
@@ -601,7 +597,11 @@ function Choice({
         type="radio"
         name={name}
         checked={checked}
-        onChange={onSelect}
+        onChange={(event) => {
+          if (event.currentTarget.checked) {
+            onSelect()
+          }
+        }}
         aria-describedby={hint ? `${id}-hint` : undefined}
         className="sr-only"
       />

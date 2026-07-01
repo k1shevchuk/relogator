@@ -88,7 +88,7 @@ export function ResultsClient({ catalogue }: ResultsClientProps) {
   return (
     <div className="flex flex-col gap-5">
       <section className="flex flex-col gap-3 rounded-lg border bg-card p-3 shadow-sm sm:p-4">
-        <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
+        <div className="grid gap-3 lg:grid-cols-[minmax(0,1fr)_220px_auto] lg:items-end">
           <div className="flex min-w-0 flex-col gap-1">
             <div className="flex flex-wrap items-center gap-2">
               <h2 className="font-heading text-2xl font-semibold">
@@ -103,58 +103,30 @@ export function ResultsClient({ catalogue }: ResultsClientProps) {
               правила меняются, решение принимает компетентный орган.
             </p>
           </div>
+          <label className="flex flex-col gap-1 text-sm font-medium">
+            Фильтр
+            <select
+              aria-label="Фильтр маршрутов"
+              value={filter}
+              onChange={(event) => {
+                setFilter(event.currentTarget.value as FilterValue)
+                setExpandedBuckets({})
+              }}
+              className="min-h-10 rounded-md border bg-background px-3 text-sm font-medium focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-none"
+            >
+              {filters.map((item) => (
+                <option key={item.value} value={item.value}>
+                  {item.label}
+                </option>
+              ))}
+            </select>
+          </label>
           <Button asChild variant="outline" size="sm" className="w-fit">
             <Link href="/questionnaire">
               <RotateCcw data-icon="inline-start" />
               Изменить анкету
             </Link>
           </Button>
-        </div>
-
-        <select
-          aria-label="Фильтр маршрутов"
-          value={filter}
-          onChange={(event) => {
-            setFilter(event.currentTarget.value as FilterValue)
-            setExpandedBuckets({})
-          }}
-          className="min-h-10 rounded-md border bg-background px-3 text-sm font-medium focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-none sm:hidden"
-        >
-          {filters.map((item) => (
-            <option key={item.value} value={item.value}>
-              {item.label}
-            </option>
-          ))}
-        </select>
-
-        <div
-          aria-label="Фильтр маршрутов"
-          className="hidden gap-1 sm:flex sm:flex-wrap"
-          role="group"
-        >
-          {filters.map((item) => {
-            const active = item.value === filter
-
-            return (
-              <button
-                key={item.value}
-                type="button"
-                aria-pressed={active}
-                onClick={() => {
-                  setFilter(item.value)
-                  setExpandedBuckets({})
-                }}
-                className={cn(
-                  "min-h-9 shrink-0 rounded-md border px-3 py-1 text-center text-xs font-medium leading-5 transition-colors focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-none sm:text-sm",
-                  active
-                    ? "border-primary bg-primary text-primary-foreground shadow-sm"
-                    : "border-transparent bg-muted/70 text-muted-foreground hover:bg-background hover:text-foreground"
-                )}
-              >
-                {item.label}
-              </button>
-            )
-          })}
         </div>
 
         <div className="grid gap-2 lg:grid-cols-2">
