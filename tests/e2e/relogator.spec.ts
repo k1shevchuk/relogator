@@ -14,18 +14,18 @@ test("first questionnaire step has no preselected answer", async ({ page }) => {
 
   await page.getByText("Уехать быстро", { exact: true }).click()
 
-  await expect(page.locator('input#goal-quick_exit')).toBeChecked()
-  await expect(page.locator('input#goal-compare')).not.toBeChecked()
+  await expect(page.locator("input#goal-quick_exit")).toBeChecked()
+  await expect(page.locator("input#goal-compare")).not.toBeChecked()
 
   await page.getByText("Пока сравниваю варианты", { exact: true }).click()
 
-  await expect(page.locator('input#goal-quick_exit')).not.toBeChecked()
-  await expect(page.locator('input#goal-compare')).toBeChecked()
+  await expect(page.locator("input#goal-quick_exit")).not.toBeChecked()
+  await expect(page.locator("input#goal-compare")).toBeChecked()
 
   await page.getByText("Уехать быстро", { exact: true }).click()
 
-  await expect(page.locator('input#goal-quick_exit')).toBeChecked()
-  await expect(page.locator('input#goal-compare')).not.toBeChecked()
+  await expect(page.locator("input#goal-quick_exit")).toBeChecked()
+  await expect(page.locator("input#goal-compare")).not.toBeChecked()
 })
 
 test("questionnaire radio answers can be changed after selection", async ({
@@ -37,33 +37,33 @@ test("questionnaire radio answers can be changed after selection", async ({
   await page.getByRole("button", { name: /Дальше/ }).click()
 
   await page.getByText("В течение 2 недель", { exact: true }).click()
-  await expect(page.locator('input#departureWindow-two_weeks')).toBeChecked()
+  await expect(page.locator("input#departureWindow-two_weeks")).toBeChecked()
 
   await page.getByText("Пока без срока", { exact: true }).click()
   await expect(
-    page.locator('input#departureWindow-two_weeks')
+    page.locator("input#departureWindow-two_weeks")
   ).not.toBeChecked()
-  await expect(page.locator('input#departureWindow-no_deadline')).toBeChecked()
+  await expect(page.locator("input#departureWindow-no_deadline")).toBeChecked()
 
   await page.getByText("До 1 месяца", { exact: true }).click()
-  await expect(page.locator('input#stayDuration-up_to_one_month')).toBeChecked()
+  await expect(page.locator("input#stayDuration-up_to_one_month")).toBeChecked()
 
   await page.getByText("Больше года", { exact: true }).click()
   await expect(
-    page.locator('input#stayDuration-up_to_one_month')
+    page.locator("input#stayDuration-up_to_one_month")
   ).not.toBeChecked()
-  await expect(page.locator('input#stayDuration-more_than_year')).toBeChecked()
+  await expect(page.locator("input#stayDuration-more_than_year")).toBeChecked()
 
   await page.getByText("Да, срок меньше 6 месяцев", { exact: true }).click()
   await expect(
-    page.locator('input#passportStatus-less_than_6_months')
+    page.locator("input#passportStatus-less_than_6_months")
   ).toBeChecked()
 
   await page.getByText("Нет", { exact: true }).click()
   await expect(
-    page.locator('input#passportStatus-less_than_6_months')
+    page.locator("input#passportStatus-less_than_6_months")
   ).not.toBeChecked()
-  await expect(page.locator('input#passportStatus-none')).toBeChecked()
+  await expect(page.locator("input#passportStatus-none")).toBeChecked()
 })
 
 test("empty questionnaire step cannot be skipped", async ({ page }) => {
@@ -110,7 +110,7 @@ test("user can complete questionnaire and gets a clear login gate for specialist
     page.getByText("Что может сделать маршруты проще", { exact: true })
   ).toBeVisible()
   await expect(
-    page.getByRole("heading", { name: "Наиболее подходящие маршруты" }).first()
+    page.getByRole("heading", { name: "Лучшие варианты" }).first()
   ).toBeVisible()
   await expect(
     page.getByRole("heading", { name: "Почему подходит" }).first()
@@ -127,9 +127,7 @@ test("user can complete questionnaire and gets a clear login gate for specialist
     .fill("Проверьте, какие документы лучше подготовить первыми.")
   await page.getByLabel("Согласие на передачу данных специалисту").click()
   await page.getByRole("button", { name: "Отправить заявку" }).click()
-  await expect(
-    page.getByText("Войдите, чтобы отправить заявку")
-  ).toBeVisible()
+  await expect(page.getByText("Войдите, чтобы отправить заявку")).toBeVisible()
   await expect(
     page.getByRole("main").getByRole("link", { name: "Войти" })
   ).toHaveAttribute("href", "/auth/login?next=%2Fresults")
@@ -208,7 +206,9 @@ test("specialist requests page is user-facing and not a technical export screen"
   await expect(page.getByText(/JSON|CSV/)).toHaveCount(0)
 })
 
-test("partners page lets agencies submit an interest form", async ({ page }) => {
+test("partners page lets agencies submit an interest form", async ({
+  page,
+}) => {
   await page.route("**/api/partner-leads", async (route) => {
     await route.fulfill({
       status: 201,
@@ -263,7 +263,7 @@ test("quick exit scenario shows routes that can start now", async ({
   })
 
   await expect(
-    page.getByRole("heading", { name: "Наиболее подходящие маршруты" })
+    page.getByRole("heading", { name: "Лучшие варианты" })
   ).toBeVisible()
 })
 

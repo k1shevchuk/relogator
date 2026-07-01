@@ -2,18 +2,12 @@
 
 import { useMemo, useState, useSyncExternalStore } from "react"
 import Link from "next/link"
-import {
-  ClipboardList,
-  Filter,
-  ListChecks,
-  RotateCcw,
-} from "lucide-react"
+import { ClipboardList, Filter, ListChecks, RotateCcw } from "lucide-react"
 
 import { LegalNotice } from "@/components/legal-notice"
 import { RouteCard } from "@/components/route-card"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { Button } from "@/components/ui/button"
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { assessRoutes, simulateAnswerImpact } from "@/domain/assessment"
 import type { ContentCatalogue } from "@/domain/content-catalogue"
 import type { AnswerImpact, RouteAssessment, UserProfile } from "@/domain/types"
@@ -117,22 +111,32 @@ export function ResultsClient({ catalogue }: ResultsClientProps) {
           </Button>
         </div>
 
-        <Tabs
-          value={filter}
-          onValueChange={(value) => setFilter(value as FilterValue)}
+        <div
+          aria-label="Фильтр маршрутов"
+          className="grid grid-cols-2 gap-1 rounded-lg bg-muted/70 p-1 sm:flex sm:flex-wrap"
+          role="group"
         >
-          <TabsList className="grid h-auto w-full grid-cols-2 items-stretch justify-stretch gap-1 bg-muted/70 p-1 sm:flex sm:flex-wrap sm:justify-start">
-            {filters.map((item) => (
-              <TabsTrigger
+          {filters.map((item) => {
+            const active = item.value === filter
+
+            return (
+              <button
                 key={item.value}
-                value={item.value}
-                className="min-h-9 flex-none whitespace-normal rounded-md px-2 py-1 text-center text-xs leading-5 sm:text-sm"
+                type="button"
+                aria-pressed={active}
+                onClick={() => setFilter(item.value)}
+                className={cn(
+                  "min-h-9 rounded-md px-2 py-1 text-center text-xs font-medium leading-5 transition-colors focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-none sm:text-sm",
+                  active
+                    ? "bg-background text-foreground shadow-sm"
+                    : "text-muted-foreground hover:bg-background/60 hover:text-foreground"
+                )}
               >
                 {item.label}
-              </TabsTrigger>
-            ))}
-          </TabsList>
-        </Tabs>
+              </button>
+            )
+          })}
+        </div>
 
         <details className="group rounded-md border bg-background">
           <summary className="flex cursor-pointer items-center justify-between gap-3 px-3 py-2 text-sm font-medium">

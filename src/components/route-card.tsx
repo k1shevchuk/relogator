@@ -7,6 +7,7 @@ import {
   CalendarDays,
   FileText,
   Link2,
+  ShieldAlert,
   WalletCards,
 } from "lucide-react"
 
@@ -15,14 +16,12 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import {
   Card,
-  CardAction,
   CardContent,
   CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
-import { Separator } from "@/components/ui/separator"
 import { buildRouteMetricSummaries } from "@/domain/assessment-display"
 import { countryStatusLabels, getReviewFreshness } from "@/domain/countries"
 import type { RouteAssessment } from "@/domain/types"
@@ -50,117 +49,125 @@ export function RouteCard({ assessment, tone = "best" }: RouteCardProps) {
     >
       <CardHeader
         className={cn(
-          "rounded-t-lg border-l-4 bg-secondary/35 py-3 sm:py-4",
+          "rounded-t-lg border-l-4 bg-secondary/35 py-4",
           toneStyle.header
         )}
       >
-        <div className="flex flex-col gap-1">
-          <CardTitle className="text-xl">{assessment.country.name}</CardTitle>
-          <CardDescription className="text-sm">
-            {assessment.route.title}
-          </CardDescription>
-        </div>
-        <CardAction>
-          <div className="flex flex-wrap justify-end gap-2">
-            <Badge variant="outline">
-              {countryStatusLabels[assessment.country.status]}
-            </Badge>
-            <Badge variant={getStatusVariant(assessment.status)}>
-              {assessment.statusLabel}
-            </Badge>
-            <Badge
-              variant={
-                assessment.difficulty.level <= 2 ? "secondary" : "outline"
-              }
-              className={difficultyStyle.subtleBadge}
-            >
-              {assessment.difficulty.label}
-            </Badge>
+        <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-start">
+          <div className="flex min-w-0 flex-col gap-2">
+            <div className="flex flex-wrap gap-2">
+              <Badge variant="outline">
+                {countryStatusLabels[assessment.country.status]}
+              </Badge>
+              <Badge variant={getStatusVariant(assessment.status)}>
+                {assessment.statusLabel}
+              </Badge>
+              <Badge
+                variant={
+                  assessment.difficulty.level <= 2 ? "secondary" : "outline"
+                }
+                className={difficultyStyle.subtleBadge}
+              >
+                {assessment.difficulty.label}
+              </Badge>
+            </div>
+            <div className="flex flex-col gap-1">
+              <CardTitle className="text-xl">
+                {assessment.country.name}
+              </CardTitle>
+              <CardDescription className="text-sm">
+                {assessment.route.title}
+              </CardDescription>
+            </div>
           </div>
-        </CardAction>
+          <Button asChild className="w-full lg:w-auto">
+            <Link href={`/routes/${assessment.route.id}`}>
+              Открыть план
+              <ArrowRight data-icon="inline-end" />
+            </Link>
+          </Button>
+        </div>
       </CardHeader>
+
       <CardContent className="pt-4">
-        <div className="grid gap-4 xl:grid-cols-[minmax(0,1fr)_300px] xl:items-start">
-          <div className="flex min-w-0 flex-col gap-3 xl:col-start-1 xl:row-start-1">
+        <div className="grid gap-4">
+          <div className="flex min-w-0 flex-col gap-4">
             <p className="text-sm leading-6 text-muted-foreground">
               {assessment.route.shortDescription}
             </p>
-            <div className="grid gap-3 sm:grid-cols-3">
+            <div className="grid gap-2 sm:grid-cols-2 xl:grid-cols-4">
               <InfoLine
                 icon={<CalendarDays />}
-                label="Срок подготовки"
+                label="Срок"
                 value={assessment.timeline}
               />
               <InfoLine
                 icon={<WalletCards />}
-                label="Расходы на старт"
+                label="Расходы"
                 value={assessment.cost}
               />
               <InfoLine
                 icon={<FileText />}
                 label="Документы"
-                value={`${assessment.documents.length} ключевых пунктов`}
+                value={`${assessment.documents.length} пунктов`}
+              />
+              <InfoLine
+                icon={<ShieldAlert />}
+                label="Сложность"
+                value={`${assessment.difficulty.level}/5`}
               />
             </div>
           </div>
-          <aside className="rounded-lg border bg-background p-3 xl:col-start-2 xl:row-span-3 xl:row-start-1">
-            <div className="mb-3 flex items-center justify-between gap-2">
-              <span className="text-sm font-medium">Оценка</span>
-              <span
-                className={cn(
-                  "rounded-md px-2 py-1 text-xs font-medium",
-                  difficultyStyle.scoreBadge
-                )}
-              >
-                сложность {assessment.difficulty.level}/5
-              </span>
-            </div>
-            <div className="grid gap-2">
-              {metricSummaries.map((metric) => (
-                <MetricLine key={metric.label} metric={metric} />
-              ))}
-            </div>
-          </aside>
-          <div className="grid gap-3 md:grid-cols-3 xl:col-start-1 xl:row-start-2">
+
+          <div className="grid gap-3 md:grid-cols-3">
             <RouteList
               title="Почему подходит"
-              items={assessment.whyFits.slice(0, 3)}
+              items={assessment.whyFits.slice(0, 2)}
             />
             <RouteList
               title="Подготовить первым"
-              items={assessment.documents.slice(0, 3)}
+              items={assessment.documents.slice(0, 2)}
             />
             <RouteList
-              title="Что может помешать"
+              title="Проверить риск"
               items={assessment.blockers.slice(0, 3)}
             />
           </div>
-          <div className="flex flex-col gap-3 xl:col-start-1 xl:row-start-3">
-            <Separator />
-            <div className="flex flex-col gap-2 text-xs text-muted-foreground">
-              <div className="flex flex-wrap items-center gap-2">
-                <span>
-                Проверено: {assessment.lastReviewedAt}. Статус страны:{" "}
-                {countryStatusLabels[assessment.country.status]}.
-                </span>
-              {reviewFreshness && (
-                <span
-                  className={cn(
-                    "rounded-md border px-2 py-1",
-                    reviewFreshness.tone === "risk"
-                      ? "border-rose-200 bg-rose-50 text-rose-950"
-                      : "border-amber-200 bg-amber-50 text-amber-950"
-                  )}
-                >
-                  {reviewFreshness.label}
-                </span>
-              )}
+
+          <details className="rounded-md border bg-background">
+            <summary className="cursor-pointer px-3 py-2 text-sm font-medium">
+              Детали и источники
+            </summary>
+            <div className="flex flex-col gap-3 border-t p-3">
+              <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-4">
+                {metricSummaries.map((metric) => (
+                  <MetricLine
+                    key={metric.label}
+                    metric={metric}
+                    showDescription
+                  />
+                ))}
               </div>
-              <details className="rounded-md border bg-background">
-                <summary className="cursor-pointer px-2 py-1 font-medium text-foreground">
-                  Источники
-                </summary>
-                <div className="flex flex-wrap gap-2 border-t p-2">
+              <div className="flex flex-col gap-2 text-xs text-muted-foreground">
+                <div className="flex flex-wrap items-center gap-2">
+                  <span>
+                    Проверено: {assessment.lastReviewedAt}. Статус страны:{" "}
+                    {countryStatusLabels[assessment.country.status]}.
+                  </span>
+                  {reviewFreshness && (
+                    <span
+                      className={cn(
+                        "rounded-md border px-2 py-1",
+                        reviewFreshness.tone === "risk"
+                          ? "border-rose-200 bg-rose-50 text-rose-950"
+                          : "border-amber-200 bg-amber-50 text-amber-950"
+                      )}
+                    >
+                      {reviewFreshness.label}
+                    </span>
+                  )}
+                </div>
+                <div className="flex flex-wrap gap-2">
                   {assessment.sources.map((source) => (
                     <a
                       key={source.id}
@@ -174,13 +181,14 @@ export function RouteCard({ assessment, tone = "best" }: RouteCardProps) {
                     </a>
                   ))}
                 </div>
-              </details>
+              </div>
             </div>
-          </div>
+          </details>
         </div>
       </CardContent>
-      <CardFooter className="flex flex-col items-stretch gap-3 bg-muted/35 sm:flex-row sm:items-start sm:justify-between">
-        <Button asChild>
+
+      <CardFooter className="flex flex-col items-stretch gap-3 bg-muted/30 sm:flex-row sm:items-center sm:justify-between">
+        <Button asChild variant="outline">
           <Link href={`/routes/${assessment.route.id}`}>
             Открыть пошаговый план
             <ArrowRight data-icon="inline-end" />
@@ -270,8 +278,10 @@ function InfoLine({
 
 function MetricLine({
   metric,
+  showDescription = false,
 }: {
   metric: ReturnType<typeof buildRouteMetricSummaries>[number]
+  showDescription?: boolean
 }) {
   return (
     <div className="rounded-md border bg-card px-3 py-2 text-sm">
@@ -281,6 +291,11 @@ function MetricLine({
         </span>
         <span className="text-right text-sm font-medium">{metric.value}</span>
       </div>
+      {showDescription && (
+        <p className="mt-1 text-xs leading-5 text-muted-foreground">
+          {metric.description}
+        </p>
+      )}
     </div>
   )
 }
