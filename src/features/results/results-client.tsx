@@ -99,8 +99,8 @@ export function ResultsClient({ catalogue }: ResultsClientProps) {
               </span>
             </div>
             <p className="max-w-3xl text-xs leading-5 text-muted-foreground sm:text-sm sm:leading-6">
-              Сначала ближайшие варианты. Подробный план открывается после
-              входа; перед действием сверяйте источник.
+              Маршруты отсортированы по совпадению с анкетой. План и источники
+              доступны в карточке направления.
             </p>
           </div>
           <label className="flex flex-col gap-1 text-sm font-medium">
@@ -129,59 +129,46 @@ export function ResultsClient({ catalogue }: ResultsClientProps) {
           </Button>
         </div>
 
-        <details className="group rounded-md border bg-background sm:hidden">
+        <details className="group rounded-md border bg-background">
           <summary className="flex cursor-pointer items-center justify-between gap-3 px-3 py-2 text-sm font-medium">
-            Ответы и подсказки
+            <span className="flex min-w-0 items-center gap-2">
+              <ListChecks className="size-4 text-primary" />
+              Анкета и улучшения
+            </span>
             <span className="text-xs text-muted-foreground group-open:hidden">
               раскрыть
             </span>
           </summary>
-          <div className="flex flex-col gap-3 border-t p-3">
-            <ProfileSummaryList profile={profile} limit={4} inset={false} />
-            {answerImpacts.length > 0 && (
-              <div className="flex flex-col gap-2">
-                <p className="text-xs font-medium uppercase text-muted-foreground">
-                  Что может упростить маршруты
+          <div className="grid gap-4 border-t p-3 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
+            <section className="flex min-w-0 flex-col gap-2">
+              <p className="text-xs font-medium uppercase text-muted-foreground">
+                Ваши вводные
+              </p>
+              <ProfileSummaryList profile={profile} inset={false} />
+            </section>
+
+            <section className="flex min-w-0 flex-col gap-2">
+              <p className="text-xs font-medium uppercase text-muted-foreground">
+                Что может упростить маршруты
+              </p>
+              {answerImpacts.length > 0 ? (
+                <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
+                  {answerImpacts.map((impact) => (
+                    <ImpactCard
+                      key={`${impact.field}-${String(impact.value)}`}
+                      impact={impact}
+                    />
+                  ))}
+                </div>
+              ) : (
+                <p className="text-sm leading-6 text-muted-foreground">
+                  По текущим ответам нет очевидного пункта, который сразу
+                  улучшит несколько маршрутов.
                 </p>
-                {answerImpacts.slice(0, 1).map((impact) => (
-                  <ImpactCard
-                    key={`${impact.field}-${String(impact.value)}`}
-                    impact={impact}
-                  />
-                ))}
-              </div>
-            )}
+              )}
+            </section>
           </div>
         </details>
-
-        <div className="hidden gap-2 sm:grid lg:grid-cols-2">
-          <details className="group rounded-md border bg-background">
-            <summary className="flex cursor-pointer items-center justify-between gap-3 px-3 py-2 text-sm font-medium">
-              Ваши ответы
-              <span className="text-xs text-muted-foreground group-open:hidden">
-                раскрыть
-              </span>
-            </summary>
-            <ProfileSummaryList profile={profile} />
-          </details>
-
-          {answerImpacts.length > 0 && (
-            <details className="group rounded-md border bg-accent/30">
-              <summary className="flex cursor-pointer items-center gap-2 px-3 py-2 text-sm font-medium">
-                <ListChecks className="size-4 text-primary" />
-                Что может сделать маршруты проще
-              </summary>
-              <div className="grid gap-3 border-t p-3 md:grid-cols-3 lg:grid-cols-1 xl:grid-cols-3">
-                {answerImpacts.map((impact) => (
-                  <ImpactCard
-                    key={`${impact.field}-${String(impact.value)}`}
-                    impact={impact}
-                  />
-                ))}
-              </div>
-            </details>
-          )}
-        </div>
       </section>
 
       {filteredResults.length > 0 ? (

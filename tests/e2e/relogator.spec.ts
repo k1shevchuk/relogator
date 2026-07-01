@@ -153,14 +153,13 @@ test("user can complete questionnaire and gets a clear login gate for specialist
   await expect(
     page.getByRole("heading", { name: "Подходящие маршруты", exact: true })
   ).toBeVisible()
-  const desktopRouteHints = await page
-    .getByText("Что может сделать маршруты проще", { exact: true })
-    .isVisible()
-  const mobileRouteHints = await page
-    .getByText("Ответы и подсказки")
-    .first()
-    .isVisible()
-  expect(desktopRouteHints || mobileRouteHints).toBe(true)
+  const profilePanel = page.getByText("Анкета и улучшения", { exact: true })
+  await expect(profilePanel).toBeVisible()
+  await profilePanel.click()
+  await expect(page.getByText("Ваши вводные", { exact: true })).toBeVisible()
+  await expect(
+    page.getByText("Что может упростить маршруты", { exact: true })
+  ).toBeVisible()
   await expect(
     page.getByRole("heading", { name: "Лучшие варианты" }).first()
   ).toBeVisible()
