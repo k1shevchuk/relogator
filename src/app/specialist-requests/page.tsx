@@ -11,8 +11,8 @@ export default function SpecialistRequestsPage() {
             Обращения к специалистам
           </h1>
           <p className="max-w-3xl text-base leading-7 text-muted-foreground">
-            История вопросов по маршрутам. Отправленные из аккаунта обращения
-            также доступны в личном кабинете.
+            История вопросов по выбранным маршрутам. Здесь удобно вернуться к
+            тому, что вы уже отправляли специалистам.
           </p>
         </div>
         <SpecialistRequestsClient />

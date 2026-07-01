@@ -1,18 +1,18 @@
 import Link from "next/link"
 import type { ReactNode } from "react"
-import { FileText, LogOut, Route, UserCircle } from "lucide-react"
+import {
+  ArrowRight,
+  ClipboardList,
+  FileText,
+  LogOut,
+  Route,
+  UserCircle,
+} from "lucide-react"
 
 import { SiteHeader } from "@/components/site-header"
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import {
   AuthFormMessage,
   readAuthSearchParams,
@@ -54,20 +54,33 @@ export default async function AccountPage({
     return (
       <AccountShell
         body={
-          <Card className="rounded-lg">
-            <CardHeader>
-              <CardTitle>Войдите в аккаунт</CardTitle>
-              <CardDescription>
-                После входа Relogator сможет сохранять анкеты, маршруты и заявки
-                в вашем аккаунте.
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <Button asChild>
-                <Link href="/auth/login">Войти</Link>
-              </Button>
-            </CardContent>
-          </Card>
+          <section className="rounded-lg border bg-card p-5 shadow-sm sm:p-6">
+            <div className="flex max-w-2xl flex-col gap-4">
+              <div className="flex items-start gap-3">
+                <UserCircle className="mt-1 size-5 text-primary" />
+                <div className="flex flex-col gap-2">
+                  <h1 className="font-heading text-2xl font-semibold">
+                    Личный кабинет
+                  </h1>
+                  <p className="text-sm leading-6 text-muted-foreground">
+                    Войдите, чтобы открыть пошаговые планы, сохранить маршруты и
+                    видеть обращения к специалистам в одном месте.
+                  </p>
+                </div>
+              </div>
+              <div className="flex flex-col gap-2 sm:flex-row">
+                <Button asChild>
+                  <Link href="/auth/login">
+                    Войти
+                    <ArrowRight data-icon="inline-end" />
+                  </Link>
+                </Button>
+                <Button asChild variant="outline">
+                  <Link href="/questionnaire">Начать подбор</Link>
+                </Button>
+              </div>
+            </div>
+          </section>
         }
       />
     )
@@ -130,24 +143,31 @@ export default async function AccountPage({
             </div>
           </section>
 
-          <div className="grid gap-4 md:grid-cols-2">
-            <SummaryCard
-              icon={<Route />}
-              title="Маршруты"
-              value={plans.length}
-              description="Сохраненные планы маршрутов появятся здесь."
+          <div className="grid gap-3 md:grid-cols-3">
+            <ActionCard
+              href="/questionnaire"
+              icon={<ClipboardList />}
+              title="Обновить анкету"
+              text="Уточнить цель, сроки, документы и получить новый подбор."
             />
-            <SummaryCard
+            <ActionCard
+              href="/results"
+              icon={<Route />}
+              title="Открыть маршруты"
+              text="Вернуться к результатам последней анкеты и продолжить выбор."
+            />
+            <ActionCard
+              href="/specialist-requests"
               icon={<FileText />}
-              title="Заявки"
-              value={requests.length}
-              description="Ваши обращения к специалистам."
+              title="Обращения"
+              text="Посмотреть вопросы, которые вы отправляли специалистам."
             />
           </div>
 
           <section className="grid gap-4 lg:grid-cols-2">
             <RecordList
-              title="Сохраненные маршруты"
+              actionHref="/results"
+              actionText="К маршрутам"
               empty="Сохраненных маршрутов пока нет."
               rows={plans.map((item) => ({
                 id: item.id,
@@ -156,8 +176,11 @@ export default async function AccountPage({
                   ? `${item.notes}, ${formatDate(item.created_at)}`
                   : `Сохранен: ${formatDate(item.created_at)}`,
               }))}
+              title="Сохраненные планы"
             />
             <RecordList
+              actionHref="/specialist-requests"
+              actionText="Открыть обращения"
               title="Заявки специалистам"
               empty="Заявок пока нет."
               rows={requests.map((item) => ({
@@ -184,38 +207,43 @@ function AccountShell({ body }: { body: ReactNode }) {
   )
 }
 
-function SummaryCard({
-  description,
+function ActionCard({
+  href,
   icon,
+  text,
   title,
-  value,
 }: {
-  description: string
+  href: string
   icon: ReactNode
+  text: string
   title: string
-  value: number
 }) {
   return (
-    <Card className="rounded-lg">
-      <CardHeader className="flex flex-row items-start justify-between gap-3">
-        <div>
-          <CardTitle>{title}</CardTitle>
-          <CardDescription>{description}</CardDescription>
-        </div>
-        <span className="text-primary [&_svg]:size-5">{icon}</span>
-      </CardHeader>
-      <CardContent>
-        <span className="font-heading text-3xl font-semibold">{value}</span>
-      </CardContent>
-    </Card>
+    <Link
+      href={href}
+      className="group flex min-h-36 flex-col justify-between gap-4 rounded-lg border bg-card p-4 shadow-sm outline-none transition-colors hover:bg-secondary/60 focus-visible:ring-3 focus-visible:ring-ring/50"
+    >
+      <span className="flex size-9 items-center justify-center rounded-md bg-accent text-accent-foreground [&_svg]:size-5">
+        {icon}
+      </span>
+      <span className="flex flex-col gap-1">
+        <span className="font-heading text-base font-medium">{title}</span>
+        <span className="text-sm leading-6 text-muted-foreground">{text}</span>
+      </span>
+      <ArrowRight className="size-4 text-muted-foreground transition-transform group-hover:translate-x-0.5" />
+    </Link>
   )
 }
 
 function RecordList({
+  actionHref,
+  actionText,
   empty,
   rows,
   title,
 }: {
+  actionHref: string
+  actionText: string
   empty: string
   rows: { id: string; title: string; description: string }[]
   title: string
@@ -236,10 +264,12 @@ function RecordList({
             ))}
           </ul>
         ) : (
-          <Alert>
-            <AlertTitle>Пока пусто</AlertTitle>
-            <AlertDescription>{empty}</AlertDescription>
-          </Alert>
+          <div className="flex flex-col gap-3 rounded-md border bg-background p-3">
+            <p className="text-sm leading-6 text-muted-foreground">{empty}</p>
+            <Button asChild variant="outline" size="sm" className="w-fit">
+              <Link href={actionHref}>{actionText}</Link>
+            </Button>
+          </div>
         )}
       </CardContent>
     </Card>

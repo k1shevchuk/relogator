@@ -208,6 +208,20 @@ test("auth pages render without sending real emails", async ({ page }) => {
   await expect(page.getByText(/sb_publishable|service_role/)).toHaveCount(0)
 })
 
+test("guest account page is action-oriented and not technical", async ({
+  page,
+}) => {
+  await page.goto("/account")
+
+  await expect(
+    page.getByRole("heading", { name: "Личный кабинет" })
+  ).toBeVisible()
+  await expect(
+    page.getByRole("main").getByRole("link", { name: "Начать подбор" })
+  ).toBeVisible()
+  await expect(page.getByText(/role: user|Роль: user|MVP/i)).toHaveCount(0)
+})
+
 test("specialist requests page is user-facing and not a technical export screen", async ({
   page,
 }) => {
@@ -218,6 +232,9 @@ test("specialist requests page is user-facing and not a technical export screen"
   ).toBeVisible()
   await expect(page.getByRole("link", { name: "К маршрутам" })).toBeVisible()
   await expect(page.getByText(/JSON|CSV/)).toHaveCount(0)
+  await expect(
+    page.getByText(/Найдено|на этом устройстве|из этого браузера/i)
+  ).toHaveCount(0)
 })
 
 test("partners page lets agencies submit an interest form", async ({

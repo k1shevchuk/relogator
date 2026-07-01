@@ -2,9 +2,8 @@
 
 import { useMemo, useSyncExternalStore } from "react"
 import Link from "next/link"
-import { FileText } from "lucide-react"
+import { ArrowRight, FileText } from "lucide-react"
 
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { Button } from "@/components/ui/button"
 import {
   Card,
@@ -34,36 +33,21 @@ export function SpecialistRequestsClient() {
 
   return (
     <div className="flex flex-col gap-5">
-      <Alert>
-        <FileText data-icon="inline-start" />
-        <AlertTitle>Обращения к специалистам</AlertTitle>
-        <AlertDescription>
-          Отправленные из аккаунта обращения хранятся в кабинете. Здесь видны
-          последние обращения, созданные на этом устройстве.
-        </AlertDescription>
-      </Alert>
-
-      <div className="flex flex-col gap-3 rounded-lg border bg-card p-4 sm:flex-row sm:items-center sm:justify-between">
-        <div>
-          <h2 className="font-heading text-xl font-semibold">
-            Последние обращения
-          </h2>
-          <p className="text-sm text-muted-foreground">
-            Найдено: {requests.length}
-          </p>
-        </div>
-        <div className="flex flex-col gap-2 sm:flex-row">
-          <Button asChild variant="outline">
-            <Link href="/account">Открыть кабинет</Link>
-          </Button>
-          <Button asChild>
-            <Link href="/results">К маршрутам</Link>
-          </Button>
-        </div>
-      </div>
-
       {hasRequests ? (
-        <section className="grid gap-4">
+        <section className="grid gap-4" aria-label="Последние обращения">
+          <div className="flex flex-col gap-3 rounded-lg border bg-card p-4 sm:flex-row sm:items-center sm:justify-between">
+            <div>
+              <h2 className="font-heading text-xl font-semibold">
+                Последние обращения
+              </h2>
+              <p className="text-sm text-muted-foreground">
+                Здесь видны вопросы по маршрутам, которые вы отправляли.
+              </p>
+            </div>
+            <Button asChild>
+              <Link href="/results">К маршрутам</Link>
+            </Button>
+          </div>
           {requests.map((request) => (
             <Card key={request.id} className="rounded-lg">
               <CardHeader>
@@ -95,16 +79,27 @@ export function SpecialistRequestsClient() {
         </section>
       ) : (
         <Card className="rounded-lg">
-          <CardHeader>
-            <CardTitle>Заявок пока нет</CardTitle>
-            <CardDescription>
-              Выберите маршрут и отправьте вопрос после входа, если хотите
-              проверить документы, сроки или основание.
-            </CardDescription>
+          <CardHeader className="gap-3">
+            <span className="flex size-10 items-center justify-center rounded-md bg-accent text-accent-foreground">
+              <FileText className="size-5" />
+            </span>
+            <div className="flex flex-col gap-1">
+              <CardTitle>Обращений пока нет</CardTitle>
+              <CardDescription>
+                Выберите подходящий маршрут, откройте его карточку и отправьте
+                вопрос специалисту после входа.
+              </CardDescription>
+            </div>
           </CardHeader>
-          <CardContent>
+          <CardContent className="flex flex-col gap-2 sm:flex-row">
             <Button asChild>
-              <Link href="/results">Вернуться к результатам</Link>
+              <Link href="/results">
+                К маршрутам
+                <ArrowRight data-icon="inline-end" />
+              </Link>
+            </Button>
+            <Button asChild variant="outline">
+              <Link href="/account">Открыть кабинет</Link>
             </Button>
           </CardContent>
         </Card>
