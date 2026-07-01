@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useMemo, useRef, useState, type ReactNode } from "react"
+import { useEffect, useMemo, useRef, useState } from "react"
 import { useRouter } from "next/navigation"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Controller, useForm, useWatch } from "react-hook-form"
@@ -18,7 +18,6 @@ import {
 } from "@/components/ui/card"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Progress } from "@/components/ui/progress"
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Separator } from "@/components/ui/separator"
 import {
   defaultQuestionnaireDraft,
@@ -108,7 +107,7 @@ export function QuestionnaireFlow() {
   const progress = useMemo(() => ((step + 1) / steps.length) * 100, [step])
   const readiness = useMemo(() => calculateProfileReadiness(values), [values])
   const readinessHints = useMemo(
-    () => buildLiveQuestionnaireHints(values).slice(0, 4),
+    () => buildLiveQuestionnaireHints(values).slice(0, 2),
     [values]
   )
 
@@ -203,7 +202,7 @@ export function QuestionnaireFlow() {
   return (
     <form
       onSubmit={(event) => event.preventDefault()}
-      className="mx-auto flex w-full max-w-3xl flex-col gap-5"
+      className="mx-auto flex w-full max-w-3xl flex-col gap-4"
     >
       <div className="flex flex-col gap-3">
         <div className="flex items-center justify-between gap-3 text-sm text-muted-foreground">
@@ -243,15 +242,7 @@ export function QuestionnaireFlow() {
               control={control}
               name="goal"
               render={({ field }) => (
-                <RadioGroup
-                  value={field.value ?? ""}
-                  onValueChange={(value) =>
-                    setValue("goal", value as QuestionnaireDraft["goal"], {
-                      shouldDirty: true,
-                      shouldValidate: true,
-                    })
-                  }
-                >
+                <div role="radiogroup" className="grid gap-3">
                   {goalOptions.map((option) => {
                     return (
                       <Choice
@@ -260,16 +251,16 @@ export function QuestionnaireFlow() {
                         checked={field.value === option.value}
                         label={option.label}
                         hint={option.hint}
-                      >
-                        <RadioGroupItem
-                          id={`goal-${option.value}`}
-                          value={option.value}
-                          aria-labelledby={`goal-${option.value}-label`}
-                        />
-                      </Choice>
+                        onSelect={() =>
+                          setValue("goal", option.value, {
+                            shouldDirty: true,
+                            shouldValidate: true,
+                          })
+                        }
+                      />
                     )
                   })}
-                </RadioGroup>
+                </div>
               )}
             />
           )}
@@ -520,14 +511,14 @@ function ReadinessPanel({
   score: number
 }) {
   return (
-    <section className="rounded-lg border bg-card p-4 shadow-sm">
+    <section className="rounded-lg border bg-card p-3 shadow-sm sm:p-4">
       <div className="flex flex-col gap-3">
-        <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
-          <div className="flex flex-col gap-1">
+        <div className="grid gap-3 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-start">
+          <div className="flex min-w-0 flex-col gap-1">
             <h2 className="font-heading text-lg font-semibold">
               Готовность к подбору
             </h2>
-            <p className="text-sm leading-6 text-muted-foreground">
+            <p className="text-sm leading-5 text-muted-foreground">
               {description}
             </p>
           </div>
@@ -536,10 +527,6 @@ function ReadinessPanel({
           </span>
         </div>
         <Progress value={score} aria-label="Готовность анкеты к подбору" />
-        <p className="text-xs leading-5 text-muted-foreground">
-          Это не вероятность одобрения визы или ВНЖ. Показатель отражает,
-          хватает ли вводных для полезного подбора маршрутов.
-        </p>
         <div className="grid gap-2 md:grid-cols-2">
           {hints.map((hint) => (
             <div
@@ -577,25 +564,37 @@ function safelyParseDraft(raw: string) {
 }
 
 function Choice({
-  children,
   checked,
   hint,
   id,
   label,
+  onSelect,
 }: {
-  children: ReactNode
   checked: boolean
   hint?: string
   id: string
   label: string
+  onSelect: () => void
 }) {
   return (
-    <label
-      htmlFor={id}
-      className="flex cursor-pointer items-start gap-3 rounded-md border bg-background p-3 data-[checked=true]:border-primary data-[checked=true]:bg-primary/5"
+    <button
+      id={id}
+      type="button"
+      role="radio"
+      aria-checked={checked}
+      onClick={onSelect}
+      className="flex w-full cursor-pointer items-start gap-3 rounded-md border bg-background p-3 text-left data-[checked=true]:border-primary data-[checked=true]:bg-primary/5"
       data-checked={checked}
     >
-      <span className="mt-1">{children}</span>
+      <span
+        aria-hidden="true"
+        className={cn(
+          "mt-1 flex size-4 shrink-0 items-center justify-center rounded-full border",
+          checked ? "border-primary bg-primary" : "border-input bg-background"
+        )}
+      >
+        {checked && <span className="size-1.5 rounded-full bg-background" />}
+      </span>
       <span className="flex min-w-0 flex-1 flex-col gap-1" id={`${id}-label`}>
         <span className="text-sm font-medium">{label}</span>
         {hint && (
@@ -604,7 +603,7 @@ function Choice({
           </span>
         )}
       </span>
-    </label>
+    </button>
   )
 }
 
@@ -659,15 +658,7 @@ function RadioField<
       render={({ field }) => (
         <fieldset className="flex flex-col gap-3">
           <legend className="text-sm font-medium">{label}</legend>
-          <RadioGroup
-            value={field.value ? String(field.value) : ""}
-            onValueChange={(value) =>
-              setValue(name, value as PathValue<QuestionnaireDraft, TName>, {
-                shouldDirty: true,
-                shouldValidate: true,
-              })
-            }
-          >
+          <div role="radiogroup" className="grid gap-3">
             {options.map((option) => {
               return (
                 <Choice
@@ -675,16 +666,20 @@ function RadioField<
                   id={`${name}-${option.value}`}
                   checked={field.value === option.value}
                   label={option.label}
-                >
-                  <RadioGroupItem
-                    id={`${name}-${option.value}`}
-                    value={String(option.value)}
-                    aria-labelledby={`${name}-${option.value}-label`}
-                  />
-                </Choice>
+                  onSelect={() =>
+                    setValue(
+                      name,
+                      option.value as PathValue<QuestionnaireDraft, TName>,
+                      {
+                        shouldDirty: true,
+                        shouldValidate: true,
+                      }
+                    )
+                  }
+                />
               )
             })}
-          </RadioGroup>
+          </div>
         </fieldset>
       )}
     />
@@ -709,19 +704,7 @@ function BooleanRadioField<TName extends "hasProvableIncome">({
       render={({ field }) => (
         <fieldset className="flex flex-col gap-3">
           <legend className="text-sm font-medium">{label}</legend>
-          <RadioGroup
-            value={field.value === undefined ? "" : String(field.value)}
-            onValueChange={(value) =>
-              setValue(
-                name,
-                (value === "true") as PathValue<QuestionnaireDraft, TName>,
-                {
-                  shouldDirty: true,
-                  shouldValidate: true,
-                }
-              )
-            }
-          >
+          <div role="radiogroup" className="grid gap-3">
             {[
               { value: true, label: "Да, могу подтвердить" },
               { value: false, label: "Нет или пока не уверен" },
@@ -732,16 +715,20 @@ function BooleanRadioField<TName extends "hasProvableIncome">({
                   id={`${name}-${option.value}`}
                   checked={field.value === option.value}
                   label={option.label}
-                >
-                  <RadioGroupItem
-                    id={`${name}-${option.value}`}
-                    value={String(option.value)}
-                    aria-labelledby={`${name}-${option.value}-label`}
-                  />
-                </Choice>
+                  onSelect={() =>
+                    setValue(
+                      name,
+                      option.value as PathValue<QuestionnaireDraft, TName>,
+                      {
+                        shouldDirty: true,
+                        shouldValidate: true,
+                      }
+                    )
+                  }
+                />
               )
             })}
-          </RadioGroup>
+          </div>
         </fieldset>
       )}
     />

@@ -13,7 +13,6 @@ import {
   ShieldCheck,
 } from "lucide-react"
 
-import { LegalNotice } from "@/components/legal-notice"
 import { SiteHeader } from "@/components/site-header"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
@@ -40,8 +39,8 @@ export default async function Home() {
   return (
     <>
       <SiteHeader />
-      <main className="mx-auto flex w-full max-w-7xl flex-1 flex-col gap-8 px-4 py-6 sm:px-6 lg:py-10">
-        <section className="grid min-h-[560px] gap-6 lg:grid-cols-[minmax(0,1.08fr)_minmax(360px,0.92fr)]">
+      <main className="mx-auto flex w-full max-w-7xl flex-1 flex-col gap-6 px-4 py-5 sm:px-6 lg:py-8">
+        <section className="grid gap-5 lg:grid-cols-[minmax(0,1.05fr)_minmax(360px,0.95fr)]">
           <div className="flex flex-col justify-between gap-6 rounded-lg border bg-card p-5 shadow-sm sm:p-7 lg:p-8">
             <div className="flex flex-col gap-5">
               <div className="flex w-fit items-center gap-2 rounded-md border bg-secondary px-3 py-1 text-sm font-medium text-secondary-foreground">
@@ -49,8 +48,8 @@ export default async function Home() {
                 Подбор по анкете, а не по списку стран
               </div>
               <div className="flex flex-col gap-4">
-                <h1 className="max-w-4xl font-heading text-4xl font-semibold leading-[1.04] sm:text-5xl lg:text-6xl">
-                  Спокойный план переезда вместо десятков вкладок и слухов
+                <h1 className="max-w-4xl font-heading text-4xl font-semibold leading-[1.06] sm:text-5xl">
+                  Спокойный план переезда по вашим вводным
                 </h1>
                 <p className="max-w-2xl text-base leading-7 text-muted-foreground sm:text-lg">
                   Relogator сопоставляет цель, сроки, документы, бюджет и
@@ -75,7 +74,6 @@ export default async function Home() {
                 <Link href="/results">Вернуться к результатам анкеты</Link>
               </Button>
             </div>
-            <LegalNotice />
           </div>
 
           <div className="grid gap-4">

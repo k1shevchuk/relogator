@@ -28,11 +28,18 @@ export default async function AccountPage({
   searchParams,
 }: {
   searchParams: Promise<{
+    confirmed?: string | string[]
     error?: string | string[]
     message?: string | string[]
   }>
 }) {
-  const { error, message } = await readAuthSearchParams(searchParams)
+  const params = await searchParams
+  const { error, message } = await readAuthSearchParams(Promise.resolve(params))
+  const authMessage =
+    message ??
+    (readFirstParam(params.confirmed) === "1"
+      ? "Email подтвержден. Аккаунт готов к работе."
+      : undefined)
 
   if (!isSupabaseConfigured()) {
     return <AccountShell body={<SupabaseSetupNotice />} />
@@ -92,7 +99,7 @@ export default async function AccountPage({
     <AccountShell
       body={
         <div className="flex flex-col gap-5">
-          <AuthFormMessage error={error} message={message} />
+          <AuthFormMessage error={error} message={authMessage} />
           <section className="flex flex-col gap-4 rounded-lg border bg-card p-4 sm:flex-row sm:items-start sm:justify-between">
             <div className="flex items-start gap-3">
               <UserCircle className="mt-0.5 size-5 text-primary" />
@@ -237,6 +244,14 @@ function RecordList({
       </CardContent>
     </Card>
   )
+}
+
+function readFirstParam(value: string | string[] | undefined) {
+  if (Array.isArray(value)) {
+    return value[0]
+  }
+
+  return value
 }
 
 const requestStatusLabels: Record<string, string> = {

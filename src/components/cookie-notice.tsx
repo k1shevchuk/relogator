@@ -35,12 +35,11 @@ export function CookieNotice() {
   }
 
   return (
-    <div className="fixed inset-x-0 bottom-0 z-50 border-t bg-background/95 px-4 py-3 shadow-lg backdrop-blur">
-      <div className="mx-auto flex max-w-6xl flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <p className="max-w-3xl text-sm leading-6 text-muted-foreground">
-          Relogator использует технические cookies и локальное хранение для
-          входа, сохранения анкеты, настроек и защиты сессии. Рекламная
-          аналитика не подключена. Подробнее:{" "}
+    <div className="fixed inset-x-0 bottom-0 z-50 border-t bg-background/95 px-4 py-2 shadow-lg backdrop-blur">
+      <div className="mx-auto flex max-w-6xl flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+        <p className="max-w-3xl text-sm leading-5 text-muted-foreground">
+          Используем только технические cookies и локальное хранение для входа и
+          сохранения анкеты. Подробнее:{" "}
           <Link
             className="text-foreground underline-offset-4 hover:underline"
             href="/legal/cookies"

@@ -65,7 +65,7 @@ test("user can complete questionnaire, request help and see protected route plan
 
   await expect(
     page.getByRole("heading", {
-      name: /Спокойный план переезда вместо десятков вкладок и слухов/i,
+      name: /Спокойный план переезда по вашим вводным/i,
     })
   ).toBeVisible()
   await page.getByRole("link", { name: "Начать подбор" }).first().click()
@@ -89,7 +89,7 @@ test("user can complete questionnaire, request help and see protected route plan
     page.getByRole("heading", { name: "Подходящие маршруты", exact: true })
   ).toBeVisible()
   await expect(
-    page.locator("h2").filter({ hasText: "Что улучшит подбор" })
+    page.getByText("Что может сделать маршруты проще", { exact: true })
   ).toBeVisible()
   await expect(
     page.getByRole("heading", { name: "Наиболее подходящие маршруты" }).first()
@@ -247,9 +247,11 @@ test("no passport and no income scenario shows blocked and unlock explanations",
     page.getByRole("heading", { name: "Не подходят сейчас" })
   ).toBeVisible()
   await expect(
-    page.getByText("Оформить или заменить загранпаспорт").first()
+    page.getByText("Нет действующего загранпаспорта").first()
   ).toBeVisible()
-  await expect(page.getByText("Если подтвердить доход").first()).toBeVisible()
+  await expect(
+    page.getByText("Нужно подтвердить регулярный доход").first()
+  ).toBeVisible()
 })
 
 type QuestionnaireScenario = {

@@ -139,7 +139,7 @@ export function RouteDetailClient({
             </p>
           </div>
 
-          <LegalNotice />
+          <LegalNotice compact />
 
           {!profile && (
             <Card className="rounded-lg border-amber-200 bg-amber-50">

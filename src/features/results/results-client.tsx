@@ -6,7 +6,6 @@ import {
   ClipboardList,
   Filter,
   ListChecks,
-  MapPinned,
   RotateCcw,
 } from "lucide-react"
 
@@ -91,99 +90,84 @@ export function ResultsClient({ catalogue }: ResultsClientProps) {
   }
 
   return (
-    <div className="flex flex-col gap-6">
-      <LegalNotice />
+    <div className="flex flex-col gap-5">
+      <LegalNotice compact />
 
-      <section className="grid gap-4 rounded-lg border bg-card p-4 shadow-sm lg:grid-cols-[260px_1fr]">
-        <div className="flex flex-col justify-between gap-4 rounded-lg bg-foreground p-4 text-background">
-          <div className="flex items-center justify-between gap-3">
-            <MapPinned className="size-6 text-background/70" />
-            <span className="rounded-md bg-background/10 px-2 py-1 text-xs text-background/75">
-              расчет
-            </span>
-          </div>
-          <div>
-            <div className="text-5xl font-semibold leading-none">
-              {results.length}
-            </div>
-            <p className="mt-2 text-sm leading-6 text-background/70">
-              маршрутов проверяются по вашей анкете и ограничениям
-            </p>
-          </div>
-        </div>
-
-        <div className="flex min-w-0 flex-col gap-4">
-          <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
-            <div className="flex flex-col gap-1">
+      <section className="flex flex-col gap-4 rounded-lg border bg-card p-4 shadow-sm">
+        <div className="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
+          <div className="flex min-w-0 flex-col gap-1">
+            <div className="flex flex-wrap items-center gap-2">
               <h2 className="font-heading text-2xl font-semibold">
                 Подходящие маршруты
               </h2>
-              <p className="max-w-2xl text-sm leading-6 text-muted-foreground">
-                Страна не была первым фильтром. Сначала система смотрит цель,
-                сроки, паспорт, доход, семью и готовность документов.
-              </p>
+              <span className="rounded-md border bg-background px-2 py-1 text-xs font-medium text-muted-foreground">
+                {filteredResults.length} из {results.length}
+              </span>
             </div>
-            <Button asChild variant="outline" size="sm">
-              <Link href="/questionnaire">
-                <RotateCcw data-icon="inline-start" />
-                Изменить анкету
-              </Link>
-            </Button>
+            <p className="max-w-3xl text-sm leading-6 text-muted-foreground">
+              Сначала показаны маршруты, которые ближе всего к вашим вводным.
+              Подробные ответы анкеты и условия можно раскрыть ниже.
+            </p>
           </div>
-          <dl className="grid gap-2 text-sm sm:grid-cols-2 lg:grid-cols-4">
-            {summarizeProfile(profile).map((item) => (
-              <div
-                key={item.label}
-                className="flex min-w-0 flex-col gap-1 rounded-md border bg-background px-3 py-2"
+          <Button asChild variant="outline" size="sm" className="w-fit">
+            <Link href="/questionnaire">
+              <RotateCcw data-icon="inline-start" />
+              Изменить анкету
+            </Link>
+          </Button>
+        </div>
+
+        <Tabs
+          value={filter}
+          onValueChange={(value) => setFilter(value as FilterValue)}
+        >
+          <TabsList className="grid h-auto w-full grid-cols-2 items-stretch justify-stretch gap-1 bg-muted/70 p-1 sm:flex sm:flex-wrap sm:justify-start">
+            {filters.map((item) => (
+              <TabsTrigger
+                key={item.value}
+                value={item.value}
+                className="min-h-9 flex-none whitespace-normal rounded-md px-2 py-1 text-center text-xs leading-5 sm:text-sm"
               >
+                {item.label}
+              </TabsTrigger>
+            ))}
+          </TabsList>
+        </Tabs>
+
+        <details className="group rounded-md border bg-background">
+          <summary className="flex cursor-pointer items-center justify-between gap-3 px-3 py-2 text-sm font-medium">
+            Ваши ответы
+            <span className="text-xs text-muted-foreground group-open:hidden">
+              раскрыть
+            </span>
+          </summary>
+          <dl className="grid gap-2 border-t p-3 text-sm sm:grid-cols-2 lg:grid-cols-4">
+            {summarizeProfile(profile).map((item) => (
+              <div key={item.label} className="flex min-w-0 flex-col gap-1">
                 <dt className="text-xs text-muted-foreground">{item.label}</dt>
                 <dd className="min-w-0 truncate font-medium">{item.value}</dd>
               </div>
             ))}
           </dl>
-          <Tabs
-            value={filter}
-            onValueChange={(value) => setFilter(value as FilterValue)}
-          >
-            <TabsList className="grid h-auto w-full grid-cols-2 items-stretch justify-stretch gap-1 bg-muted/70 p-1 sm:flex sm:flex-wrap sm:justify-start">
-              {filters.map((item) => (
-                <TabsTrigger
-                  key={item.value}
-                  value={item.value}
-                  className="min-h-9 flex-none whitespace-normal rounded-md px-2 py-1 text-center text-xs leading-5 sm:text-sm"
-                >
-                  {item.label}
-                </TabsTrigger>
-              ))}
-            </TabsList>
-          </Tabs>
-        </div>
-      </section>
+        </details>
 
-      {answerImpacts.length > 0 && (
-        <section className="flex flex-col gap-3 rounded-lg border bg-accent/55 p-4 shadow-sm">
-          <div className="flex items-start gap-2">
-            <ListChecks className="mt-0.5 size-4 text-primary" />
-            <div className="flex flex-col gap-1">
-              <h2 className="font-heading text-lg font-semibold">
-                Что улучшит подбор
-              </h2>
-              <p className="text-sm leading-6 text-muted-foreground">
-                Ниже показано, какие ответы меняют статус или сложность
-                маршрутов по тем же правилам, что и основной расчет.
-              </p>
+        {answerImpacts.length > 0 && (
+          <details className="group rounded-md border bg-accent/40">
+            <summary className="flex cursor-pointer items-center gap-2 px-3 py-2 text-sm font-medium">
+              <ListChecks className="size-4 text-primary" />
+              Что может сделать маршруты проще
+            </summary>
+            <div className="grid gap-3 border-t p-3 md:grid-cols-3">
+              {answerImpacts.map((impact) => (
+                <ImpactCard
+                  key={`${impact.field}-${String(impact.value)}`}
+                  impact={impact}
+                />
+              ))}
             </div>
-          </div>
-          <div className="grid gap-3 md:grid-cols-3">
-            {answerImpacts.map((impact) => (
-              <ImpactCard
-                key={`${impact.field}-${String(impact.value)}`}
-                impact={impact}
-              />
-            ))}
-          </div>
-        </section>
-      )}
+          </details>
+        )}
+      </section>
 
       {filteredResults.length > 0 ? (
         <div className="flex flex-col gap-6">

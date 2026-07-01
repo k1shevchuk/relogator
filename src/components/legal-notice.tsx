@@ -1,14 +1,25 @@
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
+import { cn } from "@/lib/utils"
 import { ShieldAlert } from "lucide-react"
 
-export function LegalNotice() {
+type LegalNoticeProps = {
+  compact?: boolean
+  className?: string
+}
+
+export function LegalNotice({ compact = false, className }: LegalNoticeProps) {
   return (
-    <Alert className="border-amber-200 bg-amber-50 text-amber-950">
+    <Alert
+      className={cn(
+        "border-amber-200 bg-amber-50 text-amber-950",
+        compact && "items-start py-2 text-sm",
+        className
+      )}
+    >
       <ShieldAlert data-icon="inline-start" />
-      <AlertTitle>Справочная информация</AlertTitle>
+      <AlertTitle>{compact ? "Информация справочная" : "Справочная информация"}</AlertTitle>
       <AlertDescription>
-        Relogator не заменяет юридическую консультацию. Правила меняются, а
-        окончательное решение принимает компетентный орган страны.
+        Правила меняются, окончательное решение принимает компетентный орган.
       </AlertDescription>
     </Alert>
   )

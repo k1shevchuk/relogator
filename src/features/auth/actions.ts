@@ -117,16 +117,14 @@ async function signUpWithEmail(formData: FormData): Promise<AuthActionState> {
 
   const { email, password } = credentials.data
   const supabase = await createSupabaseServerClient()
+  const confirmationNextPath = getSignUpConfirmationNextPath(formData)
   const { error } = await supabase.auth.signUp({
     email,
     password,
     options: {
-      emailRedirectTo: getAuthCallbackUrl(
-        sanitizeNextPath(String(formData.get("next") ?? "")),
-        {
-          requestOrigin: await getRequestOrigin(),
-        }
-      ),
+      emailRedirectTo: getAuthCallbackUrl(confirmationNextPath, {
+        requestOrigin: await getRequestOrigin(),
+      }),
     },
   })
 
@@ -215,6 +213,16 @@ function readFormFields(formData: FormData) {
     personalDataConsent: formData.get("personalDataConsent") === "on",
     termsAccepted: formData.get("termsAccepted") === "on",
   }
+}
+
+function getSignUpConfirmationNextPath(formData: FormData) {
+  const nextPath = sanitizeNextPath(String(formData.get("next") ?? ""))
+
+  if (nextPath === "/account") {
+    return "/account?confirmed=1"
+  }
+
+  return nextPath
 }
 
 async function getRequestOrigin() {

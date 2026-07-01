@@ -50,12 +50,12 @@ export function RouteCard({ assessment, tone = "best" }: RouteCardProps) {
     >
       <CardHeader
         className={cn(
-          "rounded-t-lg border-l-4 bg-secondary/35 py-4 sm:py-5",
+          "rounded-t-lg border-l-4 bg-secondary/35 py-3 sm:py-4",
           toneStyle.header
         )}
       >
         <div className="flex flex-col gap-1">
-          <CardTitle className="text-2xl">{assessment.country.name}</CardTitle>
+          <CardTitle className="text-xl">{assessment.country.name}</CardTitle>
           <CardDescription className="text-sm">
             {assessment.route.title}
           </CardDescription>
@@ -79,9 +79,9 @@ export function RouteCard({ assessment, tone = "best" }: RouteCardProps) {
           </div>
         </CardAction>
       </CardHeader>
-      <CardContent className="pt-5">
-        <div className="grid gap-5 xl:grid-cols-[minmax(0,1fr)_320px] xl:items-start">
-          <div className="flex min-w-0 flex-col gap-4 xl:col-start-1 xl:row-start-1">
+      <CardContent className="pt-4">
+        <div className="grid gap-4 xl:grid-cols-[minmax(0,1fr)_300px] xl:items-start">
+          <div className="flex min-w-0 flex-col gap-3 xl:col-start-1 xl:row-start-1">
             <p className="text-sm leading-6 text-muted-foreground">
               {assessment.route.shortDescription}
             </p>
@@ -103,9 +103,9 @@ export function RouteCard({ assessment, tone = "best" }: RouteCardProps) {
               />
             </div>
           </div>
-          <aside className="rounded-lg border bg-background p-3 xl:sticky xl:top-20 xl:col-start-2 xl:row-span-3 xl:row-start-1">
+          <aside className="rounded-lg border bg-background p-3 xl:col-start-2 xl:row-span-3 xl:row-start-1">
             <div className="mb-3 flex items-center justify-between gap-2">
-              <span className="text-sm font-medium">Краткая оценка</span>
+              <span className="text-sm font-medium">Оценка</span>
               <span
                 className={cn(
                   "rounded-md px-2 py-1 text-xs font-medium",
@@ -121,7 +121,7 @@ export function RouteCard({ assessment, tone = "best" }: RouteCardProps) {
               ))}
             </div>
           </aside>
-          <div className="grid gap-4 md:grid-cols-2 xl:col-start-1 xl:row-start-2 xl:grid-cols-4">
+          <div className="grid gap-3 md:grid-cols-3 xl:col-start-1 xl:row-start-2">
             <RouteList
               title="Почему подходит"
               items={assessment.whyFits.slice(0, 3)}
@@ -134,21 +134,15 @@ export function RouteCard({ assessment, tone = "best" }: RouteCardProps) {
               title="Что может помешать"
               items={assessment.blockers.slice(0, 3)}
             />
-            <RouteList
-              title="Что улучшит подбор"
-              items={(assessment.unlocks.length
-                ? assessment.unlocks
-                : ["Подтвердить вводные и сверить источник перед действием."]
-              ).slice(0, 3)}
-            />
           </div>
-          <div className="flex flex-col gap-4 xl:col-start-1 xl:row-start-3">
+          <div className="flex flex-col gap-3 xl:col-start-1 xl:row-start-3">
             <Separator />
             <div className="flex flex-col gap-2 text-xs text-muted-foreground">
-              <span>
+              <div className="flex flex-wrap items-center gap-2">
+                <span>
                 Проверено: {assessment.lastReviewedAt}. Статус страны:{" "}
                 {countryStatusLabels[assessment.country.status]}.
-              </span>
+                </span>
               {reviewFreshness && (
                 <span
                   className={cn(
@@ -161,20 +155,26 @@ export function RouteCard({ assessment, tone = "best" }: RouteCardProps) {
                   {reviewFreshness.label}
                 </span>
               )}
-              <div className="flex flex-wrap gap-2">
-                {assessment.sources.map((source) => (
-                  <a
-                    key={source.id}
-                    href={source.url}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="inline-flex items-center gap-1 rounded-md border px-2 py-1 hover:bg-muted"
-                  >
-                    <Link2 />
-                    {source.description}
-                  </a>
-                ))}
               </div>
+              <details className="rounded-md border bg-background">
+                <summary className="cursor-pointer px-2 py-1 font-medium text-foreground">
+                  Источники
+                </summary>
+                <div className="flex flex-wrap gap-2 border-t p-2">
+                  {assessment.sources.map((source) => (
+                    <a
+                      key={source.id}
+                      href={source.url}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="inline-flex items-center gap-1 rounded-md border px-2 py-1 hover:bg-muted"
+                    >
+                      <Link2 />
+                      {source.description}
+                    </a>
+                  ))}
+                </div>
+              </details>
             </div>
           </div>
         </div>
@@ -274,16 +274,13 @@ function MetricLine({
   metric: ReturnType<typeof buildRouteMetricSummaries>[number]
 }) {
   return (
-    <div className="rounded-md border bg-card px-3 py-2">
+    <div className="rounded-md border bg-card px-3 py-2 text-sm">
       <div className="flex items-start justify-between gap-3">
         <span className="text-xs font-medium text-muted-foreground">
           {metric.label}
         </span>
         <span className="text-right text-sm font-medium">{metric.value}</span>
       </div>
-      <p className="mt-1 text-xs leading-5 text-muted-foreground">
-        {metric.description}
-      </p>
     </div>
   )
 }
