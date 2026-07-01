@@ -1,8 +1,14 @@
 "use client"
 
-import { useMemo, useState, useSyncExternalStore } from "react"
+import { useMemo, useState, useSyncExternalStore, type ReactNode } from "react"
 import Link from "next/link"
-import { ArrowLeft, ArrowRight, CheckCircle2, ExternalLink } from "lucide-react"
+import {
+  ArrowLeft,
+  ArrowRight,
+  CheckCircle2,
+  ChevronDown,
+  ExternalLink,
+} from "lucide-react"
 
 import { LegalNotice } from "@/components/legal-notice"
 import { SpecialistRequestForm } from "@/components/specialist-request-form"
@@ -111,19 +117,6 @@ export function RouteDetailClient({
               <Badge variant="outline">
                 {countryStatusLabels[country.status]}
               </Badge>
-              <Badge variant="outline">Проверено: {route.lastReviewedAt}</Badge>
-              {routeReviewFreshness && (
-                <Badge
-                  variant="outline"
-                  className={
-                    routeReviewFreshness.tone === "risk"
-                      ? "border-rose-200 bg-rose-50 text-rose-950"
-                      : "border-amber-200 bg-amber-50 text-amber-950"
-                  }
-                >
-                  {routeReviewFreshness.label}
-                </Badge>
-              )}
               <Badge variant={assessment ? "secondary" : "outline"}>
                 {assessment ? assessment.difficulty.label : "справочник"}
               </Badge>
@@ -131,12 +124,21 @@ export function RouteDetailClient({
                 <Badge variant="outline">{assessment.statusLabel}</Badge>
               )}
             </div>
-            <h1 className="max-w-3xl font-heading text-4xl font-semibold leading-tight">
+            <h1 className="max-w-3xl font-heading text-3xl font-semibold leading-tight sm:text-4xl">
               {route.title}
             </h1>
             <p className="max-w-3xl text-base leading-7 text-muted-foreground">
               {route.shortDescription}
             </p>
+            <div className="grid gap-2 pt-2 text-sm sm:grid-cols-3">
+              <RouteFact label="Проверено" value={route.lastReviewedAt} />
+              <RouteFact label="Срок подготовки" value={route.timeline.label} />
+              <RouteFact
+                label="Статус данных"
+                value={routeReviewFreshness?.label ?? "актуальная проверка"}
+                tone={routeReviewFreshness?.tone}
+              />
+            </div>
           </div>
 
           <LegalNotice compact />
@@ -282,7 +284,10 @@ export function RouteDetailClient({
                     title="Документы на этом шаге"
                     items={activeStep.documents}
                   />
-                  <DetailList title="Важно не забыть" items={activeStepNotes} />
+                  <DetailList
+                    title="Контрольные точки"
+                    items={activeStepNotes}
+                  />
                 </div>
 
                 <div className="grid gap-4 md:grid-cols-2">
@@ -331,33 +336,25 @@ export function RouteDetailClient({
             </CardContent>
           </Card>
 
-          <Card className="rounded-lg shadow-sm">
-            <CardHeader>
-              <CardTitle>
-                <h2>Персональная оценка</h2>
-              </CardTitle>
-              <CardDescription>
-                Что в этом маршруте связано с вашей анкетой и что стоит
-                проверить первым.
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="flex flex-col gap-5">
-              {assessment && (
+          <Disclosure
+            title="Оценка по вашей анкете"
+            summary={assessment?.difficulty.label ?? "общая справка"}
+          >
+            <div className="flex flex-col gap-5">
+              {assessment && metricSummaries && (
                 <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-4">
-                  {metricSummaries?.map((metric) => (
+                  {metricSummaries.map((metric) => (
                     <div
                       key={metric.label}
-                      className="flex flex-col gap-1 rounded-md border bg-background p-3"
+                      className="rounded-md border bg-background p-3"
                     >
-                      <span className="text-xs font-medium text-muted-foreground">
+                      <p className="text-xs font-medium text-muted-foreground">
                         {metric.label}
-                      </span>
-                      <span className="text-sm font-medium">
-                        {metric.value}
-                      </span>
-                      <span className="text-xs leading-5 text-muted-foreground">
+                      </p>
+                      <p className="mt-1 text-sm font-medium">{metric.value}</p>
+                      <p className="mt-1 text-xs leading-5 text-muted-foreground">
                         {metric.description}
-                      </span>
+                      </p>
                     </div>
                   ))}
                 </div>
@@ -368,11 +365,11 @@ export function RouteDetailClient({
                   items={whyFits.slice(0, 4)}
                 />
                 <DetailList
-                  title="Что может помешать"
+                  title="Что проверить"
                   items={blockers.slice(0, 4)}
                 />
                 <DetailList
-                  title="Что улучшит маршрут"
+                  title="Что упростит путь"
                   items={
                     assessment?.unlocks.length
                       ? assessment.unlocks.slice(0, 4)
@@ -380,50 +377,43 @@ export function RouteDetailClient({
                   }
                 />
               </div>
-            </CardContent>
-          </Card>
+            </div>
+          </Disclosure>
         </div>
 
         <aside className="flex flex-col gap-4">
+          <SpecialistRequestForm
+            countryName={country.name}
+            routeId={route.id}
+            routeTitle={route.title}
+          />
+
           {profile && (
-            <Card className="rounded-lg shadow-sm">
-              <CardHeader>
-                <CardTitle>Ваши вводные</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <dl className="grid gap-2 text-sm">
-                  {summarizeProfile(profile).map((item) => (
-                    <div
-                      key={item.label}
-                      className="grid grid-cols-[105px_1fr] gap-2"
-                    >
-                      <dt className="text-muted-foreground">{item.label}</dt>
-                      <dd>{item.value}</dd>
-                    </div>
-                  ))}
-                </dl>
-              </CardContent>
-            </Card>
+            <Disclosure title="Ваши вводные" summary="ответы анкеты">
+              <dl className="grid gap-2 text-sm">
+                {summarizeProfile(profile).map((item) => (
+                  <div
+                    key={item.label}
+                    className="grid grid-cols-[105px_1fr] gap-2"
+                  >
+                    <dt className="text-muted-foreground">{item.label}</dt>
+                    <dd>{item.value}</dd>
+                  </div>
+                ))}
+              </dl>
+            </Disclosure>
           )}
 
-          <Card className="rounded-lg shadow-sm">
-            <CardHeader>
-              <CardTitle>Документы по маршруту</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <ul className="flex flex-col gap-2 text-sm leading-6 text-muted-foreground">
-                {documents.map((document) => (
-                  <li key={document}>{document}</li>
-                ))}
-              </ul>
-            </CardContent>
-          </Card>
+          <Disclosure title="Документы" summary={`${documents.length} пунктов`}>
+            <ul className="flex flex-col gap-2 text-sm leading-6 text-muted-foreground">
+              {documents.map((document) => (
+                <li key={document}>{document}</li>
+              ))}
+            </ul>
+          </Disclosure>
 
-          <Card className="rounded-lg shadow-sm">
-            <CardHeader>
-              <CardTitle>Источники</CardTitle>
-            </CardHeader>
-            <CardContent className="flex flex-col gap-3">
+          <Disclosure title="Источники" summary={`${sources.length} ссылок`}>
+            <div className="flex flex-col gap-3">
               {sources.map((source) => (
                 <a
                   key={source.id}
@@ -441,17 +431,59 @@ export function RouteDetailClient({
                   <ExternalLink className="mt-0.5 size-4 shrink-0" />
                 </a>
               ))}
-            </CardContent>
-          </Card>
-
-          <SpecialistRequestForm
-            countryName={country.name}
-            routeId={route.id}
-            routeTitle={route.title}
-          />
+            </div>
+          </Disclosure>
         </aside>
       </section>
     </>
+  )
+}
+
+function RouteFact({
+  label,
+  tone,
+  value,
+}: {
+  label: string
+  tone?: "neutral" | "warning" | "risk"
+  value: string
+}) {
+  return (
+    <div
+      className={
+        tone === "risk"
+          ? "rounded-md border border-rose-200 bg-rose-50 p-3"
+          : tone === "warning"
+            ? "rounded-md border border-amber-200 bg-amber-50 p-3"
+            : "rounded-md border bg-background p-3"
+      }
+    >
+      <p className="text-xs font-medium text-muted-foreground">{label}</p>
+      <p className="mt-1 text-sm font-medium leading-5">{value}</p>
+    </div>
+  )
+}
+
+function Disclosure({
+  children,
+  summary,
+  title,
+}: {
+  children: ReactNode
+  summary?: string
+  title: string
+}) {
+  return (
+    <details className="group rounded-lg border bg-card shadow-sm">
+      <summary className="flex cursor-pointer list-none items-center justify-between gap-3 p-4 text-sm font-medium marker:hidden">
+        <span>{title}</span>
+        <span className="flex items-center gap-2 text-xs font-normal text-muted-foreground">
+          {summary}
+          <ChevronDown className="size-4 transition-transform group-open:rotate-180" />
+        </span>
+      </summary>
+      <div className="border-t px-4 py-4">{children}</div>
+    </details>
   )
 }
 
@@ -486,7 +518,7 @@ function buildStepActionItems(
       ? `Проверьте, что загранпаспорт действует минимум ${requirements.minPassportMonths} месяцев на момент ключевого действия по маршруту.`
       : "Проверьте срок действия загранпаспорта и совпадение данных во всех документах."
   const sourceText =
-    "Откройте официальный источник по шагу и сохраните страницу или PDF в папку маршрута."
+    "В блоке «Официальная проверка» откройте первый источник и сверяйте правило именно на ваши даты."
 
   const actionItemsByStep = [
     [
@@ -651,35 +683,51 @@ function buildStepImportantNotes(
   stepIndex: number,
   assessment: RouteAssessment | null
 ) {
-  const baseNotes = [
-    `Маршрут: ${route.title}.`,
-    `Тип входа: ${getEntryTypeLabel(route.entryType)}.`,
-    `Ожидаемая подготовка: ${route.timeline.label}.`,
-  ]
+  const notes: string[] = []
 
-  if (assessment) {
-    baseNotes.push(`Ваша текущая оценка: ${assessment.difficulty.label}.`)
+  if (assessment?.blockers.length && stepIndex <= 1) {
+    notes.push(
+      `Сначала проверьте ограничение из анкеты: ${assessment.blockers[0]}.`
+    )
+  }
+
+  if (assessment?.unlocks.length && stepIndex <= 1) {
+    notes.push(
+      `Упростить маршрут может это действие: ${assessment.unlocks[0]}.`
+    )
   }
 
   if (stepIndex <= 2 && route.requirements.translations) {
-    baseNotes.push(
+    notes.push(
       "Переводы, нотариальные действия и апостиль проверяйте до выезда: часть документов проще оформить в РФ."
     )
   }
 
   if (stepIndex <= 2 && route.requirements.criminalRecordCertificate) {
-    baseNotes.push(
+    notes.push(
       "Справка о несудимости имеет срок актуальности для многих подач, поэтому ее нужно заказывать с учетом даты подачи."
     )
   }
 
+  if (stepIndex <= 3 && route.entryType === "visa_free") {
+    notes.push(
+      "Безвизовый въезд не равен долгому статусу: заранее отметьте день, когда нужно выбрать продление, выезд или новое основание."
+    )
+  }
+
   if (stepIndex >= 5) {
-    baseNotes.push(
+    notes.push(
       "Держите календарь сроков: дата въезда, дедлайн подачи, срок ответа органа и крайний день законного пребывания."
     )
   }
 
-  return baseNotes
+  if (notes.length === 0) {
+    notes.push(
+      "Перед оплатой невозвратных расходов сверяйте сроки, документы и официальный источник по текущему шагу."
+    )
+  }
+
+  return notes
 }
 
 function getRouteBasis(route: RouteDefinition) {
@@ -700,16 +748,4 @@ function getRouteBasis(route: RouteDefinition) {
   }
 
   return "подтвердить основание пребывания и собрать документы по официальному списку"
-}
-
-function getEntryTypeLabel(entryType: RouteDefinition["entryType"]) {
-  if (entryType === "visa_free") {
-    return "безвизовый въезд"
-  }
-
-  if (entryType === "residence_permit") {
-    return "ВНЖ или долгий статус"
-  }
-
-  return "временное проживание"
 }

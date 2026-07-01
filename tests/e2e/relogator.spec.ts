@@ -1,3 +1,4 @@
+import { existsSync, readFileSync } from "node:fs"
 import { expect, test, type Page } from "@playwright/test"
 
 test.beforeEach(async ({ page }) => {
@@ -187,6 +188,53 @@ test("route plan is protected for guests", async ({ page }) => {
   ).toBeVisible()
   await expect(
     page.getByRole("heading", { name: "Вход в Relogator" })
+  ).toBeVisible()
+})
+
+test("signed in user can read and step through a route plan", async ({
+  page,
+}) => {
+  test.setTimeout(60_000)
+  const credentials = readE2ECredentials()
+
+  test.skip(
+    !credentials,
+    "E2E_USER_EMAIL and E2E_USER_PASSWORD are required for authenticated route checks."
+  )
+
+  await page.goto("/auth/login?next=%2Froutes%2Farmenia-visa-free-180")
+  await page.getByLabel("Email").fill(credentials!.email)
+  await page.getByLabel("Пароль").fill(credentials!.password)
+  await page.getByRole("button", { name: "Войти" }).click()
+  await page.getByRole("button", { name: "Выйти" }).waitFor({
+    state: "visible",
+    timeout: 15_000,
+  })
+  await page.evaluate((profile) => {
+    window.localStorage.setItem("relogator-profile", JSON.stringify(profile))
+  }, routePlanProfile)
+  await page.goto("/routes/armenia-visa-free-180")
+  await expect(page).toHaveURL(/\/routes\/armenia-visa-free-180/)
+
+  await expect(
+    page.getByRole("heading", { name: "Пошаговый план" })
+  ).toBeVisible()
+  await expect(page.getByText("Что сделать сейчас")).toBeVisible()
+  await expect(page.getByText("Контрольные точки")).toBeVisible()
+  await expect(page.getByText("Персональная оценка")).toHaveCount(0)
+  await expect(page.getByText("Оценка по вашей анкете")).toBeVisible()
+
+  await page.getByRole("button", { name: "Далее" }).click()
+  await expect(page.getByText("Шаг 2 из")).toBeVisible()
+
+  await page.getByText("Оценка по вашей анкете").click()
+  await expect(page.getByText("Почему подходит")).toBeVisible()
+
+  await page.getByText("Источники").click()
+  await expect(
+    page.getByRole("complementary").getByRole("link").filter({
+      hasText: "Официальная",
+    })
   ).toBeVisible()
 })
 
@@ -425,6 +473,31 @@ type QuestionnaireScenario = {
   documentChecks?: string[]
 }
 
+const routePlanProfile = {
+  companions: ["alone"],
+  departureWindow: "three_months",
+  goal: "quick_exit",
+  hasBusiness: false,
+  hasCriminalRecordCertificate: false,
+  hasEmploymentContract: false,
+  hasProvableIncome: true,
+  monthlyIncomeLevel: "one_to_three_thousand",
+  needsBankAccount: false,
+  needsSchool: false,
+  passportStatus: "more_than_18_months",
+  preparedDocuments: ["income_proof", "bank_statements"],
+  savingsLevel: "medium",
+  schengenHistory: "not_sure",
+  stayDuration: "one_to_three_months",
+  translationReadiness: "ready_with_list",
+  valuesLowCost: false,
+  valuesRussianSpeaking: true,
+  valuesWarmClimate: false,
+  visaHistory: "not_sure",
+  visaIssues: [],
+  willingToOpenCompany: false,
+}
+
 function choice(page: Page, id: string) {
   return page.locator(`[data-choice-id="${id}"]`)
 }
@@ -435,6 +508,36 @@ async function expectChoiceChecked(page: Page, id: string) {
 
 async function expectChoiceUnchecked(page: Page, id: string) {
   await expect(choice(page, id)).toHaveAttribute("aria-checked", "false")
+}
+
+function readE2ECredentials() {
+  const env = {
+    E2E_USER_EMAIL: process.env.E2E_USER_EMAIL,
+    E2E_USER_PASSWORD: process.env.E2E_USER_PASSWORD,
+    ...readDotenvFile(),
+  }
+  const email = env.E2E_USER_EMAIL?.trim()
+  const password = env.E2E_USER_PASSWORD?.trim()
+
+  if (!email || !password) {
+    return null
+  }
+
+  return { email, password }
+}
+
+function readDotenvFile() {
+  if (!existsSync(".env")) {
+    return {}
+  }
+
+  return Object.fromEntries(
+    readFileSync(".env", "utf8")
+      .split(/\r?\n/)
+      .map((line) => line.match(/^\s*([^#][^=]+)=(.*)$/))
+      .filter((match): match is RegExpMatchArray => Boolean(match))
+      .map((match) => [match[1].trim(), match[2].trim()])
+  ) as Record<string, string>
 }
 
 async function fillQuestionnaire(page: Page, scenario: QuestionnaireScenario) {
