@@ -293,7 +293,9 @@ function MetricLine({
 function RouteList({ items, title }: { items: string[]; title: string }) {
   return (
     <div className="flex flex-col gap-2">
-      <h3 className="text-sm font-medium">{title}</h3>
+      <p className="text-xs font-medium uppercase text-muted-foreground">
+        {title}
+      </p>
       <ul className="flex flex-col gap-1 text-sm leading-6 text-muted-foreground">
         {items.map((item) => (
           <li key={item}>{item}</li>

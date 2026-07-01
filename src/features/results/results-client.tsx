@@ -91,16 +91,16 @@ export function ResultsClient({ catalogue }: ResultsClientProps) {
         <div className="grid gap-3 lg:grid-cols-[minmax(0,1fr)_220px_auto] lg:items-end">
           <div className="flex min-w-0 flex-col gap-1">
             <div className="flex flex-wrap items-center gap-2">
-              <h2 className="font-heading text-2xl font-semibold">
+              <h1 className="font-heading text-xl font-semibold leading-tight sm:text-3xl">
                 Подходящие маршруты
-              </h2>
+              </h1>
               <span className="rounded-md border bg-background px-2 py-1 text-xs font-medium text-muted-foreground">
                 {filteredResults.length} из {results.length}
               </span>
             </div>
-            <p className="max-w-3xl text-sm leading-6 text-muted-foreground">
-              Сначала показаны ближайшие варианты. Информация справочная:
-              правила меняются, решение принимает компетентный орган.
+            <p className="max-w-3xl text-xs leading-5 text-muted-foreground sm:text-sm sm:leading-6">
+              Сначала ближайшие варианты. Подробный план открывается после
+              входа; перед действием сверяйте источник.
             </p>
           </div>
           <label className="flex flex-col gap-1 text-sm font-medium">
@@ -112,7 +112,7 @@ export function ResultsClient({ catalogue }: ResultsClientProps) {
                 setFilter(event.currentTarget.value as FilterValue)
                 setExpandedBuckets({})
               }}
-              className="min-h-10 rounded-md border bg-background px-3 text-sm font-medium focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-none"
+              className="min-h-9 rounded-md border bg-background px-3 text-sm font-medium focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-none"
             >
               {filters.map((item) => (
                 <option key={item.value} value={item.value}>
@@ -129,7 +129,32 @@ export function ResultsClient({ catalogue }: ResultsClientProps) {
           </Button>
         </div>
 
-        <div className="grid gap-2 lg:grid-cols-2">
+        <details className="group rounded-md border bg-background sm:hidden">
+          <summary className="flex cursor-pointer items-center justify-between gap-3 px-3 py-2 text-sm font-medium">
+            Ответы и подсказки
+            <span className="text-xs text-muted-foreground group-open:hidden">
+              раскрыть
+            </span>
+          </summary>
+          <div className="flex flex-col gap-3 border-t p-3">
+            <ProfileSummaryList profile={profile} limit={4} inset={false} />
+            {answerImpacts.length > 0 && (
+              <div className="flex flex-col gap-2">
+                <p className="text-xs font-medium uppercase text-muted-foreground">
+                  Что может упростить маршруты
+                </p>
+                {answerImpacts.slice(0, 1).map((impact) => (
+                  <ImpactCard
+                    key={`${impact.field}-${String(impact.value)}`}
+                    impact={impact}
+                  />
+                ))}
+              </div>
+            )}
+          </div>
+        </details>
+
+        <div className="hidden gap-2 sm:grid lg:grid-cols-2">
           <details className="group rounded-md border bg-background">
             <summary className="flex cursor-pointer items-center justify-between gap-3 px-3 py-2 text-sm font-medium">
               Ваши ответы
@@ -137,16 +162,7 @@ export function ResultsClient({ catalogue }: ResultsClientProps) {
                 раскрыть
               </span>
             </summary>
-            <dl className="grid gap-2 border-t p-3 text-sm sm:grid-cols-2">
-              {summarizeProfile(profile).map((item) => (
-                <div key={item.label} className="flex min-w-0 flex-col gap-1">
-                  <dt className="text-xs text-muted-foreground">
-                    {item.label}
-                  </dt>
-                  <dd className="min-w-0 truncate font-medium">{item.value}</dd>
-                </div>
-              ))}
-            </dl>
+            <ProfileSummaryList profile={profile} />
           </details>
 
           {answerImpacts.length > 0 && (
@@ -204,10 +220,10 @@ export function ResultsClient({ catalogue }: ResultsClientProps) {
                         {items.length} из {filteredResults.length}
                       </span>
                     </div>
-                    <h2 className="font-heading text-xl font-semibold leading-snug">
+                    <h2 className="font-heading text-lg font-semibold leading-snug sm:text-xl">
                       {section.title}
                     </h2>
-                    <p className="text-sm text-muted-foreground">
+                    <p className="hidden text-sm text-muted-foreground sm:block">
                       {section.description}
                     </p>
                   </div>
@@ -359,6 +375,34 @@ function buildAnswerImpacts(
   }
 
   return impacts.filter((impact) => impact.changedRoutes.length > 0).slice(0, 3)
+}
+
+function ProfileSummaryList({
+  inset = true,
+  limit,
+  profile,
+}: {
+  inset?: boolean
+  limit?: number
+  profile: UserProfile
+}) {
+  const rows = summarizeProfile(profile).slice(0, limit)
+
+  return (
+    <dl
+      className={cn(
+        "grid gap-2 text-sm sm:grid-cols-2",
+        inset && "border-t p-3"
+      )}
+    >
+      {rows.map((item) => (
+        <div key={item.label} className="flex min-w-0 flex-col gap-1">
+          <dt className="text-xs text-muted-foreground">{item.label}</dt>
+          <dd className="min-w-0 truncate font-medium">{item.value}</dd>
+        </div>
+      ))}
+    </dl>
+  )
 }
 
 function ImpactCard({ impact }: { impact: AnswerImpact }) {

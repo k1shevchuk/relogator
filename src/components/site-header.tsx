@@ -16,13 +16,13 @@ export async function SiteHeader() {
 
   return (
     <header className="sticky top-0 z-40 border-b bg-background/85 backdrop-blur-xl">
-      <div className="mx-auto flex w-full max-w-7xl flex-wrap items-center justify-between gap-3 px-4 py-3 sm:flex-nowrap sm:gap-4 sm:px-6">
+      <div className="mx-auto flex w-full max-w-7xl flex-wrap items-center justify-between gap-2 px-4 py-2 sm:flex-nowrap sm:gap-4 sm:px-6 sm:py-3">
         <Link
           href="/"
-          className="flex shrink-0 items-center gap-3 font-heading text-lg font-semibold"
+          className="flex shrink-0 items-center gap-2 font-heading text-base font-semibold sm:gap-3 sm:text-lg"
         >
-          <span className="flex size-9 shrink-0 items-center justify-center rounded-md bg-foreground text-background shadow-sm">
-            <Compass className="size-5" />
+          <span className="flex size-8 shrink-0 items-center justify-center rounded-md bg-foreground text-background shadow-sm sm:size-9">
+            <Compass className="size-4 sm:size-5" />
           </span>
           <span className="flex flex-col leading-tight">
             <span>Relogator</span>
@@ -43,7 +43,12 @@ export async function SiteHeader() {
           >
             <Link href="/partners">Партнерам</Link>
           </Button>
-          <Button asChild variant="ghost" size="sm" className="px-2">
+          <Button
+            asChild
+            variant="ghost"
+            size="sm"
+            className="hidden px-2 sm:inline-flex"
+          >
             <Link href="/account">Кабинет</Link>
           </Button>
           {isSignedIn ? (
@@ -66,7 +71,8 @@ export async function SiteHeader() {
           <Button asChild size="sm" className="px-2 sm:px-3">
             <Link href="/questionnaire">
               <Route data-icon="inline-start" />
-              Начать подбор
+              <span className="sm:hidden">Подбор</span>
+              <span className="hidden sm:inline">Начать подбор</span>
             </Link>
           </Button>
         </nav>
