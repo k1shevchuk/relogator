@@ -254,7 +254,6 @@ export function QuestionnaireFlow() {
                       <Choice
                         key={option.value}
                         id={`goal-${option.value}`}
-                        name="goal"
                         checked={field.value === option.value}
                         label={option.label}
                         hint={option.hint}
@@ -570,45 +569,28 @@ function Choice({
   hint,
   id,
   label,
-  name,
   onSelect,
 }: {
   checked: boolean
   hint?: string
   id: string
   label: string
-  name: string
   onSelect: () => void
 }) {
-  const { onClick, ...dragGuard } = useClickGuardAfterDrag()
+  const pressHandlers = usePressWithoutDrag(onSelect)
 
   return (
-    <label
-      htmlFor={id}
-      className="flex w-full cursor-pointer items-start gap-3 rounded-md border bg-background p-3 text-left focus-within:border-ring focus-within:ring-3 focus-within:ring-ring/50 data-[checked=true]:border-primary data-[checked=true]:bg-primary/5"
+    <button
+      id={id}
+      type="button"
+      role="radio"
+      aria-checked={checked}
+      aria-describedby={hint ? `${id}-hint` : undefined}
+      data-choice-id={id}
       data-checked={checked}
-      onClick={(event) => {
-        onClick(event)
-
-        if (!event.defaultPrevented && !checked) {
-          onSelect()
-        }
-      }}
-      {...dragGuard}
+      className="flex w-full cursor-pointer items-start gap-3 rounded-md border bg-background p-3 text-left focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 data-[checked=true]:border-primary data-[checked=true]:bg-primary/5"
+      {...pressHandlers}
     >
-      <input
-        id={id}
-        type="radio"
-        name={name}
-        checked={checked}
-        onChange={(event) => {
-          if (event.currentTarget.checked) {
-            onSelect()
-          }
-        }}
-        aria-describedby={hint ? `${id}-hint` : undefined}
-        className="sr-only"
-      />
       <span
         aria-hidden="true"
         className={cn(
@@ -629,7 +611,7 @@ function Choice({
           </span>
         )}
       </span>
-    </label>
+    </button>
   )
 }
 
@@ -812,7 +794,6 @@ function RadioField<
                 <Choice
                   key={String(option.value)}
                   id={`${name}-${option.value}`}
-                  name={name}
                   checked={field.value === option.value}
                   label={option.label}
                   onSelect={() =>
@@ -862,7 +843,6 @@ function BooleanRadioField<TName extends "hasProvableIncome">({
                 <Choice
                   key={String(option.value)}
                   id={`${name}-${option.value}`}
-                  name={name}
                   checked={field.value === option.value}
                   label={option.label}
                   onSelect={() =>

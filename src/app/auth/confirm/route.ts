@@ -2,7 +2,7 @@ import { NextResponse } from "next/server"
 import type { EmailOtpType } from "@supabase/supabase-js"
 
 import {
-  getPublicSiteUrl,
+  getAuthEmailSiteUrl,
   isSupabaseConfigured,
   sanitizeNextPath,
 } from "@/lib/supabase/config"
@@ -23,7 +23,7 @@ export async function GET(request: Request) {
   const tokenHash = requestUrl.searchParams.get("token_hash")
   const otpType = parseOtpType(requestUrl.searchParams.get("type"))
   const nextPath = sanitizeNextPath(requestUrl.searchParams.get("next"))
-  const publicSiteUrl = getPublicSiteUrl(process.env, requestUrl.origin)
+  const publicSiteUrl = getAuthEmailSiteUrl(process.env, requestUrl.origin)
 
   if (!isSupabaseConfigured()) {
     return redirectToLogin("Вход временно недоступен", publicSiteUrl)

@@ -2,6 +2,9 @@ import { describe, expect, test } from "vitest"
 import {
   getAuthCallbackUrl,
   getAuthConfirmUrl,
+  getAuthEmailCallbackUrl,
+  getAuthEmailConfirmUrl,
+  getAuthEmailSiteUrl,
   getPublicSiteUrl,
   getRequestOriginFromHeaders,
   getSupabasePublicConfigFromEnv,
@@ -131,6 +134,50 @@ describe("Supabase public config", () => {
     expect(callbackUrl).toBe(
       "https://relogator.ru/auth/callback?next=%2Fauth%2Fnew-password"
     )
+  })
+
+  test("keeps email confirmation links on the public site by default", () => {
+    const confirmUrl = getAuthEmailConfirmUrl("/account?confirmed=1", {
+      env: { NEXT_PUBLIC_SITE_URL: "http://localhost:3000" },
+      requestOrigin: "http://127.0.0.1:3000",
+    })
+    const resetUrl = getAuthEmailCallbackUrl("/auth/new-password", {
+      env: { NEXT_PUBLIC_SITE_URL: "http://localhost:3000" },
+      requestOrigin: "http://127.0.0.1:3000",
+    })
+
+    expect(confirmUrl).toBe(
+      "https://relogator.ru/auth/confirm?next=%2Faccount%3Fconfirmed%3D1"
+    )
+    expect(resetUrl).toBe(
+      "https://relogator.ru/auth/callback?next=%2Fauth%2Fnew-password"
+    )
+  })
+
+  test("allows local email redirects only when explicitly enabled", () => {
+    const confirmUrl = getAuthEmailConfirmUrl("/account?confirmed=1", {
+      env: {
+        ALLOW_LOCAL_AUTH_EMAIL_REDIRECTS: "true",
+        NEXT_PUBLIC_SITE_URL: "http://localhost:3000",
+      },
+      requestOrigin: "http://127.0.0.1:3100",
+    })
+
+    expect(confirmUrl).toBe(
+      "http://127.0.0.1:3100/auth/confirm?next=%2Faccount%3Fconfirmed%3D1"
+    )
+  })
+
+  test("uses explicit auth email site url before other public site urls", () => {
+    const siteUrl = getAuthEmailSiteUrl(
+      {
+        AUTH_EMAIL_SITE_URL: "https://auth.relogator.example",
+        NEXT_PUBLIC_SITE_URL: "https://relogator.example",
+      },
+      "http://127.0.0.1:3000"
+    )
+
+    expect(siteUrl).toBe("https://auth.relogator.example/")
   })
 
   test("builds request origin from forwarded proxy headers", () => {

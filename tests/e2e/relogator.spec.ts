@@ -10,22 +10,24 @@ test.beforeEach(async ({ page }) => {
 test("first questionnaire step has no preselected answer", async ({ page }) => {
   await page.goto("/questionnaire")
 
-  await expect(page.locator('input[type="radio"]:checked')).toHaveCount(0)
+  await expect(page.locator('[role="radio"][aria-checked="true"]')).toHaveCount(
+    0
+  )
 
   await page.getByText("Уехать быстро", { exact: true }).click()
 
-  await expect(page.locator("input#goal-quick_exit")).toBeChecked()
-  await expect(page.locator("input#goal-compare")).not.toBeChecked()
+  await expectChoiceChecked(page, "goal-quick_exit")
+  await expectChoiceUnchecked(page, "goal-compare")
 
   await page.getByText("Пока сравниваю варианты", { exact: true }).click()
 
-  await expect(page.locator("input#goal-quick_exit")).not.toBeChecked()
-  await expect(page.locator("input#goal-compare")).toBeChecked()
+  await expectChoiceUnchecked(page, "goal-quick_exit")
+  await expectChoiceChecked(page, "goal-compare")
 
   await page.getByText("Уехать быстро", { exact: true }).click()
 
-  await expect(page.locator("input#goal-quick_exit")).toBeChecked()
-  await expect(page.locator("input#goal-compare")).not.toBeChecked()
+  await expectChoiceChecked(page, "goal-quick_exit")
+  await expectChoiceUnchecked(page, "goal-compare")
 })
 
 test("questionnaire radio answers can be changed after selection", async ({
@@ -37,33 +39,25 @@ test("questionnaire radio answers can be changed after selection", async ({
   await page.getByRole("button", { name: /Дальше/ }).click()
 
   await page.getByText("В течение 2 недель", { exact: true }).click()
-  await expect(page.locator("input#departureWindow-two_weeks")).toBeChecked()
+  await expectChoiceChecked(page, "departureWindow-two_weeks")
 
   await page.getByText("Пока без срока", { exact: true }).click()
-  await expect(
-    page.locator("input#departureWindow-two_weeks")
-  ).not.toBeChecked()
-  await expect(page.locator("input#departureWindow-no_deadline")).toBeChecked()
+  await expectChoiceUnchecked(page, "departureWindow-two_weeks")
+  await expectChoiceChecked(page, "departureWindow-no_deadline")
 
   await page.getByText("До 1 месяца", { exact: true }).click()
-  await expect(page.locator("input#stayDuration-up_to_one_month")).toBeChecked()
+  await expectChoiceChecked(page, "stayDuration-up_to_one_month")
 
   await page.getByText("Больше года", { exact: true }).click()
-  await expect(
-    page.locator("input#stayDuration-up_to_one_month")
-  ).not.toBeChecked()
-  await expect(page.locator("input#stayDuration-more_than_year")).toBeChecked()
+  await expectChoiceUnchecked(page, "stayDuration-up_to_one_month")
+  await expectChoiceChecked(page, "stayDuration-more_than_year")
 
   await page.getByText("Да, срок меньше 6 месяцев", { exact: true }).click()
-  await expect(
-    page.locator("input#passportStatus-less_than_6_months")
-  ).toBeChecked()
+  await expectChoiceChecked(page, "passportStatus-less_than_6_months")
 
   await page.getByText("Нет", { exact: true }).click()
-  await expect(
-    page.locator("input#passportStatus-less_than_6_months")
-  ).not.toBeChecked()
-  await expect(page.locator("input#passportStatus-none")).toBeChecked()
+  await expectChoiceUnchecked(page, "passportStatus-less_than_6_months")
+  await expectChoiceChecked(page, "passportStatus-none")
 })
 
 test("questionnaire radio cards can be changed by clicking the card", async ({
@@ -71,12 +65,12 @@ test("questionnaire radio cards can be changed by clicking the card", async ({
 }) => {
   await page.goto("/questionnaire")
 
-  await page.locator('label[for="goal-quick_exit"]').click()
-  await expect(page.locator("input#goal-quick_exit")).toBeChecked()
+  await choice(page, "goal-quick_exit").click()
+  await expectChoiceChecked(page, "goal-quick_exit")
 
-  await page.locator('label[for="goal-compare"]').click()
-  await expect(page.locator("input#goal-quick_exit")).not.toBeChecked()
-  await expect(page.locator("input#goal-compare")).toBeChecked()
+  await choice(page, "goal-compare").click()
+  await expectChoiceUnchecked(page, "goal-quick_exit")
+  await expectChoiceChecked(page, "goal-compare")
 })
 
 test("questionnaire scroll gesture does not block the next radio choice", async ({
@@ -84,10 +78,10 @@ test("questionnaire scroll gesture does not block the next radio choice", async 
 }) => {
   await page.goto("/questionnaire")
 
-  await page.locator('label[for="goal-quick_exit"]').click()
-  await expect(page.locator("input#goal-quick_exit")).toBeChecked()
+  await choice(page, "goal-quick_exit").click()
+  await expectChoiceChecked(page, "goal-quick_exit")
 
-  const compareCard = page.locator('label[for="goal-compare"]')
+  const compareCard = choice(page, "goal-compare")
   await compareCard.dispatchEvent("pointerdown", {
     clientX: 40,
     clientY: 200,
@@ -109,8 +103,8 @@ test("questionnaire scroll gesture does not block the next radio choice", async 
 
   await compareCard.click()
 
-  await expect(page.locator("input#goal-quick_exit")).not.toBeChecked()
-  await expect(page.locator("input#goal-compare")).toBeChecked()
+  await expectChoiceUnchecked(page, "goal-quick_exit")
+  await expectChoiceChecked(page, "goal-compare")
 })
 
 test("empty questionnaire step cannot be skipped", async ({ page }) => {
@@ -429,6 +423,18 @@ type QuestionnaireScenario = {
   financeChecks?: string[]
   translation: string
   documentChecks?: string[]
+}
+
+function choice(page: Page, id: string) {
+  return page.locator(`[data-choice-id="${id}"]`)
+}
+
+async function expectChoiceChecked(page: Page, id: string) {
+  await expect(choice(page, id)).toHaveAttribute("aria-checked", "true")
+}
+
+async function expectChoiceUnchecked(page: Page, id: string) {
+  await expect(choice(page, id)).toHaveAttribute("aria-checked", "false")
 }
 
 async function fillQuestionnaire(page: Page, scenario: QuestionnaireScenario) {

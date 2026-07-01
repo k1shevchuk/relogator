@@ -4,8 +4,8 @@ import { headers } from "next/headers"
 import { redirect } from "next/navigation"
 
 import {
-  getAuthCallbackUrl,
-  getAuthConfirmUrl,
+  getAuthEmailCallbackUrl,
+  getAuthEmailConfirmUrl,
   getRequestOriginFromHeaders,
   isSupabaseConfigured,
   sanitizeNextPath,
@@ -124,7 +124,7 @@ async function signUpWithEmail(formData: FormData): Promise<AuthActionState> {
     email,
     password,
     options: {
-      emailRedirectTo: getAuthConfirmUrl(confirmationNextPath, {
+      emailRedirectTo: getAuthEmailConfirmUrl(confirmationNextPath, {
         requestOrigin: await getRequestOrigin(),
       }),
     },
@@ -158,7 +158,7 @@ async function requestPasswordReset(
   const { error } = await supabase.auth.resetPasswordForEmail(
     parsed.data.email,
     {
-      redirectTo: getAuthCallbackUrl("/auth/new-password", {
+      redirectTo: getAuthEmailCallbackUrl("/auth/new-password", {
         requestOrigin: await getRequestOrigin(),
       }),
     }

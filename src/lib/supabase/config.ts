@@ -106,6 +106,19 @@ export function getAuthCallbackUrl(
   return getAuthRouteUrl("/auth/callback", nextPath, options)
 }
 
+export function getAuthEmailCallbackUrl(
+  nextPath: string | null | undefined,
+  options: {
+    env?: PublicEnv
+    requestOrigin?: string | null
+  } = {}
+) {
+  return getAuthRouteUrl("/auth/callback", nextPath, {
+    ...options,
+    preferPublicSite: true,
+  })
+}
+
 export function getAuthConfirmUrl(
   nextPath: string | null | undefined,
   options: {
@@ -116,15 +129,38 @@ export function getAuthConfirmUrl(
   return getAuthRouteUrl("/auth/confirm", nextPath, options)
 }
 
+export function getAuthEmailConfirmUrl(
+  nextPath: string | null | undefined,
+  options: {
+    env?: PublicEnv
+    requestOrigin?: string | null
+  } = {}
+) {
+  return getAuthRouteUrl("/auth/confirm", nextPath, {
+    ...options,
+    preferPublicSite: true,
+  })
+}
+
+export function getAuthEmailSiteUrl(
+  env: PublicEnv = process.env,
+  requestOrigin?: string | null
+) {
+  return getPublicEmailSiteUrl(env, requestOrigin)
+}
+
 function getAuthRouteUrl(
   routePath: "/auth/callback" | "/auth/confirm",
   nextPath: string | null | undefined,
   options: {
     env?: PublicEnv
+    preferPublicSite?: boolean
     requestOrigin?: string | null
   }
 ) {
-  const siteUrl = getSiteUrl(options.env ?? process.env, options.requestOrigin)
+  const siteUrl = options.preferPublicSite
+    ? getPublicEmailSiteUrl(options.env ?? process.env, options.requestOrigin)
+    : getSiteUrl(options.env ?? process.env, options.requestOrigin)
   const callbackUrl = new URL(routePath, siteUrl)
   callbackUrl.searchParams.set("next", sanitizeNextPath(nextPath))
 
@@ -206,6 +242,40 @@ function getSiteUrl(env: PublicEnv, requestOrigin?: string | null) {
   }
 
   return isProduction ? PRODUCTION_SITE_URL : DEFAULT_LOCAL_SITE_URL
+}
+
+function getPublicEmailSiteUrl(
+  env: PublicEnv,
+  requestOrigin?: string | null
+) {
+  const emailSiteUrl = normalizeSiteUrl(
+    readEnv(env, "AUTH_EMAIL_SITE_URL") ||
+      readEnv(env, "NEXT_PUBLIC_AUTH_EMAIL_SITE_URL")
+  )
+
+  if (emailSiteUrl && !isLocalSiteUrl(emailSiteUrl)) {
+    return emailSiteUrl
+  }
+
+  const envSiteUrl = normalizeSiteUrl(readEnv(env, "NEXT_PUBLIC_SITE_URL"))
+
+  if (envSiteUrl && !isLocalSiteUrl(envSiteUrl)) {
+    return envSiteUrl
+  }
+
+  const requestOriginUrl = normalizeSiteUrl(requestOrigin)
+  const allowLocalEmailRedirects =
+    readEnv(env, "ALLOW_LOCAL_AUTH_EMAIL_REDIRECTS") === "true"
+
+  if (
+    allowLocalEmailRedirects &&
+    requestOriginUrl &&
+    isLocalSiteUrl(requestOriginUrl)
+  ) {
+    return requestOriginUrl
+  }
+
+  return PRODUCTION_SITE_URL
 }
 
 function normalizeSiteUrl(value: string | null | undefined) {
