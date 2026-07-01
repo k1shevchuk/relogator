@@ -11,9 +11,7 @@ test.beforeEach(async ({ page }) => {
 test("first questionnaire step has no preselected answer", async ({ page }) => {
   await page.goto("/questionnaire")
 
-  await expect(page.locator('[role="radio"][aria-checked="true"]')).toHaveCount(
-    0
-  )
+  await expect(page.locator('input[type="radio"]:checked')).toHaveCount(0)
 
   await page.getByText("Уехать быстро", { exact: true }).click()
 
@@ -203,17 +201,19 @@ test("signed in user can read and step through a route plan", async ({
   )
 
   await page.goto("/auth/login?next=%2Froutes%2Farmenia-visa-free-180")
-  await page.getByLabel("Email").fill(credentials!.email)
-  await page.getByLabel("Пароль").fill(credentials!.password)
-  await page.getByRole("button", { name: "Войти" }).click()
-  await page.getByRole("button", { name: "Выйти" }).waitFor({
-    state: "visible",
-    timeout: 15_000,
-  })
   await page.evaluate((profile) => {
     window.localStorage.setItem("relogator-profile", JSON.stringify(profile))
   }, routePlanProfile)
-  await page.goto("/routes/armenia-visa-free-180")
+  await page.getByLabel("Email").fill(credentials!.email)
+  await page.getByLabel("Пароль").fill(credentials!.password)
+  await page.getByRole("button", { name: "Войти" }).click()
+  await page.waitForURL(/\/routes\/armenia-visa-free-180/, {
+    timeout: 30_000,
+  })
+  await page.getByRole("button", { name: "Выйти" }).waitFor({
+    state: "visible",
+    timeout: 30_000,
+  })
   await expect(page).toHaveURL(/\/routes\/armenia-visa-free-180/)
 
   await expect(
@@ -503,11 +503,13 @@ function choice(page: Page, id: string) {
 }
 
 async function expectChoiceChecked(page: Page, id: string) {
-  await expect(choice(page, id)).toHaveAttribute("aria-checked", "true")
+  await expect(choice(page, id)).toHaveAttribute("data-checked", "true")
+  await expect(choice(page, id).locator('input[type="radio"]')).toBeChecked()
 }
 
 async function expectChoiceUnchecked(page: Page, id: string) {
-  await expect(choice(page, id)).toHaveAttribute("aria-checked", "false")
+  await expect(choice(page, id)).toHaveAttribute("data-checked", "false")
+  await expect(choice(page, id).locator('input[type="radio"]')).not.toBeChecked()
 }
 
 function readE2ECredentials() {

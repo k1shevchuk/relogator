@@ -5,8 +5,6 @@ import {
   useMemo,
   useRef,
   useState,
-  type MouseEvent,
-  type PointerEvent,
 } from "react"
 import { useRouter } from "next/navigation"
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -254,6 +252,8 @@ export function QuestionnaireFlow() {
                       <Choice
                         key={option.value}
                         id={`goal-${option.value}`}
+                        name="goal"
+                        value={option.value}
                         checked={field.value === option.value}
                         label={option.label}
                         hint={option.hint}
@@ -569,28 +569,34 @@ function Choice({
   hint,
   id,
   label,
+  name,
   onSelect,
+  value,
 }: {
   checked: boolean
   hint?: string
   id: string
   label: string
+  name: string
   onSelect: () => void
+  value: string
 }) {
-  const pressHandlers = usePressWithoutDrag(onSelect)
-
   return (
-    <button
+    <label
       id={id}
-      type="button"
-      role="radio"
-      aria-checked={checked}
-      aria-describedby={hint ? `${id}-hint` : undefined}
       data-choice-id={id}
       data-checked={checked}
-      className="flex w-full cursor-pointer items-start gap-3 rounded-md border bg-background p-3 text-left focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 data-[checked=true]:border-primary data-[checked=true]:bg-primary/5"
-      {...pressHandlers}
+      className="flex w-full cursor-pointer items-start gap-3 rounded-md border bg-background p-3 text-left has-[:focus-visible]:border-ring has-[:focus-visible]:ring-3 has-[:focus-visible]:ring-ring/50 data-[checked=true]:border-primary data-[checked=true]:bg-primary/5"
     >
+      <input
+        type="radio"
+        name={name}
+        value={value}
+        checked={checked}
+        aria-describedby={hint ? `${id}-hint` : undefined}
+        className="sr-only"
+        onChange={onSelect}
+      />
       <span
         aria-hidden="true"
         className={cn(
@@ -611,105 +617,8 @@ function Choice({
           </span>
         )}
       </span>
-    </button>
+    </label>
   )
-}
-
-function useClickGuardAfterDrag() {
-  const pointerStartRef = useRef<{
-    moved: boolean
-    x: number
-    y: number
-  } | null>(null)
-  const clearTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
-
-  useEffect(() => {
-    return () => {
-      if (clearTimerRef.current) {
-        clearTimeout(clearTimerRef.current)
-      }
-    }
-  }, [])
-
-  function clearPointerStart() {
-    if (clearTimerRef.current) {
-      clearTimeout(clearTimerRef.current)
-      clearTimerRef.current = null
-    }
-
-    pointerStartRef.current = null
-  }
-
-  function schedulePointerStartClear() {
-    if (clearTimerRef.current) {
-      clearTimeout(clearTimerRef.current)
-    }
-
-    clearTimerRef.current = setTimeout(() => {
-      pointerStartRef.current = null
-      clearTimerRef.current = null
-    }, 0)
-  }
-
-  return {
-    onClick(event: MouseEvent<HTMLElement>) {
-      if (clearTimerRef.current) {
-        clearTimeout(clearTimerRef.current)
-        clearTimerRef.current = null
-      }
-
-      if (pointerStartRef.current?.moved) {
-        event.preventDefault()
-        event.stopPropagation()
-      }
-
-      pointerStartRef.current = null
-    },
-    onPointerCancel() {
-      clearPointerStart()
-    },
-    onPointerDown(event: PointerEvent<HTMLElement>) {
-      clearPointerStart()
-      pointerStartRef.current = {
-        moved: false,
-        x: event.clientX,
-        y: event.clientY,
-      }
-    },
-    onPointerMove(event: PointerEvent<HTMLElement>) {
-      const start = pointerStartRef.current
-
-      if (!start) {
-        return
-      }
-
-      const moved =
-        Math.abs(event.clientX - start.x) > 8 ||
-        Math.abs(event.clientY - start.y) > 8
-
-      if (moved) {
-        start.moved = true
-      }
-    },
-    onPointerUp() {
-      schedulePointerStartClear()
-    },
-  }
-}
-
-function usePressWithoutDrag(onPress: () => void) {
-  const clickGuard = useClickGuardAfterDrag()
-
-  return {
-    ...clickGuard,
-    onClick(event: MouseEvent<HTMLElement>) {
-      clickGuard.onClick(event)
-
-      if (!event.defaultPrevented) {
-        onPress()
-      }
-    },
-  }
 }
 
 function ToggleChoice({
@@ -722,14 +631,16 @@ function ToggleChoice({
   onToggle: () => void
 }) {
   return (
-    <button
-      type="button"
-      role="checkbox"
-      aria-checked={checked}
-      className="flex w-full cursor-pointer items-center gap-3 rounded-md border bg-background p-3 text-left text-sm focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 data-[checked=true]:border-primary data-[checked=true]:bg-primary/5"
+    <label
+      className="flex w-full cursor-pointer items-center gap-3 rounded-md border bg-background p-3 text-left text-sm has-[:focus-visible]:border-ring has-[:focus-visible]:ring-3 has-[:focus-visible]:ring-ring/50 data-[checked=true]:border-primary data-[checked=true]:bg-primary/5"
       data-checked={checked}
-      {...usePressWithoutDrag(onToggle)}
     >
+      <input
+        type="checkbox"
+        checked={checked}
+        className="sr-only"
+        onChange={onToggle}
+      />
       <span
         aria-hidden="true"
         className={cn(
@@ -742,7 +653,7 @@ function ToggleChoice({
         {checked && <Check className="size-3" />}
       </span>
       <span className="min-w-0 flex-1">{label}</span>
-    </button>
+    </label>
   )
 }
 
@@ -794,6 +705,8 @@ function RadioField<
                 <Choice
                   key={String(option.value)}
                   id={`${name}-${option.value}`}
+                  name={name}
+                  value={String(option.value)}
                   checked={field.value === option.value}
                   label={option.label}
                   onSelect={() =>
@@ -843,6 +756,8 @@ function BooleanRadioField<TName extends "hasProvableIncome">({
                 <Choice
                   key={String(option.value)}
                   id={`${name}-${option.value}`}
+                  name={name}
+                  value={String(option.value)}
                   checked={field.value === option.value}
                   label={option.label}
                   onSelect={() =>
