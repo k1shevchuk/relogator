@@ -2,6 +2,7 @@
 
 import { FormEvent, useMemo, useState, type ReactNode } from "react"
 import Link from "next/link"
+import { usePathname } from "next/navigation"
 import { CheckCircle2, Send, X } from "lucide-react"
 
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
@@ -30,8 +31,11 @@ export function SpecialistRequestForm({
   routeTitle,
   triggerLabel = "Задать вопрос специалисту",
 }: SpecialistRequestFormProps) {
+  const pathname = usePathname()
   const [open, setOpen] = useState(false)
   const [submitted, setSubmitted] = useState(false)
+  const [authRequired, setAuthRequired] = useState(false)
+  const [submitting, setSubmitting] = useState(false)
   const [error, setError] = useState("")
   const [form, setForm] = useState({
     name: "",
@@ -49,9 +53,16 @@ export function SpecialistRequestForm({
     [form]
   )
 
-  function submit(event: FormEvent<HTMLFormElement>) {
+  const authNext = pathname || "/results"
+  const loginHref = `/auth/login?${new URLSearchParams({ next: authNext })}`
+  const registerHref = `/auth/register?${new URLSearchParams({
+    next: authNext,
+  })}`
+
+  async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
     setError("")
+    setAuthRequired(false)
 
     if (!canSubmit) {
       setError(
@@ -72,8 +83,8 @@ export function SpecialistRequestForm({
       consent: form.consent,
     }
 
-    saveSpecialistRequest(request)
-    void saveSpecialistRequestToServer({
+    setSubmitting(true)
+    const result = await saveSpecialistRequestToServer({
       routeId,
       routeTitle,
       countryName,
@@ -82,7 +93,21 @@ export function SpecialistRequestForm({
       question: request.question,
       profile: readStoredProfile(),
     })
+    setSubmitting(false)
 
+    if (!result.saved) {
+      if (result.reason === "not_authenticated" || result.reason === "401") {
+        setAuthRequired(true)
+        return
+      }
+
+      setError(
+        "Не удалось отправить заявку. Проверьте соединение и попробуйте еще раз."
+      )
+      return
+    }
+
+    saveSpecialistRequest(request)
     setSubmitted(true)
     setOpen(false)
   }
@@ -91,15 +116,14 @@ export function SpecialistRequestForm({
     return (
       <Alert className="border-emerald-200 bg-emerald-50 text-emerald-950">
         <CheckCircle2 data-icon="inline-start" />
-        <AlertTitle>Заявка сохранена</AlertTitle>
+        <AlertTitle>Заявка отправлена</AlertTitle>
         <AlertDescription>
-          Это заявка на консультацию, не гарантия результата. Для гостя она
-          сохранена в текущем браузере; после входа она также сохраняется в
-          аккаунте.
+          Мы сохранили обращение в кабинете. Ответ придет по указанному способу
+          связи после ручной обработки заявки.
         </AlertDescription>
         <div className="mt-3">
           <Button asChild size="sm" variant="outline">
-            <Link href="/specialist-requests">Открыть список заявок</Link>
+            <Link href="/account">Открыть кабинет</Link>
           </Button>
         </div>
       </Alert>
@@ -123,8 +147,9 @@ export function SpecialistRequestForm({
                 Заявка специалисту
               </h3>
               <p className="text-sm leading-6 text-muted-foreground">
-                Это консультационная заявка. Она не означает гарантию въезда,
-                ВНЖ или решения органа страны.
+                Отправка требует входа, потому что заявка содержит контакт и
+                ответы анкеты. Консультация не гарантирует въезд, ВНЖ или
+                решение органа страны.
               </p>
             </div>
             <Button
@@ -137,6 +162,24 @@ export function SpecialistRequestForm({
               <X />
             </Button>
           </div>
+
+          {authRequired && (
+            <Alert>
+              <AlertTitle>Войдите, чтобы отправить заявку</AlertTitle>
+              <AlertDescription>
+                Мы не передаем контактные данные без аккаунта. После входа
+                вернитесь к маршруту и отправьте вопрос еще раз.
+              </AlertDescription>
+              <div className="mt-3 flex flex-wrap gap-2">
+                <Button asChild size="sm">
+                  <Link href={loginHref}>Войти</Link>
+                </Button>
+                <Button asChild size="sm" variant="outline">
+                  <Link href={registerHref}>Создать аккаунт</Link>
+                </Button>
+              </div>
+            </Alert>
+          )}
 
           <div className="grid gap-3 sm:grid-cols-2">
             <Field label="Имя" htmlFor={`${routeId}-request-name`}>
@@ -224,11 +267,15 @@ export function SpecialistRequestForm({
             </span>
           </label>
 
-          {error && <p className="text-sm text-destructive">{error}</p>}
+          {error && (
+            <p className="text-sm text-destructive" aria-live="polite">
+              {error}
+            </p>
+          )}
 
-          <Button type="submit">
+          <Button type="submit" disabled={submitting}>
             <Send data-icon="inline-start" />
-            Сохранить заявку
+            {submitting ? "Отправляем..." : "Отправить заявку"}
           </Button>
         </form>
       )}

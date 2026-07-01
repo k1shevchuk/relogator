@@ -2,7 +2,7 @@
 
 import { useMemo, useSyncExternalStore } from "react"
 import Link from "next/link"
-import { Download, FileText } from "lucide-react"
+import { FileText } from "lucide-react"
 
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { Button } from "@/components/ui/button"
@@ -17,7 +17,6 @@ import {
   parseSpecialistRequests,
   readSpecialistRequestsSnapshot,
   subscribeSpecialistRequests,
-  type StoredSpecialistRequest,
 } from "@/features/specialist-requests/request-storage"
 
 export function SpecialistRequestsClient() {
@@ -32,54 +31,33 @@ export function SpecialistRequestsClient() {
     [rawRequests]
   )
   const hasRequests = requests.length > 0
-  const csv = useMemo(() => buildCsv(requests), [requests])
 
   return (
     <div className="flex flex-col gap-5">
       <Alert>
         <FileText data-icon="inline-start" />
-        <AlertTitle>Ваши заявки специалистам</AlertTitle>
+        <AlertTitle>Обращения к специалистам</AlertTitle>
         <AlertDescription>
-          Этот экран показывает заявки из текущего браузера. После входа новые
-          заявки также сохраняются в аккаунте.
+          Отправленные из аккаунта обращения хранятся в кабинете. Здесь видны
+          последние обращения, созданные на этом устройстве.
         </AlertDescription>
       </Alert>
 
       <div className="flex flex-col gap-3 rounded-lg border bg-card p-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h2 className="font-heading text-xl font-semibold">
-            Заявки специалисту
+            Последние обращения
           </h2>
           <p className="text-sm text-muted-foreground">
             Найдено: {requests.length}
           </p>
         </div>
         <div className="flex flex-col gap-2 sm:flex-row">
-          <Button
-            type="button"
-            variant="outline"
-            disabled={!hasRequests}
-            onClick={() =>
-              downloadText(
-                "relogator-specialist-requests.json",
-                JSON.stringify(requests, null, 2),
-                "application/json"
-              )
-            }
-          >
-            <Download data-icon="inline-start" />
-            Скачать JSON
+          <Button asChild variant="outline">
+            <Link href="/account">Открыть кабинет</Link>
           </Button>
-          <Button
-            type="button"
-            variant="outline"
-            disabled={!hasRequests}
-            onClick={() =>
-              downloadText("relogator-specialist-requests.csv", csv, "text/csv")
-            }
-          >
-            <Download data-icon="inline-start" />
-            Скачать CSV
+          <Button asChild>
+            <Link href="/results">К маршрутам</Link>
           </Button>
         </div>
       </div>
@@ -120,8 +98,8 @@ export function SpecialistRequestsClient() {
           <CardHeader>
             <CardTitle>Заявок пока нет</CardTitle>
             <CardDescription>
-              Откройте подходящий маршрут и задайте вопрос специалисту, если
-              хотите проверить документы, сроки или основание.
+              Выберите маршрут и отправьте вопрос после входа, если хотите
+              проверить документы, сроки или основание.
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -133,41 +111,6 @@ export function SpecialistRequestsClient() {
       )}
     </div>
   )
-}
-
-function buildCsv(requests: StoredSpecialistRequest[]): string {
-  const headers = [
-    "createdAt",
-    "name",
-    "contact",
-    "countryName",
-    "routeId",
-    "routeTitle",
-    "question",
-  ]
-
-  const rows = requests.map((request) =>
-    headers.map((field) =>
-      csvCell(request[field as keyof StoredSpecialistRequest])
-    )
-  )
-
-  return [headers.join(","), ...rows.map((row) => row.join(","))].join("\n")
-}
-
-function csvCell(value: unknown): string {
-  const text = String(value ?? "")
-  return `"${text.replaceAll('"', '""')}"`
-}
-
-function downloadText(fileName: string, text: string, type: string) {
-  const blob = new Blob([text], { type })
-  const url = URL.createObjectURL(blob)
-  const anchor = document.createElement("a")
-  anchor.href = url
-  anchor.download = fileName
-  anchor.click()
-  URL.revokeObjectURL(url)
 }
 
 function formatDate(value: string): string {

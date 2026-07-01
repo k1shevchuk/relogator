@@ -58,7 +58,7 @@ test("empty questionnaire step cannot be skipped", async ({ page }) => {
   ).toBeVisible()
 })
 
-test("user can complete questionnaire, request help and see protected route plan", async ({
+test("user can complete questionnaire and gets a clear login gate for specialist requests", async ({
   page,
 }) => {
   await page.goto("/")
@@ -108,13 +108,14 @@ test("user can complete questionnaire, request help and see protected route plan
     .getByLabel("Вопрос")
     .fill("Проверьте, какие документы лучше подготовить первыми.")
   await page.getByLabel("Согласие на передачу данных специалисту").click()
-  await page.getByRole("button", { name: "Сохранить заявку" }).click()
-  await expect(page.getByText("Заявка сохранена")).toBeVisible()
-  await page.getByRole("link", { name: "Открыть список заявок" }).click()
-  await expect(page).toHaveURL(/\/specialist-requests/)
-  await expect(page.getByText("Ваши заявки специалистам")).toBeVisible()
-  await expect(page.getByText("Анна")).toBeVisible()
-  await expect(page.getByRole("button", { name: "Скачать JSON" })).toBeEnabled()
+  await page.getByRole("button", { name: "Отправить заявку" }).click()
+  await expect(
+    page.getByText("Войдите, чтобы отправить заявку")
+  ).toBeVisible()
+  await expect(
+    page.getByRole("main").getByRole("link", { name: "Войти" })
+  ).toHaveAttribute("href", "/auth/login?next=%2Fresults")
+  await expect(page.getByText("Заявка отправлена")).toHaveCount(0)
 })
 
 test("route plan is protected for guests", async ({ page }) => {
@@ -175,6 +176,18 @@ test("auth pages render without sending real emails", async ({ page }) => {
   ).toBeVisible()
   await expect(page.getByLabel("Повторите пароль")).toBeVisible()
   await expect(page.getByText(/sb_publishable|service_role/)).toHaveCount(0)
+})
+
+test("specialist requests page is user-facing and not a technical export screen", async ({
+  page,
+}) => {
+  await page.goto("/specialist-requests")
+
+  await expect(
+    page.getByRole("heading", { name: "Обращения к специалистам" })
+  ).toBeVisible()
+  await expect(page.getByRole("link", { name: "К маршрутам" })).toBeVisible()
+  await expect(page.getByText(/JSON|CSV/)).toHaveCount(0)
 })
 
 test("quick exit scenario shows routes that can start now", async ({

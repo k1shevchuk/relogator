@@ -40,11 +40,24 @@ async function postUserData(
     })
 
     if (!response.ok) {
-      return { saved: false, reason: String(response.status) }
+      const data = await readResponseJson(response)
+
+      return {
+        saved: false,
+        reason: data?.reason ?? String(response.status),
+      }
     }
 
     return (await response.json()) as SaveResult
   } catch {
     return { saved: false, reason: "network_error" }
+  }
+}
+
+async function readResponseJson(response: Response): Promise<SaveResult | null> {
+  try {
+    return (await response.json()) as SaveResult
+  } catch {
+    return null
   }
 }
