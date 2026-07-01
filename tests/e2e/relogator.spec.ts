@@ -79,6 +79,40 @@ test("questionnaire radio cards can be changed by clicking the card", async ({
   await expect(page.locator("input#goal-compare")).toBeChecked()
 })
 
+test("questionnaire scroll gesture does not block the next radio choice", async ({
+  page,
+}) => {
+  await page.goto("/questionnaire")
+
+  await page.locator('label[for="goal-quick_exit"]').click()
+  await expect(page.locator("input#goal-quick_exit")).toBeChecked()
+
+  const compareCard = page.locator('label[for="goal-compare"]')
+  await compareCard.dispatchEvent("pointerdown", {
+    clientX: 40,
+    clientY: 200,
+    pointerId: 1,
+    pointerType: "touch",
+  })
+  await compareCard.dispatchEvent("pointermove", {
+    clientX: 40,
+    clientY: 140,
+    pointerId: 1,
+    pointerType: "touch",
+  })
+  await compareCard.dispatchEvent("pointerup", {
+    clientX: 40,
+    clientY: 140,
+    pointerId: 1,
+    pointerType: "touch",
+  })
+
+  await compareCard.click()
+
+  await expect(page.locator("input#goal-quick_exit")).not.toBeChecked()
+  await expect(page.locator("input#goal-compare")).toBeChecked()
+})
+
 test("empty questionnaire step cannot be skipped", async ({ page }) => {
   await page.goto("/questionnaire")
   await page.getByRole("button", { name: /Дальше/ }).click()

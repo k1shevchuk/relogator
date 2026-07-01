@@ -12,6 +12,8 @@ type RequiredSupabasePublicConfig = {
 }
 
 const DEFAULT_NEXT_PATH = "/account"
+const DEFAULT_LOCAL_SITE_URL = "http://localhost:3000/"
+const PRODUCTION_SITE_URL = "https://relogator.ru/"
 
 export function getSupabasePublicConfig(
   env: PublicEnv = process.env
@@ -177,12 +179,33 @@ export function sanitizeNextPath(path: string | null | undefined) {
 function getSiteUrl(env: PublicEnv, requestOrigin?: string | null) {
   const envSiteUrl = normalizeSiteUrl(readEnv(env, "NEXT_PUBLIC_SITE_URL"))
   const requestOriginUrl = normalizeSiteUrl(requestOrigin)
+  const isProduction = readEnv(env, "NODE_ENV") === "production"
 
   if (requestOriginUrl && (!envSiteUrl || isLocalSiteUrl(envSiteUrl))) {
+    if (isProduction && isLocalSiteUrl(requestOriginUrl)) {
+      return PRODUCTION_SITE_URL
+    }
+
     return requestOriginUrl
   }
 
-  return envSiteUrl || requestOriginUrl || "http://localhost:3000/"
+  if (envSiteUrl) {
+    if (isProduction && isLocalSiteUrl(envSiteUrl)) {
+      return PRODUCTION_SITE_URL
+    }
+
+    return envSiteUrl
+  }
+
+  if (requestOriginUrl) {
+    if (isProduction && isLocalSiteUrl(requestOriginUrl)) {
+      return PRODUCTION_SITE_URL
+    }
+
+    return requestOriginUrl
+  }
+
+  return isProduction ? PRODUCTION_SITE_URL : DEFAULT_LOCAL_SITE_URL
 }
 
 function normalizeSiteUrl(value: string | null | undefined) {

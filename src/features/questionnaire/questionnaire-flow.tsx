@@ -589,6 +589,10 @@ function Choice({
       data-checked={checked}
       onClick={(event) => {
         onClick(event)
+
+        if (!event.defaultPrevented && !checked) {
+          onSelect()
+        }
       }}
       {...dragGuard}
     >
@@ -635,9 +639,43 @@ function useClickGuardAfterDrag() {
     x: number
     y: number
   } | null>(null)
+  const clearTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+
+  useEffect(() => {
+    return () => {
+      if (clearTimerRef.current) {
+        clearTimeout(clearTimerRef.current)
+      }
+    }
+  }, [])
+
+  function clearPointerStart() {
+    if (clearTimerRef.current) {
+      clearTimeout(clearTimerRef.current)
+      clearTimerRef.current = null
+    }
+
+    pointerStartRef.current = null
+  }
+
+  function schedulePointerStartClear() {
+    if (clearTimerRef.current) {
+      clearTimeout(clearTimerRef.current)
+    }
+
+    clearTimerRef.current = setTimeout(() => {
+      pointerStartRef.current = null
+      clearTimerRef.current = null
+    }, 0)
+  }
 
   return {
     onClick(event: MouseEvent<HTMLElement>) {
+      if (clearTimerRef.current) {
+        clearTimeout(clearTimerRef.current)
+        clearTimerRef.current = null
+      }
+
       if (pointerStartRef.current?.moved) {
         event.preventDefault()
         event.stopPropagation()
@@ -646,9 +684,10 @@ function useClickGuardAfterDrag() {
       pointerStartRef.current = null
     },
     onPointerCancel() {
-      pointerStartRef.current = null
+      clearPointerStart()
     },
     onPointerDown(event: PointerEvent<HTMLElement>) {
+      clearPointerStart()
       pointerStartRef.current = {
         moved: false,
         x: event.clientX,
@@ -669,6 +708,9 @@ function useClickGuardAfterDrag() {
       if (moved) {
         start.moved = true
       }
+    },
+    onPointerUp() {
+      schedulePointerStartClear()
     },
   }
 }

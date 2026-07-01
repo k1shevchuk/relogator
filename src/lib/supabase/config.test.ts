@@ -108,6 +108,31 @@ describe("Supabase public config", () => {
     expect(siteUrl).toBe("https://relogator.ru/")
   })
 
+  test("does not build local auth links in production without a public site url", () => {
+    const confirmUrl = getAuthConfirmUrl("/account?confirmed=1", {
+      env: { NODE_ENV: "production" },
+      requestOrigin: "http://localhost:3000",
+    })
+
+    expect(confirmUrl).toBe(
+      "https://relogator.ru/auth/confirm?next=%2Faccount%3Fconfirmed%3D1"
+    )
+  })
+
+  test("does not keep a local configured site url in production auth links", () => {
+    const callbackUrl = getAuthCallbackUrl("/auth/new-password", {
+      env: {
+        NEXT_PUBLIC_SITE_URL: "http://localhost:3000",
+        NODE_ENV: "production",
+      },
+      requestOrigin: "http://127.0.0.1:3000",
+    })
+
+    expect(callbackUrl).toBe(
+      "https://relogator.ru/auth/callback?next=%2Fauth%2Fnew-password"
+    )
+  })
+
   test("builds request origin from forwarded proxy headers", () => {
     const headers = new Headers({
       host: "127.0.0.1:3000",
