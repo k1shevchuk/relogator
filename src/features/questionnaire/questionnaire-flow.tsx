@@ -596,17 +596,8 @@ function Choice({
         checked={checked}
         onChange={onSelect}
         aria-describedby={hint ? `${id}-hint` : undefined}
-        className="sr-only"
+        className="mt-1 size-4 shrink-0 accent-primary"
       />
-      <span
-        aria-hidden="true"
-        className={cn(
-          "mt-1 flex size-4 shrink-0 items-center justify-center rounded-full border",
-          checked ? "border-primary bg-primary" : "border-input bg-background"
-        )}
-      >
-        {checked && <span className="size-1.5 rounded-full bg-background" />}
-      </span>
       <span className="flex min-w-0 flex-1 flex-col gap-1">
         <span className="text-sm font-medium">{label}</span>
         {hint && (
