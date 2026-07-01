@@ -53,39 +53,29 @@ export function RouteCard({ assessment, tone = "best" }: RouteCardProps) {
           toneStyle.header
         )}
       >
-        <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-start">
-          <div className="flex min-w-0 flex-col gap-2">
-            <div className="flex flex-wrap gap-2">
-              <Badge variant="outline">
-                {countryStatusLabels[assessment.country.status]}
-              </Badge>
-              <Badge variant={getStatusVariant(assessment.status)}>
-                {assessment.statusLabel}
-              </Badge>
-              <Badge
-                variant={
-                  assessment.difficulty.level <= 2 ? "secondary" : "outline"
-                }
-                className={difficultyStyle.subtleBadge}
-              >
-                {assessment.difficulty.label}
-              </Badge>
-            </div>
-            <div className="flex flex-col gap-1">
-              <CardTitle className="text-xl">
-                {assessment.country.name}
-              </CardTitle>
-              <CardDescription className="text-sm">
-                {assessment.route.title}
-              </CardDescription>
-            </div>
+        <div className="flex min-w-0 flex-col gap-2">
+          <div className="flex flex-wrap gap-2">
+            <Badge variant="outline">
+              {countryStatusLabels[assessment.country.status]}
+            </Badge>
+            <Badge variant={getStatusVariant(assessment.status)}>
+              {assessment.statusLabel}
+            </Badge>
+            <Badge
+              variant={
+                assessment.difficulty.level <= 2 ? "secondary" : "outline"
+              }
+              className={difficultyStyle.subtleBadge}
+            >
+              {assessment.difficulty.label}
+            </Badge>
           </div>
-          <Button asChild className="w-full lg:w-auto">
-            <Link href={`/routes/${assessment.route.id}`}>
-              Открыть план
-              <ArrowRight data-icon="inline-end" />
-            </Link>
-          </Button>
+          <div className="flex flex-col gap-1">
+            <CardTitle className="text-xl">{assessment.country.name}</CardTitle>
+            <CardDescription className="text-sm">
+              {assessment.route.title}
+            </CardDescription>
+          </div>
         </div>
       </CardHeader>
 

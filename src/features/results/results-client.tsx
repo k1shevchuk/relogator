@@ -4,7 +4,6 @@ import { useMemo, useState, useSyncExternalStore } from "react"
 import Link from "next/link"
 import { ClipboardList, Filter, ListChecks, RotateCcw } from "lucide-react"
 
-import { LegalNotice } from "@/components/legal-notice"
 import { RouteCard } from "@/components/route-card"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { Button } from "@/components/ui/button"
@@ -88,10 +87,8 @@ export function ResultsClient({ catalogue }: ResultsClientProps) {
 
   return (
     <div className="flex flex-col gap-5">
-      <LegalNotice compact />
-
-      <section className="flex flex-col gap-4 rounded-lg border bg-card p-4 shadow-sm">
-        <div className="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
+      <section className="flex flex-col gap-3 rounded-lg border bg-card p-3 shadow-sm sm:p-4">
+        <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
           <div className="flex min-w-0 flex-col gap-1">
             <div className="flex flex-wrap items-center gap-2">
               <h2 className="font-heading text-2xl font-semibold">
@@ -102,8 +99,8 @@ export function ResultsClient({ catalogue }: ResultsClientProps) {
               </span>
             </div>
             <p className="max-w-3xl text-sm leading-6 text-muted-foreground">
-              Сначала показаны маршруты, которые ближе всего к вашим вводным.
-              Подробные ответы анкеты и условия можно раскрыть ниже.
+              Сначала показаны ближайшие варианты. Информация справочная:
+              правила меняются, решение принимает компетентный орган.
             </p>
           </div>
           <Button asChild variant="outline" size="sm" className="w-fit">
@@ -114,9 +111,25 @@ export function ResultsClient({ catalogue }: ResultsClientProps) {
           </Button>
         </div>
 
+        <select
+          aria-label="Фильтр маршрутов"
+          value={filter}
+          onChange={(event) => {
+            setFilter(event.currentTarget.value as FilterValue)
+            setExpandedBuckets({})
+          }}
+          className="min-h-10 rounded-md border bg-background px-3 text-sm font-medium focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-none sm:hidden"
+        >
+          {filters.map((item) => (
+            <option key={item.value} value={item.value}>
+              {item.label}
+            </option>
+          ))}
+        </select>
+
         <div
           aria-label="Фильтр маршрутов"
-          className="grid grid-cols-2 gap-1 rounded-lg bg-muted/70 p-1 sm:flex sm:flex-wrap"
+          className="hidden gap-1 sm:flex sm:flex-wrap"
           role="group"
         >
           {filters.map((item) => {
@@ -132,10 +145,10 @@ export function ResultsClient({ catalogue }: ResultsClientProps) {
                   setExpandedBuckets({})
                 }}
                 className={cn(
-                  "min-h-9 rounded-md px-2 py-1 text-center text-xs font-medium leading-5 transition-colors focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-none sm:text-sm",
+                  "min-h-9 shrink-0 rounded-md border px-3 py-1 text-center text-xs font-medium leading-5 transition-colors focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-none sm:text-sm",
                   active
-                    ? "bg-background text-foreground shadow-sm"
-                    : "text-muted-foreground hover:bg-background/60 hover:text-foreground"
+                    ? "border-primary bg-primary text-primary-foreground shadow-sm"
+                    : "border-transparent bg-muted/70 text-muted-foreground hover:bg-background hover:text-foreground"
                 )}
               >
                 {item.label}
@@ -144,39 +157,43 @@ export function ResultsClient({ catalogue }: ResultsClientProps) {
           })}
         </div>
 
-        <details className="group rounded-md border bg-background">
-          <summary className="flex cursor-pointer items-center justify-between gap-3 px-3 py-2 text-sm font-medium">
-            Ваши ответы
-            <span className="text-xs text-muted-foreground group-open:hidden">
-              раскрыть
-            </span>
-          </summary>
-          <dl className="grid gap-2 border-t p-3 text-sm sm:grid-cols-2 lg:grid-cols-4">
-            {summarizeProfile(profile).map((item) => (
-              <div key={item.label} className="flex min-w-0 flex-col gap-1">
-                <dt className="text-xs text-muted-foreground">{item.label}</dt>
-                <dd className="min-w-0 truncate font-medium">{item.value}</dd>
-              </div>
-            ))}
-          </dl>
-        </details>
-
-        {answerImpacts.length > 0 && (
-          <details className="group rounded-md border bg-accent/40">
-            <summary className="flex cursor-pointer items-center gap-2 px-3 py-2 text-sm font-medium">
-              <ListChecks className="size-4 text-primary" />
-              Что может сделать маршруты проще
+        <div className="grid gap-2 lg:grid-cols-2">
+          <details className="group rounded-md border bg-background">
+            <summary className="flex cursor-pointer items-center justify-between gap-3 px-3 py-2 text-sm font-medium">
+              Ваши ответы
+              <span className="text-xs text-muted-foreground group-open:hidden">
+                раскрыть
+              </span>
             </summary>
-            <div className="grid gap-3 border-t p-3 md:grid-cols-3">
-              {answerImpacts.map((impact) => (
-                <ImpactCard
-                  key={`${impact.field}-${String(impact.value)}`}
-                  impact={impact}
-                />
+            <dl className="grid gap-2 border-t p-3 text-sm sm:grid-cols-2">
+              {summarizeProfile(profile).map((item) => (
+                <div key={item.label} className="flex min-w-0 flex-col gap-1">
+                  <dt className="text-xs text-muted-foreground">
+                    {item.label}
+                  </dt>
+                  <dd className="min-w-0 truncate font-medium">{item.value}</dd>
+                </div>
               ))}
-            </div>
+            </dl>
           </details>
-        )}
+
+          {answerImpacts.length > 0 && (
+            <details className="group rounded-md border bg-accent/30">
+              <summary className="flex cursor-pointer items-center gap-2 px-3 py-2 text-sm font-medium">
+                <ListChecks className="size-4 text-primary" />
+                Что может сделать маршруты проще
+              </summary>
+              <div className="grid gap-3 border-t p-3 md:grid-cols-3 lg:grid-cols-1 xl:grid-cols-3">
+                {answerImpacts.map((impact) => (
+                  <ImpactCard
+                    key={`${impact.field}-${String(impact.value)}`}
+                    impact={impact}
+                  />
+                ))}
+              </div>
+            </details>
+          )}
+        </div>
       </section>
 
       {filteredResults.length > 0 ? (
@@ -197,7 +214,7 @@ export function ResultsClient({ catalogue }: ResultsClientProps) {
               <section key={section.bucket} className="flex flex-col gap-4">
                 <div
                   className={cn(
-                    "flex flex-wrap items-end justify-between gap-3 border-l-4 px-4 py-3",
+                    "flex flex-wrap items-end justify-between gap-3 border-l-4 px-4 py-2.5",
                     tone.header
                   )}
                 >
@@ -222,14 +239,6 @@ export function ResultsClient({ catalogue }: ResultsClientProps) {
                       {section.description}
                     </p>
                   </div>
-                  <span
-                    className={cn(
-                      "rounded-md border px-2 py-1 text-xs font-medium",
-                      tone.count
-                    )}
-                  >
-                    {items.length}
-                  </span>
                 </div>
                 {visibleItems.map((assessment) => (
                   <RouteCard
@@ -321,10 +330,10 @@ const fitSectionStyles: Record<
 }
 
 const sectionVisibleLimits: Record<ResultFitBucket, number> = {
-  best: 4,
-  medium: 4,
-  weak: 3,
-  blocked: 3,
+  best: 2,
+  medium: 2,
+  weak: 2,
+  blocked: 2,
 }
 
 function buildAnswerImpacts(
