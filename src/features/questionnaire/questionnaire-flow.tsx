@@ -1,11 +1,18 @@
 "use client"
 
-import { useEffect, useMemo, useRef, useState } from "react"
+import {
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  type MouseEvent,
+  type PointerEvent,
+} from "react"
 import { useRouter } from "next/navigation"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Controller, useForm, useWatch } from "react-hook-form"
 import type { PathValue } from "react-hook-form"
-import { ArrowLeft, ArrowRight, CheckCircle2, Save } from "lucide-react"
+import { ArrowLeft, ArrowRight, Check, CheckCircle2, Save } from "lucide-react"
 
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { Button } from "@/components/ui/button"
@@ -16,7 +23,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
-import { Checkbox } from "@/components/ui/checkbox"
 import { Progress } from "@/components/ui/progress"
 import { Separator } from "@/components/ui/separator"
 import {
@@ -298,17 +304,12 @@ export function QuestionnaireFlow() {
                 Едете один или с кем-то?
               </legend>
               {companionOptions.map((option) => (
-                <label
+                <ToggleChoice
                   key={option.value}
-                  className="flex cursor-pointer items-center gap-3 rounded-md border bg-background p-3 text-sm"
-                >
-                  <Checkbox
-                    checked={(values.companions ?? []).includes(option.value)}
-                    onCheckedChange={() => toggleCompanion(option.value)}
-                    aria-label={option.label}
-                  />
-                  <span>{option.label}</span>
-                </label>
+                  checked={(values.companions ?? []).includes(option.value)}
+                  label={option.label}
+                  onToggle={() => toggleCompanion(option.value)}
+                />
               ))}
               {formState.errors.companions && (
                 <p className="text-sm text-destructive">
@@ -580,37 +581,128 @@ function Choice({
   onSelect: () => void
 }) {
   return (
-    <label
-      htmlFor={id}
-      className="flex w-full cursor-pointer items-start gap-3 rounded-md border bg-background p-3 text-left focus-within:border-ring focus-within:ring-3 focus-within:ring-ring/50 data-[checked=true]:border-primary data-[checked=true]:bg-primary/5"
-      data-checked={checked}
-    >
+    <div>
       <input
         id={id}
         type="radio"
         name={name}
         checked={checked}
-        onChange={onSelect}
-        className="sr-only"
+        readOnly
+        hidden
       />
+      <button
+        type="button"
+        role="radio"
+        aria-checked={checked}
+        aria-labelledby={`${id}-label`}
+        aria-describedby={hint ? `${id}-hint` : undefined}
+        className="flex w-full cursor-pointer items-start gap-3 rounded-md border bg-background p-3 text-left focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 data-[checked=true]:border-primary data-[checked=true]:bg-primary/5"
+        data-checked={checked}
+        {...usePressWithoutDrag(onSelect)}
+      >
+        <span
+          aria-hidden="true"
+          className={cn(
+            "mt-1 flex size-4 shrink-0 items-center justify-center rounded-full border",
+            checked ? "border-primary bg-primary" : "border-input bg-background"
+          )}
+        >
+          {checked && <span className="size-1.5 rounded-full bg-background" />}
+        </span>
+        <span className="flex min-w-0 flex-1 flex-col gap-1" id={`${id}-label`}>
+          <span className="text-sm font-medium">{label}</span>
+          {hint && (
+            <span
+              id={`${id}-hint`}
+              className="text-sm leading-5 text-muted-foreground"
+            >
+              {hint}
+            </span>
+          )}
+        </span>
+      </button>
+    </div>
+  )
+}
+
+function usePressWithoutDrag(onPress: () => void) {
+  const pointerStartRef = useRef<{
+    moved: boolean
+    x: number
+    y: number
+  } | null>(null)
+
+  return {
+    onClick(event: MouseEvent<HTMLElement>) {
+      if (pointerStartRef.current?.moved) {
+        event.preventDefault()
+        event.stopPropagation()
+        pointerStartRef.current = null
+        return
+      }
+
+      pointerStartRef.current = null
+      onPress()
+    },
+    onPointerCancel() {
+      pointerStartRef.current = null
+    },
+    onPointerDown(event: PointerEvent<HTMLElement>) {
+      pointerStartRef.current = {
+        moved: false,
+        x: event.clientX,
+        y: event.clientY,
+      }
+    },
+    onPointerMove(event: PointerEvent<HTMLElement>) {
+      const start = pointerStartRef.current
+
+      if (!start) {
+        return
+      }
+
+      const moved =
+        Math.abs(event.clientX - start.x) > 8 ||
+        Math.abs(event.clientY - start.y) > 8
+
+      if (moved) {
+        start.moved = true
+      }
+    },
+  }
+}
+
+function ToggleChoice({
+  checked,
+  label,
+  onToggle,
+}: {
+  checked: boolean
+  label: string
+  onToggle: () => void
+}) {
+  return (
+    <button
+      type="button"
+      role="checkbox"
+      aria-checked={checked}
+      className="flex w-full cursor-pointer items-center gap-3 rounded-md border bg-background p-3 text-left text-sm focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 data-[checked=true]:border-primary data-[checked=true]:bg-primary/5"
+      data-checked={checked}
+      {...usePressWithoutDrag(onToggle)}
+    >
       <span
         aria-hidden="true"
         className={cn(
-          "mt-1 flex size-4 shrink-0 items-center justify-center rounded-full border",
-          checked ? "border-primary bg-primary" : "border-input bg-background"
+          "flex size-4 shrink-0 items-center justify-center rounded-sm border",
+          checked
+            ? "border-primary bg-primary text-primary-foreground"
+            : "border-input"
         )}
       >
-        {checked && <span className="size-1.5 rounded-full bg-background" />}
+        {checked && <Check className="size-3" />}
       </span>
-      <span className="flex min-w-0 flex-1 flex-col gap-1" id={`${id}-label`}>
-        <span className="text-sm font-medium">{label}</span>
-        {hint && (
-          <span className="text-sm leading-5 text-muted-foreground">
-            {hint}
-          </span>
-        )}
-      </span>
-    </label>
+      <span className="min-w-0 flex-1">{label}</span>
+    </button>
   )
 }
 
@@ -623,16 +715,7 @@ function CheckboxChoice({
   label: string
   onToggle: () => void
 }) {
-  return (
-    <label className="flex cursor-pointer items-center gap-3 rounded-md border bg-background p-3 text-sm">
-      <Checkbox
-        checked={checked}
-        onCheckedChange={onToggle}
-        aria-label={label}
-      />
-      <span>{label}</span>
-    </label>
-  )
+  return <ToggleChoice checked={checked} label={label} onToggle={onToggle} />
 }
 
 function RadioField<
@@ -758,14 +841,11 @@ function BooleanField<TName extends keyof QuestionnaireDraft>({
       control={control}
       name={name}
       render={({ field }) => (
-        <label className="flex cursor-pointer items-center gap-3 rounded-md border bg-background p-3 text-sm">
-          <Checkbox
-            checked={Boolean(field.value)}
-            onCheckedChange={(checked) => field.onChange(Boolean(checked))}
-            aria-label={label}
-          />
-          <span>{label}</span>
-        </label>
+        <ToggleChoice
+          checked={Boolean(field.value)}
+          label={label}
+          onToggle={() => field.onChange(!field.value)}
+        />
       )}
     />
   )
